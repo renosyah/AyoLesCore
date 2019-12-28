@@ -42,10 +42,10 @@ func NewCategoryModule(db *sql.DB) *CategoryModule {
 	}
 }
 
-func (m CategoryModule) All(ctx context.Context, param AllCategoryParam) ([]model.CategoryModelResponse, *Error) {
-	var allResp []model.CategoryModelResponse
+func (m CategoryModule) All(ctx context.Context, param AllCategoryParam) ([]model.CategoryResponse, *Error) {
+	var allResp []model.CategoryResponse
 
-	data, err := (&model.CategoryModel{}).All(ctx, m.db, model.AllCategory{
+	data, err := (&model.Category{}).All(ctx, m.db, model.AllCategory{
 		SearchBy:    param.SearchBy,
 		SearchValue: param.SearchValue,
 		OrderBy:     param.OrderBy,
@@ -62,7 +62,7 @@ func (m CategoryModule) All(ctx context.Context, param AllCategoryParam) ([]mode
 			message = "no category found"
 		}
 
-		return []model.CategoryModelResponse{}, NewErrorWrap(err, m.Name, "all/category",
+		return []model.CategoryResponse{}, NewErrorWrap(err, m.Name, "all/category",
 			message, status)
 	}
 
@@ -73,26 +73,28 @@ func (m CategoryModule) All(ctx context.Context, param AllCategoryParam) ([]mode
 	return allResp, nil
 
 }
-func (m CategoryModule) Add(ctx context.Context, param AddCategoryParam) (model.CategoryModelResponse, *Error) {
-	category := &model.CategoryModel{
+func (m CategoryModule) Add(ctx context.Context, param AddCategoryParam) (model.CategoryResponse, *Error) {
+	category := &model.Category{
 		Name:     param.Name,
 		ImageURL: param.ImageURL,
 	}
 
-	data, err := category.Add(ctx, m.db)
+	id, err := category.Add(ctx, m.db)
 	if err != nil {
 		status := http.StatusInternalServerError
 		message := "error on add category"
 
-		return model.CategoryModelResponse{}, NewErrorWrap(err, m.Name, "add/category",
+		return model.CategoryResponse{}, NewErrorWrap(err, m.Name, "add/category",
 			message, status)
 	}
 
-	return data.Response(), nil
+	category.ID = id
+
+	return category.Response(), nil
 }
 
-func (m CategoryModule) One(ctx context.Context, param OneCategoryParam) (model.CategoryModelResponse, *Error) {
-	category := &model.CategoryModel{
+func (m CategoryModule) One(ctx context.Context, param OneCategoryParam) (model.CategoryResponse, *Error) {
+	category := &model.Category{
 		ID: param.ID,
 	}
 
@@ -106,7 +108,7 @@ func (m CategoryModule) One(ctx context.Context, param OneCategoryParam) (model.
 			message = "no category found"
 		}
 
-		return model.CategoryModelResponse{}, NewErrorWrap(err, m.Name, "one/category",
+		return model.CategoryResponse{}, NewErrorWrap(err, m.Name, "one/category",
 			message, status)
 	}
 

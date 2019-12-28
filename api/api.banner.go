@@ -43,10 +43,10 @@ func NewBannerModule(db *sql.DB) *BannerModule {
 	}
 }
 
-func (m BannerModule) All(ctx context.Context, param AllBannerParam) ([]model.BannerModelResponse, *Error) {
-	var allResp []model.BannerModelResponse
+func (m BannerModule) All(ctx context.Context, param AllBannerParam) ([]model.BannerResponse, *Error) {
+	var allResp []model.BannerResponse
 
-	banner := &model.BannerModel{}
+	banner := &model.Banner{}
 	data, err := banner.All(ctx, m.db, model.AllBanner{
 		SearchBy:    param.SearchBy,
 		SearchValue: param.SearchValue,
@@ -64,7 +64,7 @@ func (m BannerModule) All(ctx context.Context, param AllBannerParam) ([]model.Ba
 			message = "no banner found"
 		}
 
-		return []model.BannerModelResponse{}, NewErrorWrap(err, m.Name, "all/banner",
+		return []model.BannerResponse{}, NewErrorWrap(err, m.Name, "all/banner",
 			message, status)
 	}
 
@@ -75,27 +75,29 @@ func (m BannerModule) All(ctx context.Context, param AllBannerParam) ([]model.Ba
 	return allResp, nil
 }
 
-func (m BannerModule) Add(ctx context.Context, param AddBannerParam) (model.BannerModelResponse, *Error) {
-	banner := &model.BannerModel{
+func (m BannerModule) Add(ctx context.Context, param AddBannerParam) (model.BannerResponse, *Error) {
+	banner := &model.Banner{
 		Title:    param.Title,
 		Content:  param.Content,
 		ImageURL: param.ImageURL,
 	}
 
-	data, err := banner.Add(ctx, m.db)
+	id, err := banner.Add(ctx, m.db)
 	if err != nil {
 		status := http.StatusInternalServerError
 		message := "error on add banner"
 
-		return model.BannerModelResponse{}, NewErrorWrap(err, m.Name, "add/banner",
+		return model.BannerResponse{}, NewErrorWrap(err, m.Name, "add/banner",
 			message, status)
 	}
 
-	return data.Response(), nil
+	banner.ID = id
+
+	return banner.Response(), nil
 }
 
-func (m *BannerModule) One(ctx context.Context, param OneBannerParam) (model.BannerModelResponse, *Error) {
-	banner := &model.BannerModel{
+func (m *BannerModule) One(ctx context.Context, param OneBannerParam) (model.BannerResponse, *Error) {
+	banner := &model.Banner{
 		ID: param.ID,
 	}
 
@@ -109,7 +111,7 @@ func (m *BannerModule) One(ctx context.Context, param OneBannerParam) (model.Ban
 			message = "no banner found"
 		}
 
-		return model.BannerModelResponse{}, NewErrorWrap(err, m.Name, "one/banner",
+		return model.BannerResponse{}, NewErrorWrap(err, m.Name, "one/banner",
 			message, status)
 	}
 

@@ -57,7 +57,7 @@ func (m StudentModule) Add(ctx context.Context, param AddStudentParam) (model.St
 	}
 
 	check, err := student.OneByEmail(ctx, m.db)
-	if err != nil {
+	if err != nil && errors.Cause(err) != sql.ErrNoRows {
 		status := http.StatusInternalServerError
 		message := "error on check existing student"
 

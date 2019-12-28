@@ -10,40 +10,48 @@ import (
 )
 
 var (
-	categoryType = graphql.NewObject(graphql.ObjectConfig{
-		Name: "category",
+	courseType = graphql.NewObject(graphql.ObjectConfig{
+		Name: "course",
 		Fields: graphql.Fields{
 			"id": &graphql.Field{
 				Type: graphql.String,
 			},
-			"name": &graphql.Field{
+			"course_name": &graphql.Field{
 				Type: graphql.String,
 			},
-			"image_url": &graphql.Field{
-				Type: graphql.String,
+			"teacher": &graphql.Field{
+				Type: teacherType,
+			},
+			"category": &graphql.Field{
+				Type: categoryType,
 			},
 		},
 	})
 
 	/* {
-		category_list(
-			search_by:"name",
+		course_list(
+			category_id : "",
+			search_by:"course_name",
 			search_value:"",
-			order_by:"name",
+			order_by:"course_name",
 			order_dir:"asc",
 			offset:0,
 			limit:10
 		)
 		{
 			id,
-			name,
-			image_url
-		 }
+			course_name,
+			teacher { id, name, email } ,
+			category {id, name, image_url}
+		}
 	} */
 
-	categoryListField = &graphql.Field{
-		Type: graphql.NewList(categoryType),
+	courseListField = &graphql.Field{
+		Type: graphql.NewList(courseType),
 		Args: graphql.FieldConfigArgument{
+			"category_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
 			"search_by": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
@@ -67,7 +75,10 @@ var (
 
 			ctx := p.Context
 
-			param := api.AllCategoryParam{
+			categoryID, _ := uuid.FromString(p.Args["category_id"].(string))
+
+			param := api.AllCourseParam{
+				CategoryID:  categoryID,
 				SearchBy:    p.Args["search_by"].(string),
 				SearchValue: p.Args["search_value"].(string),
 				OrderBy:     p.Args["order_by"].(string),
@@ -76,7 +87,7 @@ var (
 				Limit:       p.Args["limit"].(int),
 			}
 
-			all, err := categoryModule.All(ctx, param)
+			all, err := courseModule.All(ctx, param)
 			if err != nil {
 				log.Println(err)
 				return all, err
@@ -87,17 +98,19 @@ var (
 	}
 
 	/* {
-		category_detail(
-				id:"2d9a7cd6-0054-47fa-8ac1-1dbed77a9652"
-			) {
-				id,
-				name,
-				image_url
-			}
+		course_detail(
+			id: "4252869c-ddd2-466f-8528-e1fe8aff4135"
+		)
+		{
+			id,
+			course_name,
+			teacher { id, name, email } ,
+			category {id, name, image_url}
+		}
 	} */
 
-	categoryDetailField = &graphql.Field{
-		Type: categoryType,
+	courseDetailField = &graphql.Field{
+		Type: courseType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -109,10 +122,10 @@ var (
 
 			id, errUUID := uuid.FromString(p.Args["id"].(string))
 			if errUUID != nil {
-				return model.CategoryResponse{}, errUUID
+				return model.StudentResponse{}, errUUID
 			}
 
-			data, err := categoryModule.One(ctx, api.OneCategoryParam{ID: id})
+			data, err := courseModule.One(ctx, api.OneCourseParam{ID: id})
 			if err != nil {
 				log.Println(err)
 				return data, err
@@ -122,24 +135,30 @@ var (
 		},
 	}
 
-	/* {
-		category_register(
-				name : "sport",
-				image_url : "data/category/sport.png"
-			) {
-				id,
-				name,
-				image_url
-			}
+	/* mutation {
+		course_register(
+			course_name:"data science",
+			teacher_id :"73aa9774-5f93-40b4-b510-4e465f97cfcd",
+			category_id:"c6fef7b3-3bc1-4068-b00a-b58d0ffdb699"
+		)
+		{
+			id,
+			course_name,
+			teacher { id, name, email } ,
+			category {id, name, image_url}
+		}
 	} */
 
-	categoryCreateField = &graphql.Field{
-		Type: categoryType,
+	courseCreateField = &graphql.Field{
+		Type: courseType,
 		Args: graphql.FieldConfigArgument{
-			"name": &graphql.ArgumentConfig{
+			"course_name": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
-			"image_url": &graphql.ArgumentConfig{
+			"teacher_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"category_id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
 		},
@@ -147,12 +166,27 @@ var (
 
 			ctx := p.Context
 
-			category := api.AddCategoryParam{
-				Name:     p.Args["name"].(string),
-				ImageURL: p.Args["image_url"].(string),
+			teacherID, errUUID := uuid.FromString(p.Args["teacher_id"].(string))
+			if errUUID != nil {
+				return model.CourseResponse{}, errUUID
 			}
 
-			data, err := categoryModule.Add(ctx, category)
+			categoryID, errUUID := uuid.FromString(p.Args["category_id"].(string))
+			if errUUID != nil {
+				return model.CourseResponse{}, errUUID
+			}
+
+			course := api.AddCourseParam{
+				CourseName: p.Args["course_name"].(string),
+				Teacher: &model.Teacher{
+					ID: teacherID,
+				},
+				Category: &model.Category{
+					ID: categoryID,
+				},
+			}
+
+			data, err := courseModule.Add(ctx, course)
 			if err != nil {
 				log.Println(err)
 				return data, err

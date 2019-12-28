@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
@@ -44,7 +43,7 @@ func (s *Student) Response() StudentResponse {
 	}
 }
 
-func (s Student) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+func (s *Student) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	query := `INSERT INTO student (name,email,password) VALUES ($1,$2,$3) RETURNING id`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Email, s.Password).Scan(
 		&s.ID,
@@ -74,7 +73,6 @@ func (s *Student) All(ctx context.Context, db *sql.DB, param AllStudent) ([]*Stu
 	query := `SELECT id,name,email,password FROM student WHERE %s LIKE $1 ORDER BY %s %s OFFSET $2 LIMIT $3 `
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
 	if err != nil {
-		log.Println(err)
 		return all, errors.Wrap(err, "error at query all student")
 	}
 

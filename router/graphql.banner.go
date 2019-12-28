@@ -114,7 +114,7 @@ var (
 
 			id, errUUID := uuid.FromString(p.Args["id"].(string))
 			if errUUID != nil {
-				return model.BannerModelResponse{}, errUUID
+				return model.BannerResponse{}, errUUID
 			}
 
 			data, err := bannerModule.One(ctx, api.OneBannerParam{ID: id})

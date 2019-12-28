@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	categoryType = graphql.NewObject(graphql.ObjectConfig{
-		Name: "category",
+	teacherType = graphql.NewObject(graphql.ObjectConfig{
+		Name: "teacher",
 		Fields: graphql.Fields{
 			"id": &graphql.Field{
 				Type: graphql.String,
@@ -19,14 +19,14 @@ var (
 			"name": &graphql.Field{
 				Type: graphql.String,
 			},
-			"image_url": &graphql.Field{
+			"email": &graphql.Field{
 				Type: graphql.String,
 			},
 		},
 	})
 
 	/* {
-		category_list(
+		teacher_list(
 			search_by:"name",
 			search_value:"",
 			order_by:"name",
@@ -37,12 +37,12 @@ var (
 		{
 			id,
 			name,
-			image_url
-		 }
+			email
+		}
 	} */
 
-	categoryListField = &graphql.Field{
-		Type: graphql.NewList(categoryType),
+	teacherListField = &graphql.Field{
+		Type: graphql.NewList(teacherType),
 		Args: graphql.FieldConfigArgument{
 			"search_by": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -66,8 +66,7 @@ var (
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 
 			ctx := p.Context
-
-			param := api.AllCategoryParam{
+			param := api.AllTeacherParam{
 				SearchBy:    p.Args["search_by"].(string),
 				SearchValue: p.Args["search_value"].(string),
 				OrderBy:     p.Args["order_by"].(string),
@@ -76,7 +75,7 @@ var (
 				Limit:       p.Args["limit"].(int),
 			}
 
-			all, err := categoryModule.All(ctx, param)
+			all, err := teacherModule.All(ctx, param)
 			if err != nil {
 				log.Println(err)
 				return all, err
@@ -87,17 +86,18 @@ var (
 	}
 
 	/* {
-		category_detail(
-				id:"2d9a7cd6-0054-47fa-8ac1-1dbed77a9652"
-			) {
-				id,
-				name,
-				image_url
-			}
+		teacher_detail(
+			id: "4252869c-ddd2-466f-8528-e1fe8aff4135"
+		)
+		{
+			id,
+			name,
+			email
+		}
 	} */
 
-	categoryDetailField = &graphql.Field{
-		Type: categoryType,
+	teacherDetailField = &graphql.Field{
+		Type: teacherType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -109,10 +109,10 @@ var (
 
 			id, errUUID := uuid.FromString(p.Args["id"].(string))
 			if errUUID != nil {
-				return model.CategoryResponse{}, errUUID
+				return model.TeacherResponse{}, errUUID
 			}
 
-			data, err := categoryModule.One(ctx, api.OneCategoryParam{ID: id})
+			data, err := teacherModule.One(ctx, api.OneTeacherParam{ID: id})
 			if err != nil {
 				log.Println(err)
 				return data, err
@@ -123,23 +123,24 @@ var (
 	}
 
 	/* {
-		category_register(
-				name : "sport",
-				image_url : "data/category/sport.png"
-			) {
-				id,
-				name,
-				image_url
-			}
+		teacher_login(
+			email:"reno@gmail.com",
+			password:"12345"
+		)
+		{
+			id,
+			name,
+			email
+		}
 	} */
 
-	categoryCreateField = &graphql.Field{
-		Type: categoryType,
+	teacherLoginField = &graphql.Field{
+		Type: teacherType,
 		Args: graphql.FieldConfigArgument{
-			"name": &graphql.ArgumentConfig{
+			"email": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
-			"image_url": &graphql.ArgumentConfig{
+			"password": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
 		},
@@ -147,12 +148,56 @@ var (
 
 			ctx := p.Context
 
-			category := api.AddCategoryParam{
-				Name:     p.Args["name"].(string),
-				ImageURL: p.Args["image_url"].(string),
+			email := p.Args["email"].(string)
+			password := p.Args["password"].(string)
+
+			data, err := teacherModule.Login(ctx, api.TeacherLoginParam{Email: email, Password: password})
+			if err != nil {
+				log.Println(err)
+				return data, err
 			}
 
-			data, err := categoryModule.Add(ctx, category)
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		teacher_register(
+			name:"reno",
+			email:"reno@gmail.com",
+			password:"12345"
+		)
+		{
+			id,
+			name,
+			email
+		}
+	} */
+
+	teacherCreateField = &graphql.Field{
+		Type: teacherType,
+		Args: graphql.FieldConfigArgument{
+			"name": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"email": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"password": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			teacher := api.AddTeacherParam{
+				Name:     p.Args["name"].(string),
+				Email:    p.Args["email"].(string),
+				Password: p.Args["password"].(string),
+			}
+
+			data, err := teacherModule.Add(ctx, teacher)
 			if err != nil {
 				log.Println(err)
 				return data, err

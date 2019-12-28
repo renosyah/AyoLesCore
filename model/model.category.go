@@ -10,13 +10,13 @@ import (
 )
 
 type (
-	CategoryModel struct {
+	Category struct {
 		ID       uuid.UUID `json:"id"`
 		Name     string    `json:"name"`
 		ImageURL string    `json:"image_url"`
 	}
 
-	CategoryModelResponse struct {
+	CategoryResponse struct {
 		ID       uuid.UUID `json:"id"`
 		Name     string    `json:"name"`
 		ImageURL string    `json:"image_url"`
@@ -32,28 +32,28 @@ type (
 	}
 )
 
-func (c *CategoryModel) Response() CategoryModelResponse {
-	return CategoryModelResponse{
+func (c *Category) Response() CategoryResponse {
+	return CategoryResponse{
 		ID:       c.ID,
 		Name:     c.Name,
 		ImageURL: c.ImageURL,
 	}
 }
 
-func (c *CategoryModel) Add(ctx context.Context, db *sql.DB) (*CategoryModel, error) {
+func (c *Category) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	query := `INSERT INTO course_category (name,image_url) VALUES ($1,$2) RETURNING id`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.Name, c.ImageURL).Scan(
 		&c.ID,
 	)
 	if err != nil {
-		return c, errors.Wrap(err, "error at insert new category")
+		return c.ID, errors.Wrap(err, "error at insert new category")
 	}
 
-	return c, nil
+	return c.ID, nil
 }
 
-func (c *CategoryModel) One(ctx context.Context, db *sql.DB) (*CategoryModel, error) {
-	one := &CategoryModel{}
+func (c *Category) One(ctx context.Context, db *sql.DB) (*Category, error) {
+	one := &Category{}
 	query := `SELECT id,name,image_url FROM course_category WHERE id = $1 LIMIT 1`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID).Scan(
 		&one.ID, &one.Name, &one.ImageURL,
@@ -65,8 +65,8 @@ func (c *CategoryModel) One(ctx context.Context, db *sql.DB) (*CategoryModel, er
 	return one, nil
 }
 
-func (c *CategoryModel) All(ctx context.Context, db *sql.DB, param AllCategory) ([]*CategoryModel, error) {
-	all := []*CategoryModel{}
+func (c *Category) All(ctx context.Context, db *sql.DB, param AllCategory) ([]*Category, error) {
+	all := []*Category{}
 	query := `SELECT id,name,image_url FROM course_category WHERE %s LIKE $1 ORDER BY %s %s OFFSET $2 LIMIT $3 `
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
 	if err != nil {
@@ -76,7 +76,7 @@ func (c *CategoryModel) All(ctx context.Context, db *sql.DB, param AllCategory) 
 	defer rows.Close()
 
 	for rows.Next() {
-		one := &CategoryModel{}
+		one := &Category{}
 		err = rows.Scan(
 			&one.ID, &one.Name, &one.ImageURL,
 		)

@@ -19,6 +19,7 @@ var (
 	teacherModule      *api.TeacherModule
 	courseModule       *api.CourseModule
 	courseDetailModule *api.CourseDetailModule
+	classRoomModule    *api.ClassRoomModule
 	db                 *sql.DB
 )
 
@@ -30,6 +31,7 @@ func Init(d *sql.DB) {
 	teacherModule = api.NewTeacherModule(db)
 	courseModule = api.NewCourseModule(db)
 	courseDetailModule = api.NewCourseDetailModule(db)
+	classRoomModule = api.NewClassRoomModule(db)
 }
 
 // ParseBodyData parse json-formatted request body into given struct.

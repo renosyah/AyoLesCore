@@ -58,18 +58,20 @@ func (fn HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func InitSchema() (graphql.Schema, error) {
 	queryFields := graphql.Fields{
-		"student_detail":  studentDetailField,
-		"student_login":   studentLoginField,
-		"student_list":    studentListField,
-		"teacher_detail":  teacherDetailField,
-		"teacher_login":   teacherLoginField,
-		"teacher_list":    teacherListField,
-		"category_detail": categoryDetailField,
-		"category_list":   categoryListField,
-		"banner_detail":   bannerDetailField,
-		"banner_list":     bannerListField,
-		"course_detail":   courseDetailField,
-		"course_list":     courseListField,
+		"student_detail":   studentDetailField,
+		"student_login":    studentLoginField,
+		"student_list":     studentListField,
+		"teacher_detail":   teacherDetailField,
+		"teacher_login":    teacherLoginField,
+		"teacher_list":     teacherListField,
+		"category_detail":  categoryDetailField,
+		"category_list":    categoryListField,
+		"banner_detail":    bannerDetailField,
+		"banner_list":      bannerListField,
+		"course_detail":    courseDetailField,
+		"course_list":      courseListField,
+		"classroom_list":   classRoomListField,
+		"classroom_detail": classRoomDetailField,
 	}
 
 	mutationFields := graphql.Fields{
@@ -79,6 +81,7 @@ func InitSchema() (graphql.Schema, error) {
 		"banner_register":        bannerCreateField,
 		"course_register":        courseCreateField,
 		"course_detail_register": courseDetailCreateField,
+		"classroom_register":     classRoomCreateField,
 	}
 
 	queryType := graphql.NewObject(

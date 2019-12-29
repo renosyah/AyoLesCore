@@ -75,6 +75,27 @@ func (c *ClassRoom) One(ctx context.Context, db *sql.DB) (*ClassRoom, error) {
 	return one, nil
 }
 
+func (c *ClassRoom) IsExist(ctx context.Context, db *sql.DB) (bool, error) {
+	one := &ClassRoom{
+		Course: &Course{},
+	}
+
+	query := `SELECT id,course_id,student_id FROM classroom WHERE course_id = $1 AND student_id = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.Course.ID, c.StudentID).Scan(
+		&one.ID, &one.Course.ID, &one.StudentID,
+	)
+	if err != nil {
+		return false, errors.Wrap(err, "error at query validate in one classroom")
+	}
+
+	var emptyId uuid.UUID
+	if one.ID != emptyId {
+		return true, nil
+	}
+
+	return false, nil
+}
+
 func (c *ClassRoom) All(ctx context.Context, db *sql.DB, param AllClassRoom) ([]*ClassRoom, error) {
 	all := []*ClassRoom{}
 	query := `SELECT classroom.id,classroom.course_id,classroom.student_id FROM classroom INNER JOIN course ON course.id = classroom.course_id WHERE %s::STRING LIKE $1 AND classroom.student_id = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `

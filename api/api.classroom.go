@@ -83,6 +83,23 @@ func (m ClassRoomModule) Add(ctx context.Context, param AddClassRoomParam) (mode
 		StudentID: param.StudentID,
 	}
 
+	isExist, err := classroom.IsExist(ctx, m.db)
+	if err != nil && errors.Cause(err) != sql.ErrNoRows {
+		status := http.StatusInternalServerError
+		message := "error on check classroom"
+
+		return model.ClassRoomResponse{}, NewErrorWrap(err, m.Name, "add/classroom",
+			message, status)
+	}
+
+	if isExist {
+		status := http.StatusOK
+		message := "student already taken the course"
+
+		return model.ClassRoomResponse{}, NewErrorWrap(err, m.Name, "add/classroom",
+			message, status)
+	}
+
 	id, err := classroom.Add(ctx, m.db)
 	if err != nil {
 		status := http.StatusInternalServerError

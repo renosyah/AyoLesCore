@@ -13,6 +13,7 @@ type (
 	Course struct {
 		ID         uuid.UUID `json:"id"`
 		CourseName string    `json:"course_name"`
+		ImageURL   string    `json:"image_url"`
 		Teacher    *Teacher  `json:"teacher"`
 		Category   *Category `json:"category"`
 	}
@@ -20,6 +21,7 @@ type (
 	CourseResponse struct {
 		ID         uuid.UUID        `json:"id"`
 		CourseName string           `json:"course_name"`
+		ImageURL   string           `json:"image_url"`
 		Teacher    TeacherResponse  `json:"teacher"`
 		Category   CategoryResponse `json:"category"`
 	}
@@ -39,6 +41,7 @@ func (c *Course) Response() CourseResponse {
 	return CourseResponse{
 		ID:         c.ID,
 		CourseName: c.CourseName,
+		ImageURL:   c.ImageURL,
 		Teacher:    c.Teacher.Response(),
 		Category:   c.Category.Response(),
 	}
@@ -53,8 +56,8 @@ func (a AllCourse) IsWithCategory() string {
 }
 
 func (c *Course) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
-	query := `INSERT INTO course (course_name,teacher_id,category_id) VALUES ($1,$2,$3) RETURNING id`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseName, c.Teacher.ID, c.Category.ID).Scan(
+	query := `INSERT INTO course (course_name,teacher_id,category_id,image_url) VALUES ($1,$2,$3,$4) RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseName, c.Teacher.ID, c.Category.ID, c.ImageURL).Scan(
 		&c.ID,
 	)
 	if err != nil {
@@ -69,9 +72,9 @@ func (c *Course) One(ctx context.Context, db *sql.DB) (*Course, error) {
 		Teacher:  &Teacher{},
 		Category: &Category{},
 	}
-	query := `SELECT id,course_name,teacher_id,category_id FROM course WHERE id = $1 LIMIT 1`
+	query := `SELECT id,course_name,teacher_id,category_id,image_url FROM course WHERE id = $1 LIMIT 1`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID).Scan(
-		&one.ID, &one.CourseName, &one.Teacher.ID, &one.Category.ID,
+		&one.ID, &one.CourseName, &one.Teacher.ID, &one.Category.ID, &one.ImageURL,
 	)
 	if err != nil {
 		return one, errors.Wrap(err, "error at query teacher with id")
@@ -92,7 +95,7 @@ func (c *Course) One(ctx context.Context, db *sql.DB) (*Course, error) {
 
 func (c *Course) All(ctx context.Context, db *sql.DB, param AllCourse) ([]*Course, error) {
 	all := []*Course{}
-	query := `SELECT id,course_name,teacher_id,category_id FROM course WHERE %s LIKE $1 %s ORDER BY %s %s OFFSET $2 LIMIT $3 `
+	query := `SELECT id,course_name,teacher_id,category_id,image_url FROM course WHERE %s LIKE $1 %s ORDER BY %s %s OFFSET $2 LIMIT $3 `
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.IsWithCategory(), param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all course")
@@ -106,7 +109,7 @@ func (c *Course) All(ctx context.Context, db *sql.DB, param AllCourse) ([]*Cours
 			Category: &Category{},
 		}
 		err = rows.Scan(
-			&one.ID, &one.CourseName, &one.Teacher.ID, &one.Category.ID,
+			&one.ID, &one.CourseName, &one.Teacher.ID, &one.Category.ID, &one.ImageURL,
 		)
 		if err != nil {
 			return all, errors.Wrap(err, "error at query all and scan one of course data")

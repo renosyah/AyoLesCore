@@ -18,6 +18,7 @@ type (
 
 	AddCourseParam struct {
 		CourseName string          `json:"course_name"`
+		ImageURL   string          `json:"image_url"`
 		Teacher    *model.Teacher  `json:"teacher"`
 		Category   *model.Category `json:"category"`
 	}
@@ -79,6 +80,7 @@ func (m CourseModule) All(ctx context.Context, param AllCourseParam) ([]model.Co
 func (m CourseModule) Add(ctx context.Context, param AddCourseParam) (model.CourseResponse, *Error) {
 	course := &model.Course{
 		CourseName: param.CourseName,
+		ImageURL:   param.ImageURL,
 		Teacher:    param.Teacher,
 		Category:   param.Category,
 	}

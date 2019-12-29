@@ -38,6 +38,7 @@ CREATE TABLE banner (
 CREATE TABLE course (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_name STRING NOT NULL DEFAULT '',
+    image_url STRING NOT NULL DEFAULT '',
     teacher_id UUID NOT NULL REFERENCES teacher (id),
     category_id UUID NOT NULL REFERENCES course_category (id),
     PRIMARY KEY (id)

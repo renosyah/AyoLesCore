@@ -19,6 +19,9 @@ var (
 			"course_name": &graphql.Field{
 				Type: graphql.String,
 			},
+			"image_url": &graphql.Field{
+				Type: graphql.String,
+			},
 			"teacher": &graphql.Field{
 				Type: teacherType,
 			},
@@ -41,6 +44,7 @@ var (
 		{
 			id,
 			course_name,
+			image_url,
 			teacher { id, name, email } ,
 			category {id, name, image_url}
 		}
@@ -104,6 +108,7 @@ var (
 		{
 			id,
 			course_name,
+			image_url,
 			teacher { id, name, email } ,
 			category {id, name, image_url}
 		}
@@ -144,6 +149,7 @@ var (
 		{
 			id,
 			course_name,
+			image_url,
 			teacher { id, name, email } ,
 			category {id, name, image_url}
 		}
@@ -159,6 +165,9 @@ var (
 				Type: graphql.NewNonNull(graphql.String),
 			},
 			"category_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"image_url": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
 		},
@@ -178,6 +187,7 @@ var (
 
 			course := api.AddCourseParam{
 				CourseName: p.Args["course_name"].(string),
+				ImageURL:   p.Args["image_url"].(string),
 				Teacher: &model.Teacher{
 					ID: teacherID,
 				},

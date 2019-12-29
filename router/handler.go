@@ -73,11 +73,12 @@ func InitSchema() (graphql.Schema, error) {
 	}
 
 	mutationFields := graphql.Fields{
-		"student_register":  studentCreateField,
-		"teacher_register":  teacherCreateField,
-		"category_register": categoryCreateField,
-		"banner_register":   bannerCreateField,
-		"course_register":   courseCreateField,
+		"student_register":       studentCreateField,
+		"teacher_register":       teacherCreateField,
+		"category_register":      categoryCreateField,
+		"banner_register":        bannerCreateField,
+		"course_register":        courseCreateField,
+		"course_detail_register": courseDetailCreateField,
 	}
 
 	queryType := graphql.NewObject(

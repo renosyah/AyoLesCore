@@ -44,3 +44,39 @@ CREATE TABLE course (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE course_detail (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_id UUID NOT NULL REFERENCES course (id),
+    overview_text STRING NOT NULL DEFAULT '',
+    description_text STRING NOT NULL DEFAULT '',
+    image_url STRING NOT NULL DEFAULT '',
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE course_material (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_id UUID NOT NULL REFERENCES course (id),
+    type_material INT NOT NULL DEFAULT 0,
+    title STRING NOT NULL DEFAULT '',
+    sub_title STRING NOT NULL DEFAULT '',
+    content STRING NOT NULL DEFAULT '',
+    image_url STRING NOT NULL DEFAULT '',
+    video_url STRING NOT NULL DEFAULT '',
+    document_url STRING NOT NULL DEFAULT '',
+    url_refrences STRING NOT NULL DEFAULT '',
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE classroom (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_id UUID NOT NULL REFERENCES course (id),
+    student_id UUID NOT NULL REFERENCES student (id),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE classroom_material_progress (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    classroom_id UUID NOT NULL REFERENCES classroom (id),
+    course_material_id UUID NOT NULL REFERENCES course_material (id),
+    PRIMARY KEY (id)
+);

@@ -11,19 +11,21 @@ import (
 
 type (
 	Course struct {
-		ID         uuid.UUID `json:"id"`
-		CourseName string    `json:"course_name"`
-		ImageURL   string    `json:"image_url"`
-		Teacher    *Teacher  `json:"teacher"`
-		Category   *Category `json:"category"`
+		ID            uuid.UUID      `json:"id"`
+		CourseName    string         `json:"course_name"`
+		ImageURL      string         `json:"image_url"`
+		Teacher       *Teacher       `json:"teacher"`
+		Category      *Category      `json:"category"`
+		CourseDetails []CourseDetail `json:"course_details"`
 	}
 
 	CourseResponse struct {
-		ID         uuid.UUID        `json:"id"`
-		CourseName string           `json:"course_name"`
-		ImageURL   string           `json:"image_url"`
-		Teacher    TeacherResponse  `json:"teacher"`
-		Category   CategoryResponse `json:"category"`
+		ID            uuid.UUID              `json:"id"`
+		CourseName    string                 `json:"course_name"`
+		ImageURL      string                 `json:"image_url"`
+		Teacher       TeacherResponse        `json:"teacher"`
+		Category      CategoryResponse       `json:"category"`
+		CourseDetails []CourseDetailResponse `json:"course_details"`
 	}
 
 	AllCourse struct {
@@ -38,12 +40,17 @@ type (
 )
 
 func (c *Course) Response() CourseResponse {
+	details := []CourseDetailResponse{}
+	for _, v := range c.CourseDetails {
+		details = append(details, v.Response())
+	}
 	return CourseResponse{
-		ID:         c.ID,
-		CourseName: c.CourseName,
-		ImageURL:   c.ImageURL,
-		Teacher:    c.Teacher.Response(),
-		Category:   c.Category.Response(),
+		ID:            c.ID,
+		CourseName:    c.CourseName,
+		ImageURL:      c.ImageURL,
+		Teacher:       c.Teacher.Response(),
+		Category:      c.Category.Response(),
+		CourseDetails: details,
 	}
 }
 
@@ -90,6 +97,11 @@ func (c *Course) One(ctx context.Context, db *sql.DB) (*Course, error) {
 		return one, err
 	}
 
+	one.CourseDetails, err = (&CourseDetail{CourseID: one.ID}).AllByCourseID(ctx, db)
+	if err != nil {
+		return one, err
+	}
+
 	return one, nil
 }
 
@@ -121,6 +133,11 @@ func (c *Course) All(ctx context.Context, db *sql.DB, param AllCourse) ([]*Cours
 		}
 
 		one.Category, err = one.Category.One(ctx, db)
+		if err != nil {
+			return all, err
+		}
+
+		one.CourseDetails, err = (&CourseDetail{CourseID: one.ID}).AllByCourseID(ctx, db)
 		if err != nil {
 			return all, err
 		}

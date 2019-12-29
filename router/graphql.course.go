@@ -28,6 +28,9 @@ var (
 			"category": &graphql.Field{
 				Type: categoryType,
 			},
+			"course_details": &graphql.Field{
+				Type: graphql.NewList(courseDetailType),
+			},
 		},
 	})
 
@@ -45,8 +48,9 @@ var (
 			id,
 			course_name,
 			image_url,
-			teacher { id, name, email } ,
-			category {id, name, image_url}
+			teacher {id, name, email } ,
+			category {id, name, image_url},
+			course_details { id,course_id , overview_text, description_text,image_url }
 		}
 	} */
 
@@ -110,7 +114,8 @@ var (
 			course_name,
 			image_url,
 			teacher { id, name, email } ,
-			category {id, name, image_url}
+			category {id, name, image_url},
+			course_details { id,course_id , overview_text, description_text,image_url }
 		}
 	} */
 
@@ -144,14 +149,16 @@ var (
 		course_register(
 			course_name:"data science",
 			teacher_id :"73aa9774-5f93-40b4-b510-4e465f97cfcd",
-			category_id:"c6fef7b3-3bc1-4068-b00a-b58d0ffdb699"
+			category_id:"c6fef7b3-3bc1-4068-b00a-b58d0ffdb699",
+			image_url : "path/to/image",
 		)
 		{
 			id,
 			course_name,
 			image_url,
 			teacher { id, name, email } ,
-			category {id, name, image_url}
+			category {id, name, image_url},
+			course_details { id,course_id , overview_text, description_text,image_url }
 		}
 	} */
 

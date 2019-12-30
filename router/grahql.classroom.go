@@ -147,6 +147,63 @@ var (
 		},
 	}
 
+	/*  {
+		classroom_detail_by_id (
+			course_id : "4252869c-ddd2-466f-8528-e1fe8aff4135",
+			student_id : "4252869c-ddd2-466f-8528-e1fe8aff4135"
+		)
+		{
+			id,
+			course {
+				id,
+				course_name,
+				image_url,
+				teacher {id, name, email } ,
+				category {id, name, image_url},
+				course_details { id,course_id , overview_text, description_text,image_url }
+			},
+			student_id
+		}
+	} */
+
+	classRoomDetailByStudentAndCourseIdField = &graphql.Field{
+		Type: classRoomType,
+		Args: graphql.FieldConfigArgument{
+			"course_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"student_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			courseID, errUUID := uuid.FromString(p.Args["course_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomResponse{}, errUUID
+			}
+
+			studentID, errUUID := uuid.FromString(p.Args["student_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomResponse{}, errUUID
+			}
+
+			classRoom := api.OneClassRoomByIdParam{
+				CourseID:  courseID,
+				StudentID: studentID,
+			}
+
+			data, err := classRoomModule.OneByStudentIdAndCourseId(ctx, classRoom)
+			if err != nil {
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
 	/* mutation {
 		classroom_register(
 			course_id : "4252869c-ddd2-466f-8528-e1fe8aff4135",
@@ -191,9 +248,7 @@ var (
 			}
 
 			classRoom := api.AddClassRoomParam{
-				Course: &model.Course{
-					ID: courseID,
-				},
+				CourseID:  courseID,
 				StudentID: studentID,
 			}
 

@@ -75,7 +75,7 @@ func (c *ClassRoom) One(ctx context.Context, db *sql.DB) (*ClassRoom, error) {
 	return one, nil
 }
 
-func (c *ClassRoom) IsExist(ctx context.Context, db *sql.DB) (bool, error) {
+func (c *ClassRoom) OneByStudentIdAndCourseId(ctx context.Context, db *sql.DB) (*ClassRoom, error) {
 	one := &ClassRoom{
 		Course: &Course{},
 	}
@@ -85,15 +85,15 @@ func (c *ClassRoom) IsExist(ctx context.Context, db *sql.DB) (bool, error) {
 		&one.ID, &one.Course.ID, &one.StudentID,
 	)
 	if err != nil {
-		return false, errors.Wrap(err, "error at query validate in one classroom")
+		return one, errors.Wrap(err, "error at query in one classroom by student id and course id")
 	}
 
-	var emptyId uuid.UUID
-	if one.ID != emptyId {
-		return true, nil
+	one.Course, err = one.Course.One(ctx, db)
+	if err != nil {
+		return one, errors.Wrap(err, "error at query one classroom by student id and course id")
 	}
 
-	return false, nil
+	return one, nil
 }
 
 func (c *ClassRoom) All(ctx context.Context, db *sql.DB, param AllClassRoom) ([]*ClassRoom, error) {

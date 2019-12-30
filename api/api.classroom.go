@@ -16,13 +16,17 @@ type (
 		Name string
 	}
 	AddClassRoomParam struct {
-		ID        uuid.UUID     `json:"id"`
-		Course    *model.Course `json:"course"`
-		StudentID uuid.UUID     `json:"student_id"`
+		CourseID  uuid.UUID `json:"course_id"`
+		StudentID uuid.UUID `json:"student_id"`
 	}
 
 	OneClassRoomParam struct {
 		ID uuid.UUID `json:"id"`
+	}
+
+	OneClassRoomByIdParam struct {
+		CourseID  uuid.UUID `json:"course_id"`
+		StudentID uuid.UUID `json:"student_id"`
 	}
 
 	AllClassRoomParam struct {
@@ -75,29 +79,13 @@ func (m ClassRoomModule) All(ctx context.Context, param AllClassRoomParam) ([]mo
 	return allResp, nil
 
 }
+
 func (m ClassRoomModule) Add(ctx context.Context, param AddClassRoomParam) (model.ClassRoomResponse, *Error) {
 	classroom := &model.ClassRoom{
 		Course: &model.Course{
-			ID: param.Course.ID,
+			ID: param.CourseID,
 		},
 		StudentID: param.StudentID,
-	}
-
-	isExist, err := classroom.IsExist(ctx, m.db)
-	if err != nil && errors.Cause(err) != sql.ErrNoRows {
-		status := http.StatusInternalServerError
-		message := "error on check classroom"
-
-		return model.ClassRoomResponse{}, NewErrorWrap(err, m.Name, "add/classroom",
-			message, status)
-	}
-
-	if isExist {
-		status := http.StatusOK
-		message := "student already taken the course"
-
-		return model.ClassRoomResponse{}, NewErrorWrap(err, m.Name, "add/classroom",
-			message, status)
 	}
 
 	id, err := classroom.Add(ctx, m.db)
@@ -132,6 +120,31 @@ func (m ClassRoomModule) One(ctx context.Context, param OneClassRoomParam) (mode
 	if err != nil {
 		status := http.StatusInternalServerError
 		message := "error on get one classroom"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no classroom found"
+		}
+
+		return model.ClassRoomResponse{}, NewErrorWrap(err, m.Name, "one/classroom",
+			message, status)
+	}
+
+	return data.Response(), nil
+}
+
+func (m ClassRoomModule) OneByStudentIdAndCourseId(ctx context.Context, param OneClassRoomByIdParam) (model.ClassRoomResponse, *Error) {
+	classroom := &model.ClassRoom{
+		StudentID: param.StudentID,
+		Course: &model.Course{
+			ID: param.CourseID,
+		},
+	}
+
+	data, err := classroom.OneByStudentIdAndCourseId(ctx, m.db)
+	if err != nil {
+		status := http.StatusInternalServerError
+		message := "error on get one classroom  by student id and course id"
 
 		if errors.Cause(err) == sql.ErrNoRows {
 			status = http.StatusOK

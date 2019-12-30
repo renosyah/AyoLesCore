@@ -56,10 +56,15 @@ CREATE TABLE course_detail (
 CREATE TABLE course_material (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_id UUID NOT NULL REFERENCES course (id),
-    type_material INT NOT NULL DEFAULT 0,
-    material_number INT NOT NULL DEFAULT 0,
+    material_index INT NOT NULL DEFAULT 0,
     title STRING NOT NULL DEFAULT '',
-    sub_title STRING NOT NULL DEFAULT '',
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE course_material_detail (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_material_id UUID NOT NULL REFERENCES course_material (id),
+    type_material INT NOT NULL DEFAULT 0,
     content STRING NOT NULL DEFAULT '',
     image_url STRING NOT NULL DEFAULT '',
     PRIMARY KEY (id)
@@ -73,9 +78,10 @@ CREATE TABLE classroom (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE classroom_material_progress (
+CREATE TABLE classroom_progress (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     classroom_id UUID NOT NULL REFERENCES classroom (id),
     course_material_id UUID NOT NULL REFERENCES course_material (id),
+    date_add TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );

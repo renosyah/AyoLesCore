@@ -58,20 +58,21 @@ func (fn HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func InitSchema() (graphql.Schema, error) {
 	queryFields := graphql.Fields{
-		"student_detail":   studentDetailField,
-		"student_login":    studentLoginField,
-		"student_list":     studentListField,
-		"teacher_detail":   teacherDetailField,
-		"teacher_login":    teacherLoginField,
-		"teacher_list":     teacherListField,
-		"category_detail":  categoryDetailField,
-		"category_list":    categoryListField,
-		"banner_detail":    bannerDetailField,
-		"banner_list":      bannerListField,
-		"course_detail":    courseDetailField,
-		"course_list":      courseListField,
-		"classroom_list":   classRoomListField,
-		"classroom_detail": classRoomDetailField,
+		"student_detail":         studentDetailField,
+		"student_login":          studentLoginField,
+		"student_list":           studentListField,
+		"teacher_detail":         teacherDetailField,
+		"teacher_login":          teacherLoginField,
+		"teacher_list":           teacherListField,
+		"category_detail":        categoryDetailField,
+		"category_list":          categoryListField,
+		"banner_detail":          bannerDetailField,
+		"banner_list":            bannerListField,
+		"course_detail":          courseDetailField,
+		"course_list":            courseListField,
+		"classroom_list":         classRoomListField,
+		"classroom_detail":       classRoomDetailField,
+		"classroom_detail_by_id": classRoomDetailByStudentAndCourseIdField,
 	}
 
 	mutationFields := graphql.Fields{

@@ -55,6 +55,27 @@ func (s *Student) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	return s.ID, nil
 }
 
+func (s *Student) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var emptyId uuid.UUID
+	query := `UPDATE student SET name = $1,email = $2 WHERE id = $3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Email, s.ID).Scan(
+		&s.ID,
+	)
+
+	if s.Password != "" {
+		query = `UPDATE student SET password = $1 WHERE id = $2 RETURNING id`
+		err = db.QueryRowContext(ctx, fmt.Sprintf(query), s.Password, s.ID).Scan(
+			&s.ID,
+		)
+	}
+
+	if err != nil || s.ID == emptyId {
+		return s.ID, errors.Wrap(err, "error at update student")
+	}
+
+	return s.ID, nil
+}
+
 func (s *Student) One(ctx context.Context, db *sql.DB) (*Student, error) {
 	one := &Student{}
 	query := `SELECT id,name,email,password FROM student WHERE id = $1 LIMIT 1`

@@ -13,14 +13,17 @@ import (
 )
 
 var (
-	studentModule      *api.StudentModule
-	categoryModule     *api.CategoryModule
-	bannerModule       *api.BannerModule
-	teacherModule      *api.TeacherModule
-	courseModule       *api.CourseModule
-	courseDetailModule *api.CourseDetailModule
-	classRoomModule    *api.ClassRoomModule
-	db                 *sql.DB
+	studentModule              *api.StudentModule
+	categoryModule             *api.CategoryModule
+	bannerModule               *api.BannerModule
+	teacherModule              *api.TeacherModule
+	courseModule               *api.CourseModule
+	courseDetailModule         *api.CourseDetailModule
+	classRoomModule            *api.ClassRoomModule
+	courseMaterialModule       *api.CourseMaterialModule
+	courseMaterialDetailModule *api.CourseMaterialDetailModule
+	classRoomProgressModule    *api.ClassRoomProgressModule
+	db                         *sql.DB
 )
 
 func Init(d *sql.DB) {
@@ -32,6 +35,9 @@ func Init(d *sql.DB) {
 	courseModule = api.NewCourseModule(db)
 	courseDetailModule = api.NewCourseDetailModule(db)
 	classRoomModule = api.NewClassRoomModule(db)
+	courseMaterialModule = api.NewCourseMaterialModule(db)
+	courseMaterialDetailModule = api.NewCourseMaterialDetailModule(db)
+	classRoomProgressModule = api.NewClassRoomProgressModule(db)
 }
 
 // ParseBodyData parse json-formatted request body into given struct.

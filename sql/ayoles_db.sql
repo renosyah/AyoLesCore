@@ -64,6 +64,8 @@ CREATE TABLE course_material (
 CREATE TABLE course_material_detail (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_material_id UUID NOT NULL REFERENCES course_material (id),
+    position INT NOT NULL DEFAULT 0,
+    title STRING NOT NULL DEFAULT '',
     type_material INT NOT NULL DEFAULT 0,
     content STRING NOT NULL DEFAULT '',
     image_url STRING NOT NULL DEFAULT '',

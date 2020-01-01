@@ -107,7 +107,7 @@ func (c *CourseDetail) All(ctx context.Context, db *sql.DB, param AllCourseDetai
 
 func (c *CourseDetail) AllByCourseID(ctx context.Context, db *sql.DB) ([]CourseDetail, error) {
 	all := []CourseDetail{}
-	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE course_id = $1`
+	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE course_id = $1 LIMIT 3`
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(query), c.CourseID)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all course detail")

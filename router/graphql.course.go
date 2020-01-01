@@ -132,7 +132,7 @@ var (
 
 			id, errUUID := uuid.FromString(p.Args["id"].(string))
 			if errUUID != nil {
-				return model.StudentResponse{}, errUUID
+				return model.CourseResponse{}, errUUID
 			}
 
 			data, err := courseModule.One(ctx, api.OneCourseParam{ID: id})

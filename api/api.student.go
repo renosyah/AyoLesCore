@@ -27,6 +27,13 @@ type (
 		Password string `json:"password"`
 	}
 
+	UpdateStudentParam struct {
+		Name     string    `json:"name"`
+		Email    string    `json:"email"`
+		Password string    `json:"password"`
+		ID       uuid.UUID `json:"id"`
+	}
+
 	OneStudentParam struct {
 		ID uuid.UUID `json:"id"`
 	}
@@ -48,6 +55,28 @@ func NewStudentModule(db *sql.DB) *StudentModule {
 	}
 }
 
+func (m StudentModule) Update(ctx context.Context, param UpdateStudentParam) (model.StudentResponse, *Error) {
+
+	student := &model.Student{
+		ID:       param.ID,
+		Name:     param.Name,
+		Email:    param.Email,
+		Password: param.Password,
+	}
+
+	id, err := student.Update(ctx, m.db)
+	if err != nil {
+		status := http.StatusInternalServerError
+		message := "error on update one student"
+
+		return model.StudentResponse{}, NewErrorWrap(err, m.Name, "add/student",
+			message, status)
+	}
+
+	student.ID = id
+
+	return student.Response(), nil
+}
 func (m StudentModule) Add(ctx context.Context, param AddStudentParam) (model.StudentResponse, *Error) {
 
 	student := &model.Student{

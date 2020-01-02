@@ -29,6 +29,7 @@ type (
 
 	AllCourseParam struct {
 		CategoryID  uuid.UUID `json:"category_id"`
+		TeacherID   uuid.UUID `json:"teacher_id"`
 		SearchBy    string    `json:"search_by"`
 		SearchValue string    `json:"search_value"`
 		OrderBy     string    `json:"order_by"`
@@ -50,6 +51,7 @@ func (m CourseModule) All(ctx context.Context, param AllCourseParam) ([]model.Co
 
 	data, err := (&model.Course{}).All(ctx, m.db, model.AllCourse{
 		CategoryID:  param.CategoryID,
+		TeacherID:   param.TeacherID,
 		SearchBy:    param.SearchBy,
 		SearchValue: param.SearchValue,
 		OrderBy:     param.OrderBy,

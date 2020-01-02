@@ -30,6 +30,7 @@ type (
 
 	AllCourse struct {
 		CategoryID  uuid.UUID `json:"category_id"`
+		TeacherID   uuid.UUID `json:"teacher_id"`
 		SearchBy    string    `json:"search_by"`
 		SearchValue string    `json:"search_value"`
 		OrderBy     string    `json:"order_by"`
@@ -60,6 +61,14 @@ func (a AllCourse) IsWithCategory() string {
 		return ""
 	}
 	return fmt.Sprintf(`AND category_id = '%s'`, a.CategoryID)
+}
+
+func (a AllCourse) IsWithTeacher() string {
+	var emptyID uuid.UUID
+	if a.TeacherID == emptyID {
+		return ""
+	}
+	return fmt.Sprintf(`AND teacher_id = '%s'`, a.TeacherID)
 }
 
 func (c *Course) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
@@ -107,8 +116,8 @@ func (c *Course) One(ctx context.Context, db *sql.DB) (*Course, error) {
 
 func (c *Course) All(ctx context.Context, db *sql.DB, param AllCourse) ([]*Course, error) {
 	all := []*Course{}
-	query := `SELECT id,course_name,teacher_id,category_id,image_url FROM course WHERE %s LIKE $1 %s ORDER BY %s %s OFFSET $2 LIMIT $3 `
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.IsWithCategory(), param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
+	query := `SELECT id,course_name,teacher_id,category_id,image_url FROM course WHERE %s LIKE $1 %s %s ORDER BY %s %s OFFSET $2 LIMIT $3 `
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.IsWithCategory(), param.IsWithTeacher(), param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all course")
 	}

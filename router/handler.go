@@ -79,6 +79,10 @@ func InitSchema() (graphql.Schema, error) {
 		"course_material_detail_list": courseMaterialDetailListField,
 		"classroom_progress_list":     classroomProgressListField,
 		"classroom_progress_detail":   classroomProgressDetailField,
+		"course_exam_detail":          courseExamDetailField,
+		"course_exam_list":            courseExamListField,
+		"course_exam_answer_detail":   courseExamAnswerDetailField,
+		"course_exam_answer_list":     courseExamAnswerListField,
 	}
 
 	mutationFields := graphql.Fields{
@@ -93,6 +97,8 @@ func InitSchema() (graphql.Schema, error) {
 		"course_material_register":        courseMaterialCreateField,
 		"course_material_detail_register": courseMaterialDetailCreateField,
 		"classroom_progress_register":     classroomProgressRegisterField,
+		"course_exam_register":            courseExamCreateField,
+		"course_exam_answer_register":     courseExamAnswerCreateField,
 	}
 
 	queryType := graphql.NewObject(

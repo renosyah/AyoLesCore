@@ -23,6 +23,8 @@ var (
 	courseMaterialModule       *api.CourseMaterialModule
 	courseMaterialDetailModule *api.CourseMaterialDetailModule
 	classRoomProgressModule    *api.ClassRoomProgressModule
+	courseExamModule           *api.CourseExamModule
+	courseExamAnswerModule     *api.CourseExamAnswerModule
 	db                         *sql.DB
 )
 
@@ -38,6 +40,8 @@ func Init(d *sql.DB) {
 	courseMaterialModule = api.NewCourseMaterialModule(db)
 	courseMaterialDetailModule = api.NewCourseMaterialDetailModule(db)
 	classRoomProgressModule = api.NewClassRoomProgressModule(db)
+	courseExamModule = api.NewCourseExamModule(db)
+	courseExamAnswerModule = api.NewCourseExamAnswerModule(db)
 }
 
 // ParseBodyData parse json-formatted request body into given struct.

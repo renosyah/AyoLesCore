@@ -71,3 +71,23 @@ INSERT INTO course_material_detail (course_material_id,position,title,type_mater
 
 INSERT INTO course_material_detail (course_material_id,position,title,type_material,content,image_url) VALUES ('44547242-3794-45aa-ac8d-b817779c8633',1,'Method use by data scientis',0,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.','');
 INSERT INTO course_material_detail (course_material_id,position,title,type_material,content,image_url) VALUES ('44547242-3794-45aa-ac8d-b817779c8633',2,'All Benefit',1,'','data/material/data-visualization-in-data-science-1-638.jpg');
+
+
+INSERT INTO course_exam (id,course_id,type_exam,exam_index,text,image_url) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408','2e847a03-5209-4d2b-9e37-b88e461e9c41',0,1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident .. ?','');
+INSERT INTO course_exam (id,course_id,type_exam,exam_index,text,image_url) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5','2e847a03-5209-4d2b-9e37-b88e461e9c41',1,2,'','data/exam/exam_data_scientis.jpg');
+INSERT INTO course_exam (id,course_id,type_exam,exam_index,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52','2e847a03-5209-4d2b-9e37-b88e461e9c41',2,3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident .. ?','data/exam/exam_data_scientis.jpg');
+
+
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408',1,'B','','data/answer/two.png');
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
+
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',1,'B','','data/answer/two.png');
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
+
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52',1,'B','','data/answer/two.png');
+INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
+
+

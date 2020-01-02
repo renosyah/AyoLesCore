@@ -37,6 +37,7 @@ var (
 	/* {
 		course_list(
 			category_id : "",
+			teacher_id : "",
 			search_by:"course_name",
 			search_value:"",
 			order_by:"course_name",
@@ -58,6 +59,9 @@ var (
 		Type: graphql.NewList(courseType),
 		Args: graphql.FieldConfigArgument{
 			"category_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"teacher_id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
 			"search_by": &graphql.ArgumentConfig{
@@ -84,9 +88,11 @@ var (
 			ctx := p.Context
 
 			categoryID, _ := uuid.FromString(p.Args["category_id"].(string))
+			teacherID, _ := uuid.FromString(p.Args["teacher_id"].(string))
 
 			param := api.AllCourseParam{
 				CategoryID:  categoryID,
+				TeacherID:   teacherID,
 				SearchBy:    p.Args["search_by"].(string),
 				SearchValue: p.Args["search_value"].(string),
 				OrderBy:     p.Args["order_by"].(string),

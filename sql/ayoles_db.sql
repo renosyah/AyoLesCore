@@ -72,6 +72,33 @@ CREATE TABLE course_material_detail (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE course_exam (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_id UUID NOT NULL REFERENCES course (id),
+    type_exam INT NOT NULL DEFAULT 0,
+    exam_index INT NOT NULL DEFAULT 0,
+    text STRING NOT NULL DEFAULT '',
+    image_url STRING NOT NULL DEFAULT '',
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE course_exam_answer (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_exam_id UUID NOT NULL REFERENCES course_exam (id),
+    type_answer INT NOT NULL DEFAULT 0,
+    label STRING NOT NULL DEFAULT '',
+    text STRING NOT NULL DEFAULT '',
+    image_url STRING NOT NULL DEFAULT '',
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE course_exam_solution (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_exam_id UUID NOT NULL REFERENCES course_exam (id),
+    course_exam_answer UUID NOT NULL REFERENCES course_exam_answer (id),
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE classroom (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_id UUID NOT NULL REFERENCES course (id),
@@ -84,6 +111,15 @@ CREATE TABLE classroom_progress (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     classroom_id UUID NOT NULL REFERENCES classroom (id),
     course_material_id UUID NOT NULL REFERENCES course_material (id),
+    date_add TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE classroom_exam_progress (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    classroom_id UUID NOT NULL REFERENCES classroom (id),
+    course_exam_id UUID NOT NULL REFERENCES course_exam (id),
+    course_exam_answer_id UUID NOT NULL REFERENCES course_exam_answer (id),
     date_add TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );

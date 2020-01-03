@@ -100,7 +100,7 @@ func (c CourseExamAnswer) All(ctx context.Context, db *sql.DB, param AllCourseEx
 
 func (c CourseExamAnswer) AllById(ctx context.Context, db *sql.DB, LimitAnswer int) ([]*CourseExamAnswer, error) {
 	all := []*CourseExamAnswer{}
-	query := `SELECT id,course_exam_id,type_answer,label,text,image_url FROM course_exam_answer WHERE course_exam_id = $1 ORDER BY random() LIMIT $2`
+	query := `SELECT id,course_exam_id,type_answer,label,text,image_url FROM course_exam_answer WHERE course_exam_id = $1 ORDER BY create_at ASC LIMIT $2`
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(query), c.CourseExamID, LimitAnswer)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query one course exam answer")

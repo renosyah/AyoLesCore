@@ -42,7 +42,7 @@ func (c *ClassRoom) Response() ClassRoomResponse {
 }
 
 func (c *ClassRoom) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
-	query := `INSERT INTO classroom (course_id,student_id) VALUES ($1,$2) RETURNING id`
+	query := `INSERT INTO classroom (course_id,student_id) VALUES ($1, $2) RETURNING id`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.Course.ID, c.StudentID).Scan(
 		&c.ID,
 	)

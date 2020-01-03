@@ -13,19 +13,22 @@ import (
 )
 
 var (
-	studentModule              *api.StudentModule
-	categoryModule             *api.CategoryModule
-	bannerModule               *api.BannerModule
-	teacherModule              *api.TeacherModule
-	courseModule               *api.CourseModule
-	courseDetailModule         *api.CourseDetailModule
-	classRoomModule            *api.ClassRoomModule
-	courseMaterialModule       *api.CourseMaterialModule
-	courseMaterialDetailModule *api.CourseMaterialDetailModule
-	classRoomProgressModule    *api.ClassRoomProgressModule
-	courseExamModule           *api.CourseExamModule
-	courseExamAnswerModule     *api.CourseExamAnswerModule
-	db                         *sql.DB
+	studentModule               *api.StudentModule
+	categoryModule              *api.CategoryModule
+	bannerModule                *api.BannerModule
+	teacherModule               *api.TeacherModule
+	courseModule                *api.CourseModule
+	courseDetailModule          *api.CourseDetailModule
+	classRoomModule             *api.ClassRoomModule
+	courseMaterialModule        *api.CourseMaterialModule
+	courseMaterialDetailModule  *api.CourseMaterialDetailModule
+	classRoomProgressModule     *api.ClassRoomProgressModule
+	courseExamModule            *api.CourseExamModule
+	courseExamAnswerModule      *api.CourseExamAnswerModule
+	classRoomExamProgressModule *api.ClassRoomExamProgressModule
+	classRoomExamResultModule   *api.ClassRoomExamResultModule
+	classRoomCertificateModule  *api.ClassRoomCertificateModule
+	db                          *sql.DB
 )
 
 func Init(d *sql.DB) {
@@ -42,6 +45,9 @@ func Init(d *sql.DB) {
 	classRoomProgressModule = api.NewClassRoomProgressModule(db)
 	courseExamModule = api.NewCourseExamModule(db)
 	courseExamAnswerModule = api.NewCourseExamAnswerModule(db)
+	classRoomExamProgressModule = api.NewClassRoomExamProgressModule(db)
+	classRoomExamResultModule = api.NewClassRoomExamResultModule(db)
+	classRoomCertificateModule = api.NewClassRoomCertificateModule(db)
 }
 
 // ParseBodyData parse json-formatted request body into given struct.

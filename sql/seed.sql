@@ -1,7 +1,7 @@
-INSERT INTO student (name,email,password) VALUES ('reno','reno@gmail.com','12345');
-INSERT INTO student (name,email,password) VALUES ('rikka','rikka@gmail.com','12345');
-INSERT INTO student (name,email,password) VALUES ('agus','agus@gmail.com','12345');
-INSERT INTO student (name,email,password) VALUES ('surya','surya@gmail.com','12345');
+INSERT INTO student (id,name,email,password) VALUES ('26ba6f57-8cc1-4f33-a18d-b17d1b9fa7ea','reno','reno@gmail.com','12345');
+INSERT INTO student (id,name,email,password) VALUES ('53a3277b-5533-4d5d-9c54-0d33272f3fb0','rikka','rikka@gmail.com','12345');
+INSERT INTO student (id,name,email,password) VALUES ('f4df3b19-99d7-49f7-85a2-636b1ccab36d','agus','agus@gmail.com','12345');
+INSERT INTO student (id,name,email,password) VALUES ('a0779b2e-6ab4-4258-a129-843e574f4815','surya','surya@gmail.com','12345');
 
 
 INSERT INTO teacher (id,name,email,password) VALUES ('73aa9774-5f93-40b4-b510-4e465f97cfcd','prof agus','profagus@gmail.com','12345');
@@ -78,16 +78,21 @@ INSERT INTO course_exam (id,course_id,type_exam,exam_index,text,image_url) VALUE
 INSERT INTO course_exam (id,course_id,type_exam,exam_index,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52','2e847a03-5209-4d2b-9e37-b88e461e9c41',2,3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident .. ?','data/exam/exam_data_scientis.jpg');
 
 
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408',1,'B','','data/answer/two.png');
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('59156b2a-a4b3-4258-b567-a6acae4db255','fb8478fa-b27f-42a9-aebf-acaa09b3f408',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('3c580dfd-388d-4f2a-b840-5466c39376ab','fb8478fa-b27f-42a9-aebf-acaa09b3f408',1,'B','','data/answer/two.png');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('439b19f5-defd-4be7-8579-986e555f2805','fb8478fa-b27f-42a9-aebf-acaa09b3f408',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
 
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',1,'B','','data/answer/two.png');
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('d63cbe0d-c88a-4ae0-86e5-08a70192eb5e','ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('00dbf9f8-d3d5-462c-a839-6c21879f47b8','ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',1,'B','','data/answer/two.png');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('b86cf45a-d4a1-4a7c-9032-1ee10c39f35a','ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
 
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52',1,'B','','data/answer/two.png');
-INSERT INTO course_exam_answer (course_exam_id,type_answer,label,text,image_url) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('ab442b69-e486-4d05-87ae-f49f64002ef5','1609e073-557d-4009-b1c9-cee0629f0c52',0,'A','sunt in culpa qui officia deserunt mollit anim id est laborum.','');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('056f7250-8c06-4f5e-8a65-7979ffb9e12d','1609e073-557d-4009-b1c9-cee0629f0c52',1,'B','','data/answer/two.png');
+INSERT INTO course_exam_answer (id,course_exam_id,type_answer,label,text,image_url) VALUES ('daf19830-eaa8-4fa0-920f-065986d7b49c','1609e073-557d-4009-b1c9-cee0629f0c52',2,'C','sunt in culpa qui officia deserunt mollit anim id est laborum.','data/answer/two.png');
+
+
+INSERT INTO course_exam_solution (course_exam_id,course_exam_answer_id) VALUES ('fb8478fa-b27f-42a9-aebf-acaa09b3f408','59156b2a-a4b3-4258-b567-a6acae4db255');
+INSERT INTO course_exam_solution (course_exam_id,course_exam_answer_id) VALUES ('ffc7b6f3-ba2b-4068-a2d7-3c1f28b83db5','00dbf9f8-d3d5-462c-a839-6c21879f47b8');
+INSERT INTO course_exam_solution (course_exam_id,course_exam_answer_id) VALUES ('1609e073-557d-4009-b1c9-cee0629f0c52','daf19830-eaa8-4fa0-920f-065986d7b49c');
 
 

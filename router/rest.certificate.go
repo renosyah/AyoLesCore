@@ -12,6 +12,8 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	hash := mux.Vars(r)["hash_id"]
 
+	flag := r.FormValue("print")
+
 	cert, err := classRoomCertificateModule.One(ctx, api.OneClassRoomCertificateParam{
 		HashID: hash,
 	})
@@ -37,7 +39,9 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 		"CourseName": course.CourseName,
 		"Date":       cert.CreateAt.Format("02 January 2006"),
 		"HashID":     cert.HashID,
+		"Print" : flag,
 	}
+
 
 	errServe := temp.ExecuteTemplate(w, "cert.gohtml", data)
 	if errServe != nil {

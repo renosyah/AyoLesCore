@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"html/template"
+	template "html/template"
 	"io/ioutil"
 	"net/http"
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"html/template"
 	"io/ioutil"
 	"net/http"
 
@@ -28,11 +29,14 @@ var (
 	classRoomExamProgressModule *api.ClassRoomExamProgressModule
 	classRoomExamResultModule   *api.ClassRoomExamResultModule
 	classRoomCertificateModule  *api.ClassRoomCertificateModule
+	courseQualificationModule   *api.CourseQualificationModule
 	db                          *sql.DB
+	temp                        *template.Template
 )
 
 func Init(d *sql.DB) {
 	db = d
+	temp = template.Must(template.ParseGlob("template/*.gohtml"))
 	studentModule = api.NewStudentModule(db)
 	categoryModule = api.NewCategoryModule(db)
 	bannerModule = api.NewBannerModule(db)
@@ -48,6 +52,7 @@ func Init(d *sql.DB) {
 	classRoomExamProgressModule = api.NewClassRoomExamProgressModule(db)
 	classRoomExamResultModule = api.NewClassRoomExamResultModule(db)
 	classRoomCertificateModule = api.NewClassRoomCertificateModule(db)
+	courseQualificationModule = api.NewCourseQualificationModule(db)
 }
 
 // ParseBodyData parse json-formatted request body into given struct.

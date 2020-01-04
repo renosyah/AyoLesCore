@@ -43,6 +43,8 @@ var rootCmd = &cobra.Command{
 
 		r := mux.NewRouter()
 
+		r.HandleFunc("/cert/{hash_id}", router.HandleCertificate)
+
 		// register end point
 		apiRouter := r.PathPrefix("/api/v1").Subrouter()
 		apiRouter.Use(auth.AuthenticationMiddleware)

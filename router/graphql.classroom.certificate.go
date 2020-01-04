@@ -121,7 +121,6 @@ var (
 
 			one, err := classRoomCertificateModule.One(ctx, param)
 			if err != nil {
-				log.Println(err)
 				return one, err
 			}
 

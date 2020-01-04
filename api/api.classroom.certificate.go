@@ -23,6 +23,7 @@ type (
 
 	OneClassRoomCertificateParam struct {
 		ClassroomID uuid.UUID `json:"classroom_id"`
+		HashID      string    `json:"hash_id"`
 	}
 
 	AllClassRoomCertificateParam struct {
@@ -74,6 +75,7 @@ func (m ClassRoomCertificateModule) All(ctx context.Context, param AllClassRoomC
 func (m ClassRoomCertificateModule) One(ctx context.Context, param OneClassRoomCertificateParam) (model.ClassRoomCertificateResponse, *Error) {
 	classroomCert := &model.ClassRoomCertificate{
 		ClassroomID: param.ClassroomID,
+		HashID:      param.HashID,
 	}
 
 	data, err := classroomCert.One(ctx, m.db)

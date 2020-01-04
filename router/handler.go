@@ -89,6 +89,7 @@ func InitSchema() (graphql.Schema, error) {
 		"classroom_exam_result_list":     classroomExamResultListField,
 		"classroom_certificate_detail":   classroomCertificateDetailField,
 		"classroom_certificate_list":     classroomCertificateListField,
+		"course_qualification_detail":    courseQualificationDetailField,
 	}
 
 	mutationFields := graphql.Fields{
@@ -107,7 +108,8 @@ func InitSchema() (graphql.Schema, error) {
 		"course_exam_answer_register":      courseExamAnswerCreateField,
 		"classroom_exam_progress_register": classroomExamProgressRegisterField,
 		"classroom_exam_progress_delete":   classroomExamProgressDeleteField,
-		"classroom_certificate_register":    classroomCertificateRegisterField,
+		"classroom_certificate_register":   classroomCertificateRegisterField,
+		"course_qualification_register":    courseQualificationCreateField,
 	}
 
 	queryType := graphql.NewObject(

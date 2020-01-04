@@ -1,0 +1,23 @@
+<html>
+<body>
+<div style="width:800px; height:550px; padding:20px; text-align:center; border: 10px solid #0D47A1">
+<div style="width:750px; height:500px; padding:20px; text-align:center; border: 5px solid #4CAF50">
+       <span style="font-size:50px; font-weight:bold;font-family: sans-serif-light;">Certificate of Completion</span>
+       <br><br>
+       <span style="font-size:20px;font-family: sans-serif-light;"><i>This is to certify that</i></span>
+       <br><br>
+       <span style="font-size:40px;font-family: sans-serif-medium;"><b>{{.Name}}</b></span><br/><br/>
+       <span style="font-size:20px;font-family: sans-serif-light;"><i>has completed the course</i></span> <br/><br/><br/>
+       <span style="font-size:40px;font-family: sans-serif-medium;"><b>{{.CourseName}}</b></span><br/>
+       <span style="font-size:20px;font-family: sans-serif-light;"><i>(provide by Lets Course)</i></span> <br/><br/>
+       <span style="font-size:20px;font-family: sans-serif-light;"></span> <br/>
+       <span style="font-size:15px;font-family: sans-serif-light;"><i>Issued on:</i></span><br>
+       <span style="font-size:20px;font-family: sans-serif-light; font-weight:bold">{{.Date}}</span>
+       <br/><br/> <br/><br/> <br/>
+       <span style="font-size:20px;font-family: sans-serif-light;"></span>Authenticity of this certificate can be validated by going to:</span><br/>
+       <span style="font-size:15px;font-family: sans-serif-light"><a href="http://letscourse.com/cert/{{.HashID}}">http://letscourse.com/{{.HashID}}</a></span>
+</div>
+</div>
+
+</body>
+</html>

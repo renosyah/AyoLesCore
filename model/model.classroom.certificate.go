@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
@@ -14,12 +15,14 @@ type (
 		ID          uuid.UUID `json:"id"`
 		ClassroomID uuid.UUID `json:"classroom_id"`
 		HashID      string    `json:"hash_id"`
+		CreateAt    time.Time `json:"-"`
 	}
 
 	ClassRoomCertificateResponse struct {
 		ID          uuid.UUID `json:"id"`
 		ClassroomID uuid.UUID `json:"classroom_id"`
 		HashID      string    `json:"hash_id"`
+		CreateAt    time.Time `json:"-"`
 	}
 
 	AllClassRoomCertificate struct {
@@ -36,13 +39,14 @@ func (c *ClassRoomCertificate) Response() ClassRoomCertificateResponse {
 		ID:          c.ID,
 		ClassroomID: c.ClassroomID,
 		HashID:      c.HashID,
+		CreateAt:    c.CreateAt,
 	}
 }
 
 func (c *ClassRoomCertificate) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	var emptyUUID uuid.UUID
 
-	one , _:= c.One(ctx,db)
+	one, _ := c.One(ctx, db)
 	if one.ID != emptyUUID {
 		return one.ID, nil
 	}
@@ -60,9 +64,9 @@ func (c *ClassRoomCertificate) Add(ctx context.Context, db *sql.DB) (uuid.UUID, 
 func (c *ClassRoomCertificate) One(ctx context.Context, db *sql.DB) (*ClassRoomCertificate, error) {
 	one := &ClassRoomCertificate{}
 
-	query := `SELECT id,classroom_id,hash_id FROM classroom_certificate WHERE classroom_id = $1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassroomID).Scan(
-		&one.ID, &one.ClassroomID, &one.HashID,
+	query := `SELECT id,classroom_id,hash_id,create_at FROM classroom_certificate WHERE classroom_id = $1 OR hash_id = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassroomID, c.HashID).Scan(
+		&one.ID, &one.ClassroomID, &one.HashID, &one.CreateAt,
 	)
 	if err != nil {
 		return one, errors.Wrap(err, "error at one classroom certificate")
@@ -76,7 +80,8 @@ func (c *ClassRoomCertificate) All(ctx context.Context, db *sql.DB, param AllCla
 	query := `SELECT 
 				classroom_certificate.id,
 				classroom_certificate.classroom_id,
-				classroom_certificate.hash_id 
+				classroom_certificate.hash_id,
+				classroom_certificate.create_at 
 			FROM 
 				classroom_certificate 
 			INNER JOIN
@@ -99,7 +104,7 @@ func (c *ClassRoomCertificate) All(ctx context.Context, db *sql.DB, param AllCla
 	for rows.Next() {
 		one := &ClassRoomCertificate{}
 		err = rows.Scan(
-			&one.ID, &one.ClassroomID, &one.HashID,
+			&one.ID, &one.ClassroomID, &one.HashID, &one.CreateAt,
 		)
 		if err != nil {
 			return all, errors.Wrap(err, "error at query one of classroom certificate data")

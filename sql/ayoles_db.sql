@@ -59,6 +59,17 @@ CREATE TABLE course_detail (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE course_qualification (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    course_id UUID NOT NULL REFERENCES course (id),
+    course_level STRING NOT NULL DEFAULT '',
+    min_score INT NOT NULL DEFAULT 0,
+    course_material_total INT NOT NULL DEFAULT 0,
+    course_exam_total INT NOT NULL DEFAULT 0,
+    create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE course_material (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_id UUID NOT NULL REFERENCES course (id),

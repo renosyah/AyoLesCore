@@ -67,6 +67,10 @@
 [[constraint]]
   name = "github.com/spf13/viper"
   version = "1.4.0"
+  
+[[constraint]]
+  name = "github.com/skip2/go-qrcode"
+  branch = "master"
 
 [prune]
   go-tests = true

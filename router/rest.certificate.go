@@ -6,7 +6,30 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/renosyah/AyoLesCore/api"
+	"github.com/renosyah/AyoLesCore/util"
 )
+
+func HandleCertificateQRcode(w http.ResponseWriter, r *http.Request) {
+
+	hash := mux.Vars(r)["hash_id"]
+
+	qr := &util.Qrcode{
+		Value: fmt.Sprintf("http://letscourse.com/cert/%s", hash),
+		Size:  256,
+	}
+
+	qrByte, err := qr.MakeByte()
+	if err != nil {
+		http.Error(w, "404 not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "image/png")
+	_, err = w.Write(qrByte)
+	if err != nil {
+		http.Error(w, "500 failed to serve certificate", http.StatusInternalServerError)
+	}
+}
 
 func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -18,7 +41,7 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 		HashID: hash,
 	})
 	if err != nil {
-		fmt.Fprintln(w, "Certificate not found")
+		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
 
@@ -37,15 +60,15 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 	data := map[string]string{
 		"Name":       student.Name,
 		"CourseName": course.CourseName,
+		"CourseID":   course.ID.String(),
 		"Date":       cert.CreateAt.Format("02 January 2006"),
 		"HashID":     cert.HashID,
-		"Print" : flag,
+		"Print":      flag,
 	}
-
 
 	errServe := temp.ExecuteTemplate(w, "cert.gohtml", data)
 	if errServe != nil {
-		fmt.Fprintln(w, "failed to show Certificate")
+		http.Error(w, "500 failed to serve certificate", http.StatusInternalServerError)
 	}
 
 }

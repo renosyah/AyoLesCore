@@ -2,24 +2,37 @@
 <head>
 <title>Certificate {{.CourseName}} {{.Name}}</title>
 </head>
-<body>
+<body style="overflow: auto;">
 <div style="width:100%px; height:620px; padding:20px; text-align:center; border: 10px solid #0D47A1">
-<div style="width:98%px; height:580px; padding:20px; text-align:center; border: 5px solid #4CAF50;background-image: url('/data/icon.png');background-blend-mode: lighten;background-position: center;background-repeat: no-repeat;background-size: 35%;background-color: rgba(255,255,255,0.8)">
-       <span style="font-size:50px; font-weight:bold;font-family: sans-serif-light;">Certificate of Completion</span>
-       <br><br>
-       <span style="font-size:20px;font-family: sans-serif-light;"><i>This is to certify that</i></span>
-       <br><br>
-       <span style="font-size:40px;font-family: sans-serif-medium;"><b>{{.Name}}</b></span><br/><br/>
-       <span style="font-size:20px;font-family: sans-serif-light;"><i>has completed the course</i></span> <br/><br/><br/>
-       <span style="font-size:40px;font-family: sans-serif-medium;"><b>{{.CourseName}}</b></span><br/>
-       <span style="font-size:20px;font-family: sans-serif-light;"><i>(provide by Lets Course)</i></span> <br/><br/>
-       <span style="font-size:20px;font-family: sans-serif-light;"></span> <br/>
-       <span style="font-size:15px;font-family: sans-serif-light;"><i>Issued on:</i></span><br>
-       <span style="font-size:20px;font-family: sans-serif-light; font-weight:bold">{{.Date}}</span>
-       <br><br><br><br>
-       <span style="font-size:20px;font-family: sans-serif-light;"></span>Authenticity of this certificate can be validated by going to:</span><br/>
-       <span style="font-size:15px;font-family: sans-serif-light"><a href="http://letscourse.com/cert/{{.HashID}}">http://letscourse.com/cert/{{.HashID}}</a></span>
+<div style="width:98%px; height:560px; padding:20px; text-align:center; border: 5px solid #4CAF50;background-image: url('/data/icon_t.png');background-position: center;background-repeat: no-repeat;background-size: 35%">
+       <table border="0" style="width:100%;height:100%;text-align:center">
+              <tr>
+                     <td style="width:20%;vertical-align: top;text-align:left">
+                                   <img height="150" width="150" src="/data/icon.png" /><br>
+                                   <span style="font-size:20px;font-family: sans-serif-light;"><i>Lets Course</i></span>
+                     </td>
+                     <td>
+                            <span style="font-size:45px; font-weight:bold;font-family: sans-serif-light;">Certificate of Completion</span>
+                            <br><br>
+                            <span style="font-size:20px;font-family: sans-serif-light;"><i>This is to certify that</i></span>
+                            <br><br>
+                            <span style="font-size:35px;font-family: sans-serif-medium;"><b>{{.Name}}</b></span><br/><br/>
+                            <span style="font-size:20px;font-family: sans-serif-light;"><i>has completed the course</i></span> <br/><br/><br/>
+                            <span style="font-size:35px;font-family: sans-serif-medium;"><b>{{.CourseName}}</b></span><br/>
+                            <span style="font-size:15px;font-family: sans-serif-light;"><i>({{.CourseID}} provide by Lets Course)</i></span> <br/><br/>
+                            <span style="font-size:20px;font-family: sans-serif-light;"></span> <br/>
+                            <span style="font-size:15px;font-family: sans-serif-light;"><i>Issued on:</i></span><br>
+                            <span style="font-size:20px;font-family: sans-serif-light; font-weight:bold">{{.Date}}</span>
+                            <br><br><br>
+                            <span style="font-size:20px;font-family: sans-serif-light;"></span>Authenticity of this certificate can be validated by going to:</span><br/>
+                            <span style="font-size:15px;font-family: sans-serif-light"><a href="http://letscourse.com/cert/{{.HashID}}">http://letscourse.com/cert/{{.HashID}}</a></span>
+                     </td>
+                     <td style="width:20%;vertical-align: top;text-align:right">
+                            <img height="150" width="150" src="/cert/qrcode/{{.HashID}}" />
+                     </td>
 </div>
+</tr>
+</table>
 </div>
 <script src="https://www.google.com/cloudprint/client/cpgadget.js">
 </script>

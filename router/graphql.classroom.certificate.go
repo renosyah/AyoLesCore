@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/graphql-go/graphql"
 	"github.com/renosyah/AyoLesCore/api"
@@ -155,9 +156,11 @@ var (
 				return model.ClassRoomCertificateResponse{}, errUUID
 			}
 
+			hash := fmt.Sprint(p.Args["classroom_id"].(string), time.Now())
+
 			param := api.AddClassRoomCertificateParam{
 				ClassroomID: classRoomID,
-				HashID:      fmt.Sprintf("%x", md5.Sum([]byte(p.Args["classroom_id"].(string)))),
+				HashID:      fmt.Sprintf("%x", md5.Sum([]byte(hash))),
 			}
 
 			data, err := classRoomCertificateModule.Add(ctx, param)

@@ -71,7 +71,6 @@ var (
 				CourseID: courseID,
 			})
 			if err != nil {
-				log.Println(err)
 				return data, err
 			}
 

@@ -14,24 +14,25 @@ import (
 )
 
 var (
-	studentModule               *api.StudentModule
-	categoryModule              *api.CategoryModule
-	bannerModule                *api.BannerModule
-	teacherModule               *api.TeacherModule
-	courseModule                *api.CourseModule
-	courseDetailModule          *api.CourseDetailModule
-	classRoomModule             *api.ClassRoomModule
-	courseMaterialModule        *api.CourseMaterialModule
-	courseMaterialDetailModule  *api.CourseMaterialDetailModule
-	classRoomProgressModule     *api.ClassRoomProgressModule
-	courseExamModule            *api.CourseExamModule
-	courseExamAnswerModule      *api.CourseExamAnswerModule
-	classRoomExamProgressModule *api.ClassRoomExamProgressModule
-	classRoomExamResultModule   *api.ClassRoomExamResultModule
-	classRoomCertificateModule  *api.ClassRoomCertificateModule
-	courseQualificationModule   *api.CourseQualificationModule
-	db                          *sql.DB
-	temp                        *template.Template
+	studentModule                *api.StudentModule
+	categoryModule               *api.CategoryModule
+	bannerModule                 *api.BannerModule
+	teacherModule                *api.TeacherModule
+	courseModule                 *api.CourseModule
+	courseDetailModule           *api.CourseDetailModule
+	classRoomModule              *api.ClassRoomModule
+	courseMaterialModule         *api.CourseMaterialModule
+	courseMaterialDetailModule   *api.CourseMaterialDetailModule
+	classRoomProgressModule      *api.ClassRoomProgressModule
+	courseExamModule             *api.CourseExamModule
+	courseExamAnswerModule       *api.CourseExamAnswerModule
+	classRoomExamProgressModule  *api.ClassRoomExamProgressModule
+	classRoomExamResultModule    *api.ClassRoomExamResultModule
+	classRoomCertificateModule   *api.ClassRoomCertificateModule
+	courseQualificationModule    *api.CourseQualificationModule
+	classRoomQualificationModule *api.ClassRoomQualificationModule
+	db                           *sql.DB
+	temp                         *template.Template
 )
 
 func Init(d *sql.DB) {
@@ -53,6 +54,7 @@ func Init(d *sql.DB) {
 	classRoomExamResultModule = api.NewClassRoomExamResultModule(db)
 	classRoomCertificateModule = api.NewClassRoomCertificateModule(db)
 	courseQualificationModule = api.NewCourseQualificationModule(db)
+	classRoomQualificationModule = api.NewClassRoomQualificationModule(db)
 }
 
 // ParseBodyData parse json-formatted request body into given struct.

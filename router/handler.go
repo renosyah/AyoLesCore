@@ -90,6 +90,7 @@ func InitSchema() (graphql.Schema, error) {
 		"classroom_certificate_detail":   classroomCertificateDetailField,
 		"classroom_certificate_list":     classroomCertificateListField,
 		"course_qualification_detail":    courseQualificationDetailField,
+		"class_qualification_detail":     classQualificationDetailField,
 	}
 
 	mutationFields := graphql.Fields{

@@ -43,10 +43,11 @@ var rootCmd = &cobra.Command{
 
 		r := mux.NewRouter()
 
-		r.HandleFunc("/cert/{hash_id}", router.HandleCertificate)
-		r.HandleFunc("/cert/qrcode/{hash_id}", router.HandleCertificateQRcode)
+		r.HandleFunc("/cert/{hash_id}", router.HandleCertificate).Methods(http.MethodGet)
+		r.HandleFunc("/cert/qrcode/{hash_id}", router.HandleCertificateQRcode).Methods(http.MethodGet)
 
-		// register end point
+		// register end point with interceptor
+		// for rest api
 		apiRouter := r.PathPrefix("/api/v1").Subrouter()
 		apiRouter.Use(auth.AuthenticationMiddleware)
 
@@ -59,7 +60,9 @@ var rootCmd = &cobra.Command{
 			Pretty: true,
 		})
 
-		r.Handle("/graphql", graphqlHandler)
+		// register end point with interceptor
+		// for graphql api
+		r.Handle("/graphql", auth.AuthenticationMiddleware(graphqlHandler)).Methods(http.MethodPost)
 
 		server := &http.Server{
 			Addr:         fmt.Sprintf(":%d", viper.GetInt("app.port")),

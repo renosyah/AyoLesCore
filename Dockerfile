@@ -1,11 +1,20 @@
 # docker file for ayolescore app
-FROM golang:latest
+FROM golang:latest as builder
 ADD . /go/src/github.com/renosyah/AyoLesCore
 WORKDIR /go/src/github.com/renosyah/AyoLesCore
 RUN go get -u github.com/golang/dep/cmd/dep
-COPY . .
+RUN go get -u github.com/renosyah/AyoLesCore
 RUN dep ensure -v
-RUN go install
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/main /bin/main
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.server.toml .
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.staging.toml .
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/template /root/template
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/files /root/files
 EXPOSE 8000
-CMD /go/bin/AyoLesCore
+CMD /bin/main
 MAINTAINER syahputrareno975@gmail.com

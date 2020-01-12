@@ -3,7 +3,7 @@ FROM golang:latest as builder
 ADD . /go/src/github.com/renosyah/AyoLesCore
 WORKDIR /go/src/github.com/renosyah/AyoLesCore
 RUN go get -u github.com/golang/dep/cmd/dep
-RUN go get -u github.com/renosyah/AyoLesCore
+COPY . .
 RUN dep ensure -v
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 

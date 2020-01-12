@@ -1,0 +1,8 @@
+*.md
+.glide/
+.idea/
+vendor/
+.vscode/
+.vs/
+cockroach-data/
+bin/

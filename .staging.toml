@@ -1,0 +1,16 @@
+[app]
+name = "AyoLesCore"
+version = "0.0.1"
+host = "localhost"
+port = 8000
+read_timeout = 5
+write_timeout = 10
+idle_timeout = 15
+
+[database]
+host = "192.168.235.129"
+port = 26257
+name = "ayoles_db"
+sslmode = "disable"
+username = "root"
+password = ""

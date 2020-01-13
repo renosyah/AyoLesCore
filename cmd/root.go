@@ -54,7 +54,7 @@ var rootCmd = &cobra.Command{
 		apiRouter.Use(auth.AuthenticationMiddleware)
 
 		// static file serve server
-		r.PathPrefix("/data/").Handler(http.StripPrefix("/data/", http.FileServer(http.Dir("files"))))
+		r.PathPrefix("/data/").Handler(http.StripPrefix("/data/", http.FileServer(http.Dir("/files"))))
 
 		// GraphQL API
 		graphqlHandler := handler.New(&handler.Config{

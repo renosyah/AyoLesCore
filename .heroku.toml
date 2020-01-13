@@ -2,7 +2,7 @@
 name = "AyoLesCore"
 version = "0.0.1"
 host = "localhost"
-port = 8000
+port = 80
 read_timeout = 5
 write_timeout = 10
 idle_timeout = 15

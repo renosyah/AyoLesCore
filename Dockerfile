@@ -21,5 +21,6 @@ COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/sql /sql
 COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/template /template
 COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/files /files
 EXPOSE 8000
+EXPOSE 80
 CMD ./main --config=.heroku.toml
 MAINTAINER syahputrareno975@gmail.com

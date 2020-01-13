@@ -1,4 +1,7 @@
 
+drop extension pgcrypto;
+CREATE EXTENSION pgcrypto;
+
 DROP TABLE IF EXISTS classroom_certificate CASCADE;
 DROP TABLE IF EXISTS classroom_exam_progress CASCADE;
 DROP TABLE IF EXISTS classroom_progress CASCADE;

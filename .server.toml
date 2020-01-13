@@ -16,5 +16,5 @@ username = "root"
 password = ""
 
 [sql]
-schema = "/sql/ayoles_db.sql"
+schema = "/sql/ayoles_db_pq.sql"
 seed = "/sql/seed.sql"

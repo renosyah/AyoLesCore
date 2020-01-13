@@ -16,5 +16,5 @@ username = "csaqiwvemuknps"
 password = "a4a89a3cd073e0f2f11959e7a307029e426d55bf5a04e93b9d9eaf84d320c2f7"
 
 [sql]
-schema = "/sql/ayoles_db.sql"
+schema = "/sql/ayoles_db_pq.sql"
 seed = "/sql/seed.sql"

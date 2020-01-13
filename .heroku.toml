@@ -9,12 +9,12 @@ idle_timeout = 15
 temp = "/template/*.gohtml"
 
 [database]
-host = "ec2-174-129-33-207.compute-1.amazonaws.com"
+host = "ec2-54-235-180-123.compute-1.amazonaws.com"
 port = 5432
-name = "d7adv67i235u7r"
+name = "d3ni8d81iguv4j"
 sslmode = "disable"
-username = "csaqiwvemuknps"
-password = "a4a89a3cd073e0f2f11959e7a307029e426d55bf5a04e93b9d9eaf84d320c2f7"
+username = "mdymqzvtzhreki"
+password = "06583719e1322d61649d1acf22c1a4273ac9c28c5c4bb17a55c3fc2e6d3f96ea"
 
 [sql]
 schema = "/sql/ayoles_db_pq.sql"

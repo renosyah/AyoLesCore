@@ -138,8 +138,8 @@ func initDB() {
 
 	dbPool = db
 
-	initDBSchema()
-	initDBSeed()
+	//initDBSchema()
+	//initDBSeed()
 }
 
 func initDBSchema() {

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -65,8 +66,14 @@ var rootCmd = &cobra.Command{
 		// for graphql api
 		r.Handle("/graphql", auth.AuthenticationMiddleware(graphqlHandler)).Methods(http.MethodPost)
 
+		port := viper.GetInt("app.port")
+		p := os.Getenv("PORT")
+		if p != "" {
+			port,_ = strconv.Atoi(p)
+		}
+
 		server := &http.Server{
-			Addr:         fmt.Sprintf(":%d", viper.GetInt("app.port")),
+			Addr:         fmt.Sprintf(":%d", port),
 			Handler:      r,
 			ReadTimeout:  time.Duration(viper.GetInt("read_timeout")) * time.Second,
 			WriteTimeout: time.Duration(viper.GetInt("write_timeout")) * time.Second,
@@ -92,9 +99,9 @@ var rootCmd = &cobra.Command{
 			close(done)
 		}()
 
-		log.Println("Server is ready to handle requests at", fmt.Sprintf(":%d", viper.GetInt("app.port")))
+		log.Println("Server is ready to handle requests at", fmt.Sprintf(":%d", port))
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Could not listen on %s: %v\n", fmt.Sprintf(":%d", viper.GetInt("app.port")), err)
+			log.Fatalf("Could not listen on %s: %v\n", fmt.Sprintf(":%d", port), err)
 		}
 
 		<-done

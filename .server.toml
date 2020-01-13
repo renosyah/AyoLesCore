@@ -14,3 +14,7 @@ name = "ayoles_db"
 sslmode = "disable"
 username = "root"
 password = ""
+
+[sql]
+schema = "/sql/ayoles_db.sql"
+seed = "/sql/seed.sql"

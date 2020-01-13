@@ -1,8 +1,20 @@
-DROP DATABASE IF EXISTS ayoles_db CASCADE;
 
-CREATE DATABASE ayoles_db;
-
-USE ayoles_db;
+DROP TABLE IF EXISTS classroom_certificate CASCADE;
+DROP TABLE IF EXISTS classroom_exam_progress CASCADE;
+DROP TABLE IF EXISTS classroom_progress CASCADE;
+DROP TABLE IF EXISTS classroom CASCADE;
+DROP TABLE IF EXISTS course_exam_solution CASCADE;
+DROP TABLE IF EXISTS course_exam_answer CASCADE;
+DROP TABLE IF EXISTS course_exam CASCADE;
+DROP TABLE IF EXISTS course_material_detail CASCADE;
+DROP TABLE IF EXISTS course_material CASCADE;
+DROP TABLE IF EXISTS course_qualification CASCADE;
+DROP TABLE IF EXISTS course_detail CASCADE;
+DROP TABLE IF EXISTS course CASCADE;
+DROP TABLE IF EXISTS banner CASCADE;
+DROP TABLE IF EXISTS course_category CASCADE;
+DROP TABLE IF EXISTS teacher CASCADE;
+DROP TABLE IF EXISTS student CASCADE;
 
 CREATE TABLE student (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -13,6 +25,7 @@ CREATE TABLE student (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE teacher (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     name STRING NOT NULL DEFAULT '',
@@ -22,6 +35,7 @@ CREATE TABLE teacher (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE course_category (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     name STRING NOT NULL DEFAULT '',
@@ -29,6 +43,7 @@ CREATE TABLE course_category (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE banner (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -38,6 +53,7 @@ CREATE TABLE banner (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE course (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -49,6 +65,7 @@ CREATE TABLE course (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE course_detail (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_id UUID NOT NULL REFERENCES course (id),
@@ -58,6 +75,7 @@ CREATE TABLE course_detail (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE course_qualification (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -70,6 +88,7 @@ CREATE TABLE course_qualification (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE course_material (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_id UUID NOT NULL REFERENCES course (id),
@@ -78,6 +97,7 @@ CREATE TABLE course_material (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE course_material_detail (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -91,6 +111,7 @@ CREATE TABLE course_material_detail (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE course_exam (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_id UUID NOT NULL REFERENCES course (id),
@@ -101,6 +122,7 @@ CREATE TABLE course_exam (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE course_exam_answer (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -113,6 +135,7 @@ CREATE TABLE course_exam_answer (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE course_exam_solution (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     course_exam_id UUID NOT NULL REFERENCES course_exam (id),
@@ -120,6 +143,7 @@ CREATE TABLE course_exam_solution (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE classroom (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -129,6 +153,7 @@ CREATE TABLE classroom (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE classroom_progress (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     classroom_id UUID NOT NULL REFERENCES classroom (id),
@@ -136,6 +161,7 @@ CREATE TABLE classroom_progress (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE classroom_exam_progress (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -145,6 +171,7 @@ CREATE TABLE classroom_exam_progress (
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
+
 
 CREATE TABLE classroom_certificate(
     id UUID NOT NULL DEFAULT gen_random_uuid(),

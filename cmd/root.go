@@ -17,6 +17,7 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/renosyah/AyoLesCore/auth"
 	"github.com/renosyah/AyoLesCore/router"
+	"github.com/renosyah/AyoLesCore/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -136,6 +137,40 @@ func initDB() {
 	}
 
 	dbPool = db
+
+	initDBSchema()
+	initDBSeed()
+}
+
+func initDBSchema() {
+
+	schema, err := util.ReadFile(viper.GetString("sql.schema"))
+	if err != nil {
+		log.Fatalln("Error file schema not found : %v\n", err)
+		return
+	}
+
+	_, err = dbPool.Exec(string(schema))
+	if err != nil {
+		log.Fatalln("Error import file schema to db : %v\n", err)
+		return
+	}
+
+}
+
+func initDBSeed() {
+	seed, err := util.ReadFile(viper.GetString("sql.seed"))
+	if err != nil {
+		log.Fatalln("Error file seed not found : %v\n", err)
+		return
+	}
+
+	_, err = dbPool.Exec(string(seed))
+	if err != nil {
+		log.Fatalln("Error import file seed to db : %v\n", err)
+		return
+	}
+
 }
 
 func initConfig() {

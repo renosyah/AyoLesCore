@@ -3,9 +3,7 @@
 FROM golang:latest as builder
 ADD . /go/src/github.com/renosyah/AyoLesCore
 WORKDIR /go/src/github.com/renosyah/AyoLesCore
-RUN go get -u github.com/golang/dep/cmd/dep
 COPY . .
-RUN dep ensure -v
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 RUN rm -rf /api
 RUN rm -rf /auth
@@ -20,7 +18,6 @@ RUN rm .server.toml
 RUN rm Dockerfile
 RUN rm Gopkg.lock
 RUN rm Gopkg.toml
-RUN rm README.md
 RUN rm heroku.yml
 RUN rm main.go
 

@@ -98,7 +98,7 @@ func (c *ClassRoom) OneByStudentIdAndCourseId(ctx context.Context, db *sql.DB) (
 
 func (c *ClassRoom) All(ctx context.Context, db *sql.DB, param AllClassRoom) ([]*ClassRoom, error) {
 	all := []*ClassRoom{}
-	query := `SELECT classroom.id,classroom.course_id,classroom.student_id FROM classroom INNER JOIN course ON course.id = classroom.course_id WHERE %s::STRING LIKE $1 AND classroom.student_id = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
+	query := `SELECT classroom.id,classroom.course_id,classroom.student_id FROM classroom INNER JOIN course ON course.id = classroom.course_id WHERE %s LIKE $1 AND classroom.student_id = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.StudentID, param.Offset, param.Limit)
 	if err != nil {
 		fmt.Println(err)

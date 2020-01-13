@@ -54,7 +54,7 @@ var rootCmd = &cobra.Command{
 		apiRouter.Use(auth.AuthenticationMiddleware)
 
 		// static file serve server
-		r.PathPrefix("/data/").Handler(http.StripPrefix("/data/", http.FileServer(http.Dir("/files"))))
+		r.PathPrefix("/data/").Handler(http.StripPrefix("/data/", http.FileServer(http.Dir(viper.GetString("app.files")))))
 
 		// GraphQL API
 		graphqlHandler := handler.New(&handler.Config{
@@ -69,7 +69,7 @@ var rootCmd = &cobra.Command{
 		port := viper.GetInt("app.port")
 		p := os.Getenv("PORT")
 		if p != "" {
-			port,_ = strconv.Atoi(p)
+			port, _ = strconv.Atoi(p)
 		}
 
 		server := &http.Server{
@@ -145,8 +145,10 @@ func initDB() {
 
 	dbPool = db
 
-	initDBSchema()
-	initDBSeed()
+	if viper.GetBool("database.initdb") {
+		initDBSchema()
+		initDBSeed()
+	}
 }
 
 func initDBSchema() {

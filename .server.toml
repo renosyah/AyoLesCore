@@ -7,6 +7,7 @@ read_timeout = 5
 write_timeout = 10
 idle_timeout = 15
 temp = "template/*.gohtml"
+files = "/files"
 
 [database]
 host = "localhost"
@@ -15,6 +16,7 @@ name = "ayoles_db"
 sslmode = "disable"
 username = "root"
 password = ""
+initdb = false
 
 [sql]
 schema = "/sql/ayoles_db_pq.sql"

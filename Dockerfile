@@ -13,10 +13,10 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/main /bin/main
 # COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.server.toml .
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.heroku.toml /bin
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/sql /root/sql
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/template /root/template
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/files /root/files
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.heroku.toml .
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/sql /sql
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/template /template
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/files /files
 EXPOSE 8000
-CMD ["./bin/main --config=.heroku.toml"]
+CMD /bin/main
 MAINTAINER syahputrareno975@gmail.com

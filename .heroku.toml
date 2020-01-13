@@ -1,0 +1,16 @@
+[app]
+name = "AyoLesCore"
+version = "0.0.1"
+host = "localhost"
+port = 8000
+read_timeout = 5
+write_timeout = 10
+idle_timeout = 15
+
+[database]
+host = "ec2-174-129-33-207.compute-1.amazonaws.com"
+port = 5432
+name = "d7adv67i235u7r"
+sslmode = "disable"
+username = "csaqiwvemuknps"
+password = "a4a89a3cd073e0f2f11959e7a307029e426d55bf5a04e93b9d9eaf84d320c2f7"

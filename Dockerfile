@@ -12,7 +12,8 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/main /bin/main
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.server.toml .
+# COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.server.toml .
+COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.heroku.toml .
 COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/template /root/template
 COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/files /root/files
 EXPOSE 8000

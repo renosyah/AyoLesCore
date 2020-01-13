@@ -32,7 +32,7 @@ var rootCmd = &cobra.Command{
 	PreRun: func(cmd *cobra.Command, args []string) {
 
 		auth.Init(dbPool)
-		router.Init(dbPool)
+		router.Init(dbPool, viper.GetString("app.temp"))
 
 	},
 	Run: func(cmd *cobra.Command, args []string) {

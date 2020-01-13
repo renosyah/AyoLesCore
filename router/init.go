@@ -36,9 +36,9 @@ var (
 	temp                         *template.Template
 )
 
-func Init(d *sql.DB) {
+func Init(d *sql.DB, temppath string) {
 	db = d
-	temp = template.Must(template.ParseGlob("template/*.gohtml"))
+	temp = template.Must(template.ParseGlob(temppath))
 	studentModule = api.NewStudentModule(db)
 	categoryModule = api.NewCategoryModule(db)
 	bannerModule = api.NewBannerModule(db)

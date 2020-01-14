@@ -124,7 +124,7 @@ func (m ClassRoomExamProgressModule) Delete(ctx context.Context, param DeleteCla
 		ClassroomID: param.ClassroomID,
 	}
 
-	err := courseExamProgress.Delete(ctx, m.db)
+	_, err := courseExamProgress.Delete(ctx, m.db)
 	if err != nil {
 		status := http.StatusInternalServerError
 		message := "error on delete all classRoom exam progress"

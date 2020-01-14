@@ -57,8 +57,8 @@ func (b *Banner) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 
 func (b *Banner) One(ctx context.Context, db *sql.DB) (*Banner, error) {
 	one := &Banner{}
-	query := `SELECT id,title,content,image_url FROM banner WHERE id = $1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), b.ID).Scan(
+	query := `SELECT id,title,content,image_url FROM banner WHERE id = $1 AND flag_status = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), b.ID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.Title, &one.Content, &one.ImageURL,
 	)
 	if err != nil {
@@ -70,8 +70,8 @@ func (b *Banner) One(ctx context.Context, db *sql.DB) (*Banner, error) {
 
 func (b *Banner) All(ctx context.Context, db *sql.DB, param AllBanner) ([]*Banner, error) {
 	all := []*Banner{}
-	query := `SELECT id,title,content,image_url FROM banner WHERE %s LIKE $1 ORDER BY %s %s OFFSET $2 LIMIT $3 `
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
+	query := `SELECT id,title,content,image_url FROM banner WHERE %s LIKE $1 AND flag_status = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all banner")
 	}
@@ -91,4 +91,28 @@ func (b *Banner) All(ctx context.Context, db *sql.DB, param AllBanner) ([]*Banne
 	}
 
 	return all, nil
+}
+
+func (b *Banner) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE banner SET title=$1,content=$2,image_url=$3 WHERE id=$4 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), b.Title, b.Content, b.ImageURL, b.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of banner")
+	}
+	return id, nil
+}
+
+func (b *Banner) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE banner SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, b.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of banner")
+	}
+	return id, nil
 }

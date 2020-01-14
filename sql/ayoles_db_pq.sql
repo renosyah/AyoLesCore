@@ -24,6 +24,7 @@ CREATE TABLE student (
     email TEXT NOT NULL DEFAULT '',
     password TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -34,6 +35,7 @@ CREATE TABLE teacher (
     email TEXT NOT NULL DEFAULT '',
     password TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -43,6 +45,7 @@ CREATE TABLE course_category (
     name TEXT NOT NULL DEFAULT '',
     image_url TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -53,6 +56,7 @@ CREATE TABLE banner (
     content TEXT NOT NULL DEFAULT '',
     image_url TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -64,6 +68,7 @@ CREATE TABLE course (
     teacher_id UUID NOT NULL REFERENCES teacher (id),
     category_id UUID NOT NULL REFERENCES course_category (id),
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -75,6 +80,7 @@ CREATE TABLE course_detail (
     description_text TEXT NOT NULL DEFAULT '',
     image_url TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -87,6 +93,7 @@ CREATE TABLE course_qualification (
     course_material_total INT NOT NULL DEFAULT 0,
     course_exam_total INT NOT NULL DEFAULT 0,
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -97,6 +104,7 @@ CREATE TABLE course_material (
     material_index INT NOT NULL DEFAULT 0,
     title TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -110,6 +118,7 @@ CREATE TABLE course_material_detail (
     content TEXT NOT NULL DEFAULT '',
     image_url TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -122,6 +131,7 @@ CREATE TABLE course_exam (
     text TEXT NOT NULL DEFAULT '',
     image_url TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -134,6 +144,7 @@ CREATE TABLE course_exam_answer (
     text TEXT NOT NULL DEFAULT '',
     image_url TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -143,6 +154,7 @@ CREATE TABLE course_exam_solution (
     course_exam_id UUID NOT NULL REFERENCES course_exam (id),
     course_exam_answer_id UUID NOT NULL REFERENCES course_exam_answer (id),
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -152,6 +164,7 @@ CREATE TABLE classroom (
     course_id UUID NOT NULL REFERENCES course (id),
     student_id UUID NOT NULL REFERENCES student (id),
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -161,6 +174,7 @@ CREATE TABLE classroom_progress (
     classroom_id UUID NOT NULL REFERENCES classroom (id),
     course_material_id UUID NOT NULL REFERENCES course_material (id),
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -171,6 +185,7 @@ CREATE TABLE classroom_exam_progress (
     course_exam_id UUID NOT NULL REFERENCES course_exam (id),
     course_exam_answer_id UUID NOT NULL REFERENCES course_exam_answer (id),
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -180,6 +195,7 @@ CREATE TABLE classroom_certificate(
     classroom_id UUID NOT NULL REFERENCES classroom (id),
     hash_id TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
+    flag_status INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 

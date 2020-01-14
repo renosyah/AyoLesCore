@@ -55,31 +55,10 @@ func (s *Student) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	return s.ID, nil
 }
 
-func (s *Student) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
-	var emptyId uuid.UUID
-	query := `UPDATE student SET name = $1,email = $2 WHERE id = $3 RETURNING id`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Email, s.ID).Scan(
-		&s.ID,
-	)
-
-	if s.Password != "" {
-		query = `UPDATE student SET password = $1 WHERE id = $2 RETURNING id`
-		err = db.QueryRowContext(ctx, fmt.Sprintf(query), s.Password, s.ID).Scan(
-			&s.ID,
-		)
-	}
-
-	if err != nil || s.ID == emptyId {
-		return s.ID, errors.Wrap(err, "error at update student")
-	}
-
-	return s.ID, nil
-}
-
 func (s *Student) One(ctx context.Context, db *sql.DB) (*Student, error) {
 	one := &Student{}
-	query := `SELECT id,name,email,password FROM student WHERE id = $1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.ID).Scan(
+	query := `SELECT id,name,email,password FROM student WHERE id = $1 AND flag_status = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.ID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.Name, &one.Email, &one.Password,
 	)
 	if err != nil {
@@ -91,8 +70,8 @@ func (s *Student) One(ctx context.Context, db *sql.DB) (*Student, error) {
 
 func (s *Student) All(ctx context.Context, db *sql.DB, param AllStudent) ([]*Student, error) {
 	all := []*Student{}
-	query := `SELECT id,name,email,password FROM student WHERE %s LIKE $1 ORDER BY %s %s OFFSET $2 LIMIT $3 `
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
+	query := `SELECT id,name,email,password FROM student WHERE %s LIKE $1 AND flag_status = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all student")
 	}
@@ -115,12 +94,45 @@ func (s *Student) All(ctx context.Context, db *sql.DB, param AllStudent) ([]*Stu
 
 func (s *Student) OneByEmail(ctx context.Context, db *sql.DB) (*Student, error) {
 	one := &Student{}
-	query := `SELECT id,name,email,password FROM student WHERE email = $1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Email).Scan(
+	query := `SELECT id,name,email,password FROM student WHERE email = $1 AND flag_status = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Email, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.Name, &one.Email, &one.Password,
 	)
 	if err != nil {
 		return one, errors.Wrap(err, "error at query student with email")
 	}
 	return one, nil
+}
+
+func (s *Student) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var emptyId uuid.UUID
+	query := `UPDATE student SET name = $1,email = $2 WHERE id = $3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Email, s.ID).Scan(
+		&s.ID,
+	)
+
+	if s.Password != "" {
+		query = `UPDATE student SET password = $1 WHERE id = $2 RETURNING id`
+		err = db.QueryRowContext(ctx, fmt.Sprintf(query), s.Password, s.ID).Scan(
+			&s.ID,
+		)
+	}
+
+	if err != nil || s.ID == emptyId {
+		return s.ID, errors.Wrap(err, "error at update student")
+	}
+
+	return s.ID, nil
+}
+
+func (s *Student) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE student SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, s.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of student data")
+	}
+	return id, nil
 }

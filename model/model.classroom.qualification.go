@@ -88,3 +88,9 @@ func (c *ClassRoomQualification) One(ctx context.Context, db *sql.DB) (*ClassRoo
 
 	return one, nil
 }
+
+// ITS DOESNOT HAVE TABLE
+// THIS MODEL VALUE RESULT FROM
+// QUERY JOIN
+// NO UPDATE
+// NO DELETE

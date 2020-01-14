@@ -69,8 +69,8 @@ func (c *CourseDetail) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 
 func (c *CourseDetail) One(ctx context.Context, db *sql.DB) (*CourseDetail, error) {
 	one := &CourseDetail{}
-	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE id = $1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID).Scan(
+	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE id = $1 AND flag_status = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.CourseID, &one.OverviewText, &one.DescriptionText, &one.ImageURL,
 	)
 	if err != nil {
@@ -82,8 +82,8 @@ func (c *CourseDetail) One(ctx context.Context, db *sql.DB) (*CourseDetail, erro
 
 func (c *CourseDetail) All(ctx context.Context, db *sql.DB, param AllCourseDetail) ([]*CourseDetail, error) {
 	all := []*CourseDetail{}
-	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE %s LIKE $1 %s ORDER BY %s %s OFFSET $2 LIMIT $3 `
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.IsWithCourseID(), param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.Offset, param.Limit)
+	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE %s LIKE $1 AND flag_status = $2 %s ORDER BY %s %s OFFSET $3 LIMIT $4 `
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.IsWithCourseID(), param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all course detail")
 	}
@@ -107,8 +107,8 @@ func (c *CourseDetail) All(ctx context.Context, db *sql.DB, param AllCourseDetai
 
 func (c *CourseDetail) AllByCourseID(ctx context.Context, db *sql.DB) ([]CourseDetail, error) {
 	all := []CourseDetail{}
-	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE course_id = $1 LIMIT 3`
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query), c.CourseID)
+	query := `SELECT id,course_id,overview_text,description_text,image_url FROM course_detail WHERE course_id = $1 AND flag_status = $2 LIMIT 3`
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query), c.CourseID, STATUS_AVAILABLE)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all course detail")
 	}
@@ -128,4 +128,28 @@ func (c *CourseDetail) AllByCourseID(ctx context.Context, db *sql.DB) ([]CourseD
 	}
 
 	return all, nil
+}
+
+func (c *CourseDetail) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_detail SET course_id=$1,overview_text=$2,description_text=$3,image_url=$4 WHERE id=$5 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseID, c.OverviewText, c.DescriptionText, c.ImageURL, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of course detail")
+	}
+	return id, nil
+}
+
+func (c *CourseDetail) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_detail SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of course detail")
+	}
+	return id, nil
 }

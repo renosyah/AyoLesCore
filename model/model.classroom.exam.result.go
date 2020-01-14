@@ -168,3 +168,10 @@ func (c *ClassRoomExamResult) All(ctx context.Context, db *sql.DB, param AllClas
 
 	return all, nil
 }
+
+
+// ITS DOESNOT HAVE TABLE
+// THIS MODEL VALUE RESULT FROM
+// QUERY JOIN
+// NO UPDATE
+// NO DELETE

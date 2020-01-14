@@ -59,8 +59,8 @@ func (c *ClassRoom) One(ctx context.Context, db *sql.DB) (*ClassRoom, error) {
 		Course: &Course{},
 	}
 
-	query := `SELECT id,course_id,student_id FROM classroom WHERE id = $1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID).Scan(
+	query := `SELECT id,course_id,student_id FROM classroom WHERE id = $1 AND flag_status=$2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.Course.ID, &one.StudentID,
 	)
 	if err != nil {
@@ -80,8 +80,8 @@ func (c *ClassRoom) OneByStudentIdAndCourseId(ctx context.Context, db *sql.DB) (
 		Course: &Course{},
 	}
 
-	query := `SELECT id,course_id,student_id FROM classroom WHERE course_id = $1 AND student_id = $2 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.Course.ID, c.StudentID).Scan(
+	query := `SELECT id,course_id,student_id FROM classroom WHERE course_id = $1 AND student_id = $2 AND flag_status = $3 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.Course.ID, c.StudentID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.Course.ID, &one.StudentID,
 	)
 	if err != nil {
@@ -98,8 +98,8 @@ func (c *ClassRoom) OneByStudentIdAndCourseId(ctx context.Context, db *sql.DB) (
 
 func (c *ClassRoom) All(ctx context.Context, db *sql.DB, param AllClassRoom) ([]*ClassRoom, error) {
 	all := []*ClassRoom{}
-	query := `SELECT classroom.id,classroom.course_id,classroom.student_id FROM classroom INNER JOIN course ON course.id = classroom.course_id WHERE %s LIKE $1 AND classroom.student_id = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.StudentID, param.Offset, param.Limit)
+	query := `SELECT classroom.id,classroom.course_id,classroom.student_id FROM classroom INNER JOIN course ON course.id = classroom.course_id WHERE %s LIKE $1 AND classroom.student_id = $2 AND classroom.flag_status = $3 ORDER BY %s %s OFFSET $4 LIMIT $5 `
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.StudentID, STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		fmt.Println(err)
 		return all, errors.Wrap(err, "error at query all classroom")
@@ -127,4 +127,28 @@ func (c *ClassRoom) All(ctx context.Context, db *sql.DB, param AllClassRoom) ([]
 	}
 
 	return all, nil
+}
+
+func (c *ClassRoom) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE classroom SET course_id=$1,student_id=$2 WHERE id = $3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.Course.ID, c.StudentID, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of classroom data")
+	}
+	return id, nil
+}
+
+func (c *ClassRoom) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE classroom SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of classroom data")
+	}
+	return id, nil
 }

@@ -67,8 +67,8 @@ func (c *CourseMaterialDetail) Add(ctx context.Context, db *sql.DB) (uuid.UUID, 
 
 func (c *CourseMaterialDetail) All(ctx context.Context, db *sql.DB, param AllCourseMaterialDetail) ([]*CourseMaterialDetail, error) {
 	all := []*CourseMaterialDetail{}
-	query := `SELECT id,course_material_id,position,title,type_material,content,image_url FROM course_material_detail WHERE %s LIKE $1 AND course_material_id = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.CourseMaterialID, param.Offset, param.Limit)
+	query := `SELECT id,course_material_id,position,title,type_material,content,image_url FROM course_material_detail WHERE %s LIKE $1 AND course_material_id = $2 AND flag_status=$3 ORDER BY %s %s OFFSET $4 LIMIT $5 `
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.CourseMaterialID, STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all course material detail")
 	}
@@ -88,4 +88,28 @@ func (c *CourseMaterialDetail) All(ctx context.Context, db *sql.DB, param AllCou
 	}
 
 	return all, nil
+}
+
+func (c *CourseMaterialDetail) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_material_detail SET course_material_id=$1,position=$2,title=$3,type_material=$4,content=$5,image_url=$6 WHERE id = $7 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseMaterialID, c.Position, c.Title, c.TypeMaterial, c.Content, c.ImageURL, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of course material detail data")
+	}
+	return id, nil
+}
+
+func (c *CourseMaterialDetail) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_material_detail SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of course material detail data")
+	}
+	return id, nil
 }

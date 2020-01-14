@@ -39,8 +39,8 @@ func (c *ClassRoomProgress) Response() ClassRoomProgressResponse {
 func (c *ClassRoomProgress) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	var emptyUUID uuid.UUID
 
-	query := `SELECT id FROM classroom_progress WHERE classroom_id = $1 AND course_material_id = $2 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassRoomID, c.CourseMaterialID).Scan(
+	query := `SELECT id FROM classroom_progress WHERE classroom_id = $1 AND course_material_id = $2 AND flag_status = $3 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassRoomID, c.CourseMaterialID, STATUS_AVAILABLE).Scan(
 		&c.ID,
 	)
 	if err != nil && err != sql.ErrNoRows {
@@ -64,8 +64,8 @@ func (c *ClassRoomProgress) Add(ctx context.Context, db *sql.DB) (uuid.UUID, err
 
 func (c *ClassRoomProgress) One(ctx context.Context, db *sql.DB) (*ClassRoomProgress, error) {
 	one := &ClassRoomProgress{}
-	query := `SELECT id,classroom_id,course_material_id FROM classroom_progress WHERE id = $1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID).Scan(
+	query := `SELECT id,classroom_id,course_material_id FROM classroom_progress WHERE id = $1 AND flag_status = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.ClassRoomID, &one.CourseMaterialID,
 	)
 	if err != nil {
@@ -78,8 +78,8 @@ func (c *ClassRoomProgress) One(ctx context.Context, db *sql.DB) (*ClassRoomProg
 func (c *ClassRoomProgress) All(ctx context.Context, db *sql.DB, param AllClassRoomProgress) ([]*ClassRoomProgress, error) {
 	all := []*ClassRoomProgress{}
 
-	query := `SELECT id,classroom_id,course_material_id FROM classroom_progress WHERE classroom_id = $1 OFFSET $2 LIMIT $3`
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query), param.ClassRoomID, param.Offset, param.Limit)
+	query := `SELECT id,classroom_id,course_material_id FROM classroom_progress WHERE classroom_id = $1 AND flag_status = $2 OFFSET $3 LIMIT $4`
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query), param.ClassRoomID, STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all classroom progress")
 	}
@@ -98,4 +98,28 @@ func (c *ClassRoomProgress) All(ctx context.Context, db *sql.DB, param AllClassR
 	}
 
 	return all, nil
+}
+
+func (c *ClassRoomProgress) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE classroom_progress SET classroom_id=$1,course_material_id=$2 WHERE id = $3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassRoomID, c.CourseMaterialID, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of classroom progress data")
+	}
+	return id, nil
+}
+
+func (c *ClassRoomProgress) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE classroom_progress SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of classroom progress data")
+	}
+	return id, nil
 }

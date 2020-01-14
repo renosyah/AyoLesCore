@@ -51,8 +51,8 @@ func (c *CourseExamSolution) Add(ctx context.Context, db *sql.DB) (uuid.UUID, er
 
 func (c *CourseExamSolution) One(ctx context.Context, db *sql.DB) (*CourseExamSolution, error) {
 	one := &CourseExamSolution{}
-	query := `SELECT id,course_exam_id,course_exam_answer_id FROM WHERE course_exam_solution id=$1 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID).Scan(
+	query := `SELECT id,course_exam_id,course_exam_answer_id FROM WHERE course_exam_solution id=$1 AND flag_status=$2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.CourseExamID, &one.CourseExamAnswerID,
 	)
 	if err != nil {
@@ -63,8 +63,8 @@ func (c *CourseExamSolution) One(ctx context.Context, db *sql.DB) (*CourseExamSo
 
 func (c *CourseExamSolution) All(ctx context.Context, db *sql.DB, param AllCourseExamSolution) ([]*CourseExamSolution, error) {
 	all := []*CourseExamSolution{}
-	query := `SELECT id,course_exam_id,course_exam_answer_id FROM course_exam_solution WHERE course_exam_id = $1 ORDER BY %s %s OFFSET $2 LIMIT $3`
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.OrderBy, param.OrderDir), param.CourseExamID, param.Offset, param.Limit)
+	query := `SELECT id,course_exam_id,course_exam_answer_id FROM course_exam_solution WHERE course_exam_id = $1 AND flag_status = $2 ORDER BY %s %s OFFSET $3 LIMIT $4`
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.OrderBy, param.OrderDir), param.CourseExamID, STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all exam solution")
 	}
@@ -83,4 +83,28 @@ func (c *CourseExamSolution) All(ctx context.Context, db *sql.DB, param AllCours
 	}
 
 	return all, nil
+}
+
+func (c *CourseExamSolution) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_exam_solution SET course_exam_id=$1,course_exam_answer_id=$2 WHERE id = $3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseExamID, c.CourseExamAnswerID, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of course exam solution data")
+	}
+	return id, nil
+}
+
+func (c *CourseExamSolution) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_exam_solution SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of course exam solution data")
+	}
+	return id, nil
 }

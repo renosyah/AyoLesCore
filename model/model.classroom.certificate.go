@@ -64,8 +64,8 @@ func (c *ClassRoomCertificate) Add(ctx context.Context, db *sql.DB) (uuid.UUID, 
 func (c *ClassRoomCertificate) One(ctx context.Context, db *sql.DB) (*ClassRoomCertificate, error) {
 	one := &ClassRoomCertificate{}
 
-	query := `SELECT id,classroom_id,hash_id,create_at FROM classroom_certificate WHERE classroom_id = $1 OR hash_id = $2 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassroomID, c.HashID).Scan(
+	query := `SELECT id,classroom_id,hash_id,create_at FROM classroom_certificate WHERE (classroom_id = $1 OR hash_id = $2) AND flag_status = $3 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassroomID, c.HashID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.ClassroomID, &one.HashID, &one.CreateAt,
 	)
 	if err != nil {
@@ -90,11 +90,13 @@ func (c *ClassRoomCertificate) All(ctx context.Context, db *sql.DB, param AllCla
 				classroom.id = classroom_certificate.classroom_id
 			WHERE 
 				classroom.student_id = $1
+			AND
+				classroom_certificate.flag_status = $2
 			ORDER BY %s %s 
-			OFFSET $2 
-			LIMIT $3`
+			OFFSET $3 
+			LIMIT $4`
 
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.OrderBy, param.OrderDir), param.StudentID, param.Offset, param.Limit)
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.OrderBy, param.OrderDir), param.StudentID, STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all classroom certificate")
 	}
@@ -113,4 +115,28 @@ func (c *ClassRoomCertificate) All(ctx context.Context, db *sql.DB, param AllCla
 	}
 
 	return all, nil
+}
+
+func (c *ClassRoomCertificate) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE classroom_certificate SET classroom_id=$1,hash_id=$2 WHERE id=$3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassroomID, c.HashID, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of classroom certificate data")
+	}
+	return id, nil
+}
+
+func (c *ClassRoomCertificate) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE classroom_certificate SET flag_status = $1 WHERE id = $2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of classroom certificate data")
+	}
+	return id, nil
 }

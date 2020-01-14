@@ -52,12 +52,36 @@ func (c *CourseQualification) Add(ctx context.Context, db *sql.DB) (uuid.UUID, e
 
 func (c *CourseQualification) One(ctx context.Context, db *sql.DB) (*CourseQualification, error) {
 	one := &CourseQualification{}
-	query := `SELECT id,course_id,course_level,min_score,course_material_total,course_exam_total FROM course_qualification WHERE id = $1 OR course_id = $2 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID, c.CourseID).Scan(
+	query := `SELECT id,course_id,course_level,min_score,course_material_total,course_exam_total FROM course_qualification WHERE (id = $1 OR course_id = $2) AND flag_status=$3 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.ID, c.CourseID, STATUS_AVAILABLE).Scan(
 		&one.ID, &one.CourseID, &one.CourseLevel, &one.MinScore, &one.CourseMaterialTotal, &one.CourseExamTotal,
 	)
 	if err != nil {
 		return one, errors.Wrap(err, "error at query one course qualification")
 	}
 	return one, nil
+}
+
+func (c *CourseQualification) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_qualification SET course_id=$1,course_level=$2,min_score=$3,course_material_total=$4,course_exam_total=$5 WHERE id = $6 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseID, c.CourseLevel, c.MinScore, c.CourseMaterialTotal, c.CourseExamTotal, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at update one of course qualification data")
+	}
+	return id, nil
+}
+
+func (c *CourseQualification) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE course_qualification SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of course qualification data")
+	}
+	return id, nil
 }

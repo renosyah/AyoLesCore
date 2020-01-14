@@ -102,3 +102,36 @@ func (t *Teacher) OneByEmail(ctx context.Context, db *sql.DB) (*Teacher, error) 
 	}
 	return one, nil
 }
+
+func (t *Teacher) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var emptyId uuid.UUID
+	query := `UPDATE teacher SET name = $1,email = $2 WHERE id = $3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), t.Name, t.Email, t.ID).Scan(
+		&t.ID,
+	)
+
+	if t.Password != "" {
+		query = `UPDATE teacher SET password = $1 WHERE id = $2 RETURNING id`
+		err = db.QueryRowContext(ctx, fmt.Sprintf(query), t.Password, t.ID).Scan(
+			&t.ID,
+		)
+	}
+
+	if err != nil || t.ID == emptyId {
+		return t.ID, errors.Wrap(err, "error at update teacher")
+	}
+
+	return t.ID, nil
+}
+
+func (t *Teacher) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
+	var id uuid.UUID
+	query := `UPDATE teacher SET flag_status=$1 WHERE id=$2 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, t.ID).Scan(
+		&id,
+	)
+	if err != nil {
+		return id, errors.Wrap(err, "error at delete one of teacher data")
+	}
+	return id, nil
+}

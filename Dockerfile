@@ -1,5 +1,4 @@
 # docker file for ayolescore app
-# build golang api
 FROM golang:latest as builder
 ADD . /go/src/github.com/renosyah/AyoLesCore
 WORKDIR /go/src/github.com/renosyah/AyoLesCore
@@ -22,20 +21,6 @@ RUN rm Gopkg.lock
 RUN rm Gopkg.toml
 RUN rm heroku.yml
 RUN rm main.go
-
-
-FROM alpine:latest  
-RUN apk --no-cache add ca-certificates
-WORKDIR /root/
-ADD . /sql
-ADD . /template
-ADD . /files
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/main .
-# COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.server.toml .
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/.heroku.toml .
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/sql /sql
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/template /template
-COPY --from=builder /go/src/github.com/renosyah/AyoLesCore/files /files
 EXPOSE 8000
 EXPOSE 80
 CMD ./main --config=.heroku.toml

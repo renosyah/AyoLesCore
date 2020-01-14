@@ -6,8 +6,8 @@ port = 8000
 read_timeout = 5
 write_timeout = 10
 idle_timeout = 15
-temp = "/template/*.gohtml"
-files = "/files"
+temp = "template/*.gohtml"
+files = "files"
 
 [database]
 host = "ec2-54-235-180-123.compute-1.amazonaws.com"
@@ -19,5 +19,5 @@ password = "06583719e1322d61649d1acf22c1a4273ac9c28c5c4bb17a55c3fc2e6d3f96ea"
 initdb = false
 
 [sql]
-schema = "/sql/ayoles_db_pq.sql"
-seed = "/sql/seed.sql"
+schema = "sql/ayoles_db_pq.sql"
+seed = "sql/seed.sql"

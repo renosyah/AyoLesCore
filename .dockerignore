@@ -3,6 +3,7 @@
 .idea/
 .vscode/
 .vs/
+.git/
 cockroach-data/
 bin/
 api/

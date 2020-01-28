@@ -1,23 +1,24 @@
 # Ayo Les Core API
 
 AyoLesCore is backend core api for simple online course with grahpql
-* run via docker images 
+* build and build image
+
+```
+set GOARCH=amd64
+set GOOS=linux
+go build -o main
+docker build -t ayolescore .
+del main
 
 ```
 
-docker run -d -p 8000:8000 renosyah/ayolescore /bin/main --config=.staging.toml
+* run image
 
 ```
 
-* how to run via local fo golang dev
+docker run -d -p 8000:8000 ayolescore ./main --config=.staging.toml
 
 ```
-
-del main.exe && go build main.go && main.exe --config=.server.toml
-
-```
-
-
 
 * note
 

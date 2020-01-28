@@ -5,4 +5,17 @@
 .vs/
 cockroach-data/
 bin/
+api/
+auth/
+cmd/
+model/
+router/
 vendor/
+util/
+.dockerignore
+.gitignore
+Dockerfile
+Gopkg.lock
+Gopkg.toml
+heroku.yml
+main.go

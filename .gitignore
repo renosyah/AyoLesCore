@@ -18,3 +18,4 @@ vendor/
 .vs/
 cockroach-data/
 bin/
+main

@@ -4,6 +4,5 @@ WORKDIR /app
 COPY . .
 EXPOSE 8000
 EXPOSE 80
-CMD ls
 CMD ./main --config=.heroku.toml
 MAINTAINER syahputrareno975@gmail.com

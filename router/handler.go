@@ -99,6 +99,7 @@ func InitSchema() (graphql.Schema, error) {
 		"student_register":                 studentCreateField,
 		"student_update":                   studentUpdateField,
 		"teacher_register":                 teacherCreateField,
+		"teacher_update":                   teacherUpdateField,
 		"category_register":                categoryCreateField,
 		"banner_register":                  bannerCreateField,
 		"course_register":                  courseCreateField,

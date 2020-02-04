@@ -206,4 +206,60 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		teacher_update(
+			id : "",
+			name:"reno",
+			email:"reno@gmail.com",
+			password:"12345"
+		)
+		{
+			id,
+			name,
+			email
+		}
+	} */
+
+	teacherUpdateField = &graphql.Field{
+		Type: teacherType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"name": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"email": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"password": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.StudentResponse{}, errUUID
+			}
+
+			student := api.UpdateTeacherParam{
+				ID:       id,
+				Name:     p.Args["name"].(string),
+				Email:    p.Args["email"].(string),
+				Password: p.Args["password"].(string),
+			}
+
+			data, err := teacherModule.Update(ctx, student)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

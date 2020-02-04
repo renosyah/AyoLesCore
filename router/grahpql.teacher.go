@@ -243,17 +243,17 @@ var (
 
 			id, errUUID := uuid.FromString(p.Args["id"].(string))
 			if errUUID != nil {
-				return model.StudentResponse{}, errUUID
+				return model.TeacherResponse{}, errUUID
 			}
 
-			student := api.UpdateTeacherParam{
+			teacher := api.UpdateTeacherParam{
 				ID:       id,
 				Name:     p.Args["name"].(string),
 				Email:    p.Args["email"].(string),
 				Password: p.Args["password"].(string),
 			}
 
-			data, err := teacherModule.Update(ctx, student)
+			data, err := teacherModule.Update(ctx, teacher)
 			if err != nil {
 				log.Println(err)
 				return data, err

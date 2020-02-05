@@ -16,7 +16,7 @@ name = "d3ni8d81iguv4j"
 sslmode = "disable"
 username = "mdymqzvtzhreki"
 password = "06583719e1322d61649d1acf22c1a4273ac9c28c5c4bb17a55c3fc2e6d3f96ea"
-initdb = false
+initdb = true
 
 [sql]
 schema = "sql/ayoles_db_pq.sql"

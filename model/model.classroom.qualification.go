@@ -67,9 +67,13 @@ func (c *ClassRoomQualification) One(ctx context.Context, db *sql.DB) (*ClassRoo
 				ON
 					course_exam_solution.course_exam_id = classroom_exam_progress.course_exam_id
 				WHERE
-					classroom_exam_progress.classroom_id = $1`
+					classroom_exam_progress.classroom_id = $1
+				AND
+					classroom_exam_progress.flag_status = $2
+				AND
+					course_exam_solution.flag_status = $3`
 
-	err = db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassRoomID).Scan(
+	err = db.QueryRowContext(ctx, fmt.Sprintf(query), c.ClassRoomID, STATUS_AVAILABLE, STATUS_AVAILABLE).Scan(
 		&totalExamAnswered, &one.TotalScore,
 	)
 	if err != nil {

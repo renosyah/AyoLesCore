@@ -93,9 +93,15 @@ func (c *ClassRoomExamResult) One(ctx context.Context, db *sql.DB, LimitAnswer i
 				course_exam.id = $1
 			AND
 				classroom_exam_progress.classroom_id = $2
+			AND
+				classroom_exam_progress.flag_status = $3
+			AND
+				course_exam_solution.flag_status = $4
+			AND
+				course_exam.flag_status = $5
 			LIMIT 1`
 
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseExamID, c.ClassRoomID).Scan(
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.CourseExamID, c.ClassRoomID, STATUS_AVAILABLE, STATUS_AVAILABLE, STATUS_AVAILABLE).Scan(
 		&one.CourseExamID, &one.CourseID, &one.ClassRoomID, &one.StudentAnswerID, &one.ValidAnswerID, &one.TypeExam, &one.ExamIndex, &one.Text, &one.ImageURL,
 	)
 	if err != nil {
@@ -137,12 +143,18 @@ func (c *ClassRoomExamResult) All(ctx context.Context, db *sql.DB, param AllClas
 				%s LIKE $1
 			AND
 				classroom_exam_progress.classroom_id = $2
+			AND
+				classroom_exam_progress.flag_status = $3
+			AND
+				course_exam_solution.flag_status = $4
+			AND
+				course_exam.flag_status = $5
 			ORDER BY 
 				%s %s 
-			OFFSET $3 
-			LIMIT $4`
+			OFFSET $6 
+			LIMIT $7`
 
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.ClassRoomID, param.Offset, param.Limit)
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", param.ClassRoomID, STATUS_AVAILABLE, STATUS_AVAILABLE, STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all course exam result")
 	}
@@ -168,7 +180,6 @@ func (c *ClassRoomExamResult) All(ctx context.Context, db *sql.DB, param AllClas
 
 	return all, nil
 }
-
 
 // ITS DOESNOT HAVE TABLE
 // THIS MODEL VALUE RESULT FROM

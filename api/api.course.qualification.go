@@ -82,3 +82,51 @@ func (m CourseQualificationModule) One(ctx context.Context, param OneCourseQuali
 
 	return data.Response(), nil
 }
+
+func (m CourseQualificationModule) Update(ctx context.Context, param AddCourseQualificationParam, id uuid.UUID) (model.CourseQualificationResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseQualification := &model.CourseQualification{
+		ID:                  id,
+		CourseID:            param.CourseID,
+		CourseLevel:         param.CourseLevel,
+		MinScore:            param.MinScore,
+		CourseMaterialTotal: param.CourseMaterialTotal,
+		CourseExamTotal:     param.CourseExamTotal,
+	}
+
+	i, err := courseQualification.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update course qualification"
+
+		return model.CourseQualificationResponse{}, NewErrorWrap(err, m.Name, "update/course_qualification",
+			message, status)
+	}
+
+	return courseQualification.Response(), nil
+}
+
+func (m CourseQualificationModule) Delete(ctx context.Context, id uuid.UUID) (model.CourseQualificationResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseQualification := &model.CourseQualification{
+		ID: id,
+	}
+
+	i, err := courseQualification.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete course qualification"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no course qualificationfound"
+		}
+
+		return model.CourseQualificationResponse{}, NewErrorWrap(err, m.Name, "delete/course_qualification",
+			message, status)
+	}
+
+	return courseQualification.Response(), nil
+}

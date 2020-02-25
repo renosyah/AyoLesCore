@@ -72,6 +72,26 @@ func (m ClassRoomCertificateModule) All(ctx context.Context, param AllClassRoomC
 	return allResp, nil
 }
 
+func (m ClassRoomCertificateModule) Add(ctx context.Context, param AddClassRoomCertificateParam) (model.ClassRoomCertificateResponse, *Error) {
+	classroomCert := &model.ClassRoomCertificate{
+		ClassroomID: param.ClassroomID,
+		HashID:      param.HashID,
+	}
+
+	id, err := classroomCert.Add(ctx, m.db)
+	if err != nil {
+		status := http.StatusInternalServerError
+		message := "error on add classRoom certificate"
+
+		return model.ClassRoomCertificateResponse{}, NewErrorWrap(err, m.Name, "add/classroom_certificate_module",
+			message, status)
+	}
+
+	classroomCert.ID = id
+
+	return classroomCert.Response(), nil
+}
+
 func (m ClassRoomCertificateModule) One(ctx context.Context, param OneClassRoomCertificateParam) (model.ClassRoomCertificateResponse, *Error) {
 	classroomCert := &model.ClassRoomCertificate{
 		ClassroomID: param.ClassroomID,
@@ -95,22 +115,47 @@ func (m ClassRoomCertificateModule) One(ctx context.Context, param OneClassRoomC
 	return data.Response(), nil
 }
 
-func (m ClassRoomCertificateModule) Add(ctx context.Context, param AddClassRoomCertificateParam) (model.ClassRoomCertificateResponse, *Error) {
+func (m ClassRoomCertificateModule) Update(ctx context.Context, param AddClassRoomCertificateParam, id uuid.UUID) (model.ClassRoomCertificateResponse, *Error) {
+	var emptyUUID uuid.UUID
+
 	classroomCert := &model.ClassRoomCertificate{
+		ID:          id,
 		ClassroomID: param.ClassroomID,
 		HashID:      param.HashID,
 	}
 
-	id, err := classroomCert.Add(ctx, m.db)
-	if err != nil {
+	i, err := classroomCert.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
 		status := http.StatusInternalServerError
-		message := "error on add classRoom certificate"
+		message := "error on update classRoom certificate"
 
-		return model.ClassRoomCertificateResponse{}, NewErrorWrap(err, m.Name, "add/classroom_certificate_module",
+		return model.ClassRoomCertificateResponse{}, NewErrorWrap(err, m.Name, "update/classroom_certificate_module",
 			message, status)
 	}
 
-	classroomCert.ID = id
+	return classroomCert.Response(), nil
+}
+
+func (m ClassRoomCertificateModule) Delete(ctx context.Context, id uuid.UUID) (model.ClassRoomCertificateResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	classroomCert := &model.ClassRoomCertificate{
+		ID: id,
+	}
+
+	i, err := classroomCert.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete classRoom certificate"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no classRoom certificate found"
+		}
+
+		return model.ClassRoomCertificateResponse{}, NewErrorWrap(err, m.Name, "delete/classroom_certificate_module",
+			message, status)
+	}
 
 	return classroomCert.Response(), nil
 }

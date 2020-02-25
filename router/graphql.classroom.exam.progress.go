@@ -222,11 +222,7 @@ var (
 				return model.ClassRoomExamProgressResponse{}, errUUID
 			}
 
-			param := api.DeleteClassRoomExamProgressParam{
-				ClassroomID: classRoomID,
-			}
-
-			data, err := classRoomExamProgressModule.Delete(ctx, param)
+			data, err := classRoomExamProgressModule.Delete(ctx, classRoomID)
 			if err != nil {
 				log.Println(err)
 				return data, err

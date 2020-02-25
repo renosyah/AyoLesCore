@@ -81,6 +81,7 @@ func (m CourseExamModule) All(ctx context.Context, param AllCourseExamParam) ([]
 	return allResp, nil
 
 }
+
 func (m CourseExamModule) Add(ctx context.Context, param AddCourseExamParam) (model.CourseExamResponse, *Error) {
 	courseExam := &model.CourseExam{
 		CourseID:  param.CourseID,
@@ -124,4 +125,52 @@ func (m CourseExamModule) One(ctx context.Context, param OneCourseExamParam) (mo
 	}
 
 	return data.Response(), nil
+}
+
+func (m CourseExamModule) Update(ctx context.Context, param AddCourseExamParam, id uuid.UUID) (model.CourseExamResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseExam := &model.CourseExam{
+		ID:        id,
+		CourseID:  param.CourseID,
+		TypeExam:  param.TypeExam,
+		ExamIndex: param.ExamIndex,
+		Text:      param.Text,
+		ImageURL:  param.ImageURL,
+	}
+
+	i, err := courseExam.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update course exam"
+
+		return model.CourseExamResponse{}, NewErrorWrap(err, m.Name, "update/course_exam",
+			message, status)
+	}
+
+	return courseExam.Response(), nil
+}
+
+func (m CourseExamModule) Delete(ctx context.Context, id uuid.UUID) (model.CourseExamResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseExam := &model.CourseExam{
+		ID: id,
+	}
+
+	i, err := courseExam.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete course exam"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no course exam found"
+		}
+
+		return model.CourseExamResponse{}, NewErrorWrap(err, m.Name, "delete/course_exam",
+			message, status)
+	}
+
+	return courseExam.Response(), nil
 }

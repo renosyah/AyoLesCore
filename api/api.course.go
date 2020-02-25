@@ -79,6 +79,7 @@ func (m CourseModule) All(ctx context.Context, param AllCourseParam) ([]model.Co
 	return allResp, nil
 
 }
+
 func (m CourseModule) Add(ctx context.Context, param AddCourseParam) (model.CourseResponse, *Error) {
 	course := &model.Course{
 		CourseName: param.CourseName,
@@ -121,4 +122,51 @@ func (m CourseModule) One(ctx context.Context, param OneCourseParam) (model.Cour
 	}
 
 	return data.Response(), nil
+}
+
+func (m CourseModule) Update(ctx context.Context, param AddCourseParam, id uuid.UUID) (model.CourseResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	course := &model.Course{
+		ID:         id,
+		CourseName: param.CourseName,
+		ImageURL:   param.ImageURL,
+		Teacher:    param.Teacher,
+		Category:   param.Category,
+	}
+
+	i, err := course.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update course"
+
+		return model.CourseResponse{}, NewErrorWrap(err, m.Name, "update/course",
+			message, status)
+	}
+
+	return course.Response(), nil
+}
+
+func (m CourseModule) Delete(ctx context.Context, id uuid.UUID) (model.CourseResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	course := &model.Course{
+		ID: id,
+	}
+
+	i, err := course.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete course"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no course found"
+		}
+
+		return model.CourseResponse{}, NewErrorWrap(err, m.Name, "delete/course",
+			message, status)
+	}
+
+	return course.Response(), nil
 }

@@ -114,3 +114,48 @@ func (m CategoryModule) One(ctx context.Context, param OneCategoryParam) (model.
 
 	return data.Response(), nil
 }
+
+func (m CategoryModule) Update(ctx context.Context, param AddCategoryParam, id uuid.UUID) (model.CategoryResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	category := &model.Category{
+		ID:       id,
+		Name:     param.Name,
+		ImageURL: param.ImageURL,
+	}
+
+	i, err := category.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update category"
+
+		return model.CategoryResponse{}, NewErrorWrap(err, m.Name, "update/category",
+			message, status)
+	}
+
+	return category.Response(), nil
+}
+
+func (m CategoryModule) Delete(ctx context.Context, id uuid.UUID) (model.CategoryResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	category := &model.Category{
+		ID: id,
+	}
+
+	i, err := category.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete category"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no category found"
+		}
+
+		return model.CategoryResponse{}, NewErrorWrap(err, m.Name, "delete/category",
+			message, status)
+	}
+
+	return category.Response(), nil
+}

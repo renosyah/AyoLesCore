@@ -15,7 +15,7 @@ type (
 		db   *sql.DB
 		Name string
 	}
-	
+
 	AddCourseMaterialDetailParam struct {
 		CourseMaterialID uuid.UUID `json:"course_material_id"`
 		Position         int32     `json:"position"`
@@ -47,13 +47,13 @@ func (m CourseMaterialDetailModule) All(ctx context.Context, param AllCourseMate
 	var allResp []model.CourseMaterialDetailResponse
 
 	data, err := (&model.CourseMaterialDetail{}).All(ctx, m.db, model.AllCourseMaterialDetail{
-		CourseMaterialID:    param.CourseMaterialID,
-		SearchBy:    param.SearchBy,
-		SearchValue: param.SearchValue,
-		OrderBy:     param.OrderBy,
-		OrderDir:    param.OrderDir,
-		Offset:      param.Offset,
-		Limit:       param.Limit,
+		CourseMaterialID: param.CourseMaterialID,
+		SearchBy:         param.SearchBy,
+		SearchValue:      param.SearchValue,
+		OrderBy:          param.OrderBy,
+		OrderDir:         param.OrderDir,
+		Offset:           param.Offset,
+		Limit:            param.Limit,
 	})
 	if err != nil {
 		status := http.StatusInternalServerError
@@ -76,15 +76,14 @@ func (m CourseMaterialDetailModule) All(ctx context.Context, param AllCourseMate
 
 }
 
-
 func (m CourseMaterialDetailModule) Add(ctx context.Context, param AddCourseMaterialDetailParam) (model.CourseMaterialDetailResponse, *Error) {
 	courseMaterialDetail := &model.CourseMaterialDetail{
-		CourseMaterialID : param.CourseMaterialID,
-		Position         : param.Position,
-		Title            : param.Title,
-		TypeMaterial     : param.TypeMaterial,
-		Content          : param.Content,
-		ImageURL         : param.ImageURL,
+		CourseMaterialID: param.CourseMaterialID,
+		Position:         param.Position,
+		Title:            param.Title,
+		TypeMaterial:     param.TypeMaterial,
+		Content:          param.Content,
+		ImageURL:         param.ImageURL,
 	}
 
 	id, err := courseMaterialDetail.Add(ctx, m.db)
@@ -97,6 +96,50 @@ func (m CourseMaterialDetailModule) Add(ctx context.Context, param AddCourseMate
 	}
 
 	courseMaterialDetail.ID = id
+
+	return courseMaterialDetail.Response(), nil
+}
+
+func (m CourseMaterialDetailModule) Update(ctx context.Context, param AddCourseMaterialDetailParam, id uuid.UUID) (model.CourseMaterialDetailResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseMaterialDetail := &model.CourseMaterialDetail{
+		ID:               id,
+		CourseMaterialID: param.CourseMaterialID,
+		Position:         param.Position,
+		Title:            param.Title,
+		TypeMaterial:     param.TypeMaterial,
+		Content:          param.Content,
+		ImageURL:         param.ImageURL,
+	}
+
+	i, err := courseMaterialDetail.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update course material detail"
+
+		return model.CourseMaterialDetailResponse{}, NewErrorWrap(err, m.Name, "update/course_material_detail",
+			message, status)
+	}
+
+	return courseMaterialDetail.Response(), nil
+}
+
+func (m CourseMaterialDetailModule) Delete(ctx context.Context, id uuid.UUID) (model.CourseMaterialDetailResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseMaterialDetail := &model.CourseMaterialDetail{
+		ID: id,
+	}
+
+	i, err := courseMaterialDetail.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete course material detail"
+
+		return model.CourseMaterialDetailResponse{}, NewErrorWrap(err, m.Name, "delete/course_material_detail",
+			message, status)
+	}
 
 	return courseMaterialDetail.Response(), nil
 }

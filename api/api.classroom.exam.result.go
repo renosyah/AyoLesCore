@@ -95,3 +95,10 @@ func (m ClassRoomExamResultModule) One(ctx context.Context, param OneClassRoomEx
 
 	return data.Response(), nil
 }
+
+
+// ITS DOESNOT HAVE TABLE
+// THIS MODEL VALUE RESULT FROM
+// QUERY JOIN
+// NO UPDATE
+// NO DELETE

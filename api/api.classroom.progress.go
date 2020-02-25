@@ -67,6 +67,7 @@ func (m ClassRoomProgressModule) All(ctx context.Context, param AllClassRoomProg
 	return allResp, nil
 
 }
+
 func (m ClassRoomProgressModule) Add(ctx context.Context, param AddClassRoomProgressParam) (model.ClassRoomProgressResponse, *Error) {
 	courseProgress := &model.ClassRoomProgress{
 		ClassRoomID:      param.ClassRoomID,
@@ -107,4 +108,49 @@ func (m ClassRoomProgressModule) One(ctx context.Context, param OneClassRoomProg
 	}
 
 	return data.Response(), nil
+}
+
+func (m ClassRoomProgressModule) Update(ctx context.Context, param AddClassRoomProgressParam, id uuid.UUID) (model.ClassRoomProgressResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseProgress := &model.ClassRoomProgress{
+		ID:               id,
+		ClassRoomID:      param.ClassRoomID,
+		CourseMaterialID: param.CourseMaterialID,
+	}
+
+	i, err := courseProgress.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update classRoom progress"
+
+		return model.ClassRoomProgressResponse{}, NewErrorWrap(err, m.Name, "update/course_progress_module",
+			message, status)
+	}
+
+	return courseProgress.Response(), nil
+}
+
+func (m ClassRoomProgressModule) Delete(ctx context.Context, id uuid.UUID) (model.ClassRoomProgressResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseProgress := &model.ClassRoomProgress{
+		ID: id,
+	}
+
+	i, err := courseProgress.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error ondelete classRoom progress"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no classRoom progress found"
+		}
+
+		return model.ClassRoomProgressResponse{}, NewErrorWrap(err, m.Name, "delete/course_progress_module",
+			message, status)
+	}
+
+	return courseProgress.Response(), nil
 }

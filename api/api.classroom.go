@@ -157,3 +157,50 @@ func (m ClassRoomModule) OneByStudentIdAndCourseId(ctx context.Context, param On
 
 	return data.Response(), nil
 }
+
+func (m ClassRoomModule) Update(ctx context.Context, param AddClassRoomParam, id uuid.UUID) (model.ClassRoomResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	classroom := &model.ClassRoom{
+		ID: id,
+		Course: &model.Course{
+			ID: param.CourseID,
+		},
+		StudentID: param.StudentID,
+	}
+
+	i, err := classroom.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update classroom"
+
+		return model.ClassRoomResponse{}, NewErrorWrap(err, m.Name, "update/classroom",
+			message, status)
+	}
+
+	return classroom.Response(), nil
+}
+
+func (m ClassRoomModule) Delete(ctx context.Context, id uuid.UUID) (model.ClassRoomResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	classroom := &model.ClassRoom{
+		ID: id,
+	}
+
+	i, err := classroom.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete classroom"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no classroom found"
+		}
+
+		return model.ClassRoomResponse{}, NewErrorWrap(err, m.Name, "delete/classroom",
+			message, status)
+	}
+
+	return classroom.Response(), nil
+}

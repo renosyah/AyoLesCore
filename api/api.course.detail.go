@@ -93,5 +93,46 @@ func (m CourseDetailModule) All(ctx context.Context, param AllCourseDetailParam)
 	}
 
 	return allResp, nil
+}
 
+func (m CourseDetailModule) Update(ctx context.Context, param AddCourseDetailParam, id uuid.UUID) (model.CourseDetailResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseDetail := &model.CourseDetail{
+		ID:              id,
+		CourseID:        param.CourseID,
+		OverviewText:    param.OverviewText,
+		DescriptionText: param.DescriptionText,
+		ImageURL:        param.ImageURL,
+	}
+
+	i, err := courseDetail.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update course detail"
+
+		return model.CourseDetailResponse{}, NewErrorWrap(err, m.Name, "update/course_detail",
+			message, status)
+	}
+
+	return courseDetail.Response(), nil
+}
+
+func (m CourseDetailModule) Delete(ctx context.Context, id uuid.UUID) (model.CourseDetailResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseDetail := &model.CourseDetail{
+		ID: id,
+	}
+
+	i, err := courseDetail.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete course detail"
+
+		return model.CourseDetailResponse{}, NewErrorWrap(err, m.Name, "delete/course_detail",
+			message, status)
+	}
+
+	return courseDetail.Response(), nil
 }

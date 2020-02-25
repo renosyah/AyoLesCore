@@ -76,6 +76,7 @@ func (m CourseMaterialModule) All(ctx context.Context, param AllCourseMaterialPa
 	return allResp, nil
 
 }
+
 func (m CourseMaterialModule) Add(ctx context.Context, param AddCourseMaterialParam) (model.CourseMaterialResponse, *Error) {
 	courseMaterial := &model.CourseMaterial{
 		CourseID:      param.CourseID,
@@ -117,4 +118,50 @@ func (m CourseMaterialModule) One(ctx context.Context, param OneCourseMaterialPa
 	}
 
 	return data.Response(), nil
+}
+
+func (m CourseMaterialModule) Update(ctx context.Context, param AddCourseMaterialParam, id uuid.UUID) (model.CourseMaterialResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseMaterial := &model.CourseMaterial{
+		ID:            id,
+		CourseID:      param.CourseID,
+		MaterialIndex: param.MaterialIndex,
+		Title:         param.Title,
+	}
+
+	i, err := courseMaterial.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update course material"
+
+		return model.CourseMaterialResponse{}, NewErrorWrap(err, m.Name, "update/course_material",
+			message, status)
+	}
+
+	return courseMaterial.Response(), nil
+}
+
+func (m CourseMaterialModule) Delete(ctx context.Context, id uuid.UUID) (model.CourseMaterialResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseMaterial := &model.CourseMaterial{
+		ID: id,
+	}
+
+	i, err := courseMaterial.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete course material"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no course material found"
+		}
+
+		return model.CourseMaterialResponse{}, NewErrorWrap(err, m.Name, "delete/course_material",
+			message, status)
+	}
+
+	return courseMaterial.Response(), nil
 }

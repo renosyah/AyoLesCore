@@ -117,3 +117,49 @@ func (m *BannerModule) One(ctx context.Context, param OneBannerParam) (model.Ban
 
 	return data.Response(), nil
 }
+
+func (m BannerModule) Update(ctx context.Context, param AddBannerParam, id uuid.UUID) (model.BannerResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	banner := &model.Banner{
+		ID:       id,
+		Title:    param.Title,
+		Content:  param.Content,
+		ImageURL: param.ImageURL,
+	}
+
+	i, err := banner.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on update banner"
+
+		return model.BannerResponse{}, NewErrorWrap(err, m.Name, "update/banner",
+			message, status)
+	}
+
+	return banner.Response(), nil
+}
+
+func (m *BannerModule) Delete(ctx context.Context, id uuid.UUID) (model.BannerResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	banner := &model.Banner{
+		ID: id,
+	}
+
+	i, err := banner.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete banner"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no banner found"
+		}
+
+		return model.BannerResponse{}, NewErrorWrap(err, m.Name, "delete/banner",
+			message, status)
+	}
+
+	return banner.Response(), nil
+}

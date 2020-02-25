@@ -25,10 +25,6 @@ type (
 		ID uuid.UUID `json:"id"`
 	}
 
-	DeleteClassRoomExamProgressParam struct {
-		ClassroomID uuid.UUID `json:"classroom_id"`
-	}
-
 	AllClassRoomExamProgressParam struct {
 		ClassroomID uuid.UUID `json:"classroom_id"`
 		OrderBy     string    `json:"order_by"`
@@ -119,19 +115,43 @@ func (m ClassRoomExamProgressModule) One(ctx context.Context, param OneClassRoom
 	return data.Response(), nil
 }
 
-func (m ClassRoomExamProgressModule) Delete(ctx context.Context, param DeleteClassRoomExamProgressParam) (model.ClassRoomExamProgressResponse, *Error) {
-	courseExamProgress := &model.ClassRoomExamProgress{
-		ClassroomID: param.ClassroomID,
+func (m ClassRoomExamProgressModule) Update(ctx context.Context, param AddClassRoomExamParam, id uuid.UUID) (model.ClassRoomExamProgressResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	classroomExamProgress := &model.ClassRoomExamProgress{
+		ID:                 id,
+		ClassroomID:        param.ClassroomID,
+		CourseExamID:       param.CourseExamID,
+		CourseExamAnswerID: param.CourseExamAnswerID,
 	}
 
-	_, err := courseExamProgress.Delete(ctx, m.db)
-	if err != nil {
+	i, err := classroomExamProgress.Update(ctx, m.db)
+	if err != nil || i == emptyUUID {
 		status := http.StatusInternalServerError
-		message := "error on delete all classRoom exam progress"
+		message := "error on update classRoom exam progress"
 
-		return model.ClassRoomExamProgressResponse{}, NewErrorWrap(err, m.Name, "one/classroom_exam_progress_module",
+		return model.ClassRoomExamProgressResponse{}, NewErrorWrap(err, m.Name, "update/classroom_exam_progress_module",
 			message, status)
 	}
 
-	return (&model.ClassRoomExamProgress{ClassroomID: param.ClassroomID}).Response(), nil
+	return classroomExamProgress.Response(), nil
+}
+
+func (m ClassRoomExamProgressModule) Delete(ctx context.Context, id uuid.UUID) (model.ClassRoomExamProgressResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	courseExamProgress := &model.ClassRoomExamProgress{
+		ClassroomID: id,
+	}
+
+	i, err := courseExamProgress.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete classRoom exam progress"
+
+		return model.ClassRoomExamProgressResponse{}, NewErrorWrap(err, m.Name, "delete/classroom_exam_progress_module",
+			message, status)
+	}
+
+	return courseExamProgress.Response(), nil
 }

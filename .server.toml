@@ -11,11 +11,11 @@ files = "files"
 
 [database]
 host = "localhost"
-port = 26257
+port = 5432
 name = "ayoles_db"
 sslmode = "disable"
-username = "root"
-password = ""
+username = "postgres"
+password = "123"
 initdb = false
 
 [sql]

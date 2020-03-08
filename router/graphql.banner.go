@@ -126,7 +126,8 @@ var (
 			return data, nil
 		},
 	}
-	/* {
+
+	/* mutation {
 		banner_register(
 				title : ,
 				content : ,
@@ -163,6 +164,98 @@ var (
 			}
 
 			data, err := bannerModule.Add(ctx, banner)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		banner_update(
+				id : ""
+				title : "",
+				content : "",
+				image_url: ""
+			) {
+				id,
+				title,
+				content,
+				image_url
+			}
+	} */
+
+	bannerUpdateField = &graphql.Field{
+		Type: categoryType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"title": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"content": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"image_url": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.BannerResponse{}, errUUID
+			}
+
+			banner := api.AddBannerParam{
+				Title:    p.Args["title"].(string),
+				Content:  p.Args["content"].(string),
+				ImageURL: p.Args["image_url"].(string),
+			}
+
+			data, err := bannerModule.Update(ctx, banner, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		banner_delete(
+				id : ""
+			) {
+				id,
+				title,
+				content,
+				image_url
+			}
+	} */
+
+	bannerDeleteField = &graphql.Field{
+		Type: categoryType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.BannerResponse{}, errUUID
+			}
+
+			data, err := bannerModule.Delete(ctx, id)
 			if err != nil {
 				log.Println(err)
 				return data, err

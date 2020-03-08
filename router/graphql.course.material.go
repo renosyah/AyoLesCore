@@ -186,4 +186,97 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		course_material_update(
+			id:"",
+			course_id : "4252869c-ddd2-466f-8528-e1fe8aff4135",
+			material_index : 1,
+			title : "Chapter 1"
+		)
+		{
+			id
+		}
+	} */
+
+	courseMaterialUpdateField = &graphql.Field{
+		Type: courseType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"material_index": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"title": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseMaterialResponse{}, errUUID
+			}
+
+			courseID, errUUID := uuid.FromString(p.Args["course_id"].(string))
+			if errUUID != nil {
+				return model.CourseMaterialResponse{}, errUUID
+			}
+
+			courseMaterial := api.AddCourseMaterialParam{
+				CourseID:      courseID,
+				MaterialIndex: int32(p.Args["material_index"].(int)),
+				Title:         p.Args["title"].(string),
+			}
+
+			data, err := courseMaterialModule.Update(ctx, courseMaterial, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		course_material_delete(
+			id:""
+		)
+		{
+			id
+		}
+	} */
+
+	courseMaterialDeleteField = &graphql.Field{
+		Type: courseType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseMaterialResponse{}, errUUID
+			}
+
+			data, err := courseMaterialModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

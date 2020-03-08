@@ -225,13 +225,116 @@ var (
 
 			courseExam := api.AddCourseExamParam{
 				CourseID:  courseID,
-				TypeExam:  int32(p.Args["course_id"].(int)),
-				ExamIndex: int32(p.Args["course_id"].(int)),
-				Text:      p.Args["course_id"].(string),
-				ImageURL:  p.Args["course_id"].(string),
+				TypeExam:  int32(p.Args["type_exam"].(int)),
+				ExamIndex: int32(p.Args["exam_index"].(int)),
+				Text:      p.Args["text"].(string),
+				ImageURL:  p.Args["image_url"].(string),
 			}
 
 			data, err := courseExamModule.Add(ctx, courseExam)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		course_exam_update(
+			id:"",
+			course_id : "",
+			type_exam : "",
+			exam_index : "",
+			text : "",
+			image_url : ""
+		)
+		{
+			id
+		}
+	} */
+
+	courseExamUpdateField = &graphql.Field{
+		Type: courseType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"type_exam": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"exam_index": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"text": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"image_url": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseExamResponse{}, errUUID
+			}
+
+			courseID, errUUID := uuid.FromString(p.Args["course_id"].(string))
+			if errUUID != nil {
+				return model.CourseExamResponse{}, errUUID
+			}
+
+			courseExam := api.AddCourseExamParam{
+				CourseID:  courseID,
+				TypeExam:  int32(p.Args["type_exam"].(int)),
+				ExamIndex: int32(p.Args["exam_index"].(int)),
+				Text:      p.Args["text"].(string),
+				ImageURL:  p.Args["image_url"].(string),
+			}
+
+			data, err := courseExamModule.Update(ctx, courseExam, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* {
+		course_exam_delete(
+			id: "4252869c-ddd2-466f-8528-e1fe8aff4135"
+		)
+		{
+			id
+		}
+	} */
+
+	courseExamDeleteField = &graphql.Field{
+		Type: courseExamType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseExamResponse{}, errUUID
+			}
+
+			data, err := courseExamModule.Delete(ctx, id)
 			if err != nil {
 				log.Println(err)
 				return data, err

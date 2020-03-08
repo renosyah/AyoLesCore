@@ -169,4 +169,97 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		course_exam_solution_update(
+			id:"",
+			course_exam_id:" ",
+			course_exam_answer_id:" "
+		)
+		{
+			id
+		}
+	} */
+
+	courseExamSolutionUpdateField = &graphql.Field{
+		Type: courseExamSolutionType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_exam_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_exam_answer_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseExamSolutionResponse{}, errUUID
+			}
+
+			courseExamID, errUUID := uuid.FromString(p.Args["course_exam_id"].(string))
+			if errUUID != nil {
+				return model.CourseExamSolutionResponse{}, errUUID
+			}
+
+			courseExamAnswerID, errUUID := uuid.FromString(p.Args["course_exam_answer_id"].(string))
+			if errUUID != nil {
+				return model.CourseExamSolutionResponse{}, errUUID
+			}
+
+			courseExamAnswer := api.AddCourseExamSolutionParam{
+				CourseExamID:       courseExamID,
+				CourseExamAnswerID: courseExamAnswerID,
+			}
+
+			data, err := courseExamSolutionModule.Update(ctx, courseExamAnswer, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		course_exam_solution_delete(
+			id:""
+		)
+		{
+			id
+		}
+	} */
+
+	courseExamSolutionDeleteField = &graphql.Field{
+		Type: courseExamSolutionType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseExamSolutionResponse{}, errUUID
+			}
+
+			data, err := courseExamSolutionModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

@@ -199,3 +199,27 @@ func (m TeacherModule) Login(ctx context.Context, param TeacherLoginParam) (mode
 
 	return resp, nil
 }
+
+func (m TeacherModule) Delete(ctx context.Context, id uuid.UUID) (model.TeacherResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	teacher := &model.Teacher{
+		ID: id,
+	}
+
+	i, err := teacher.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete teacher"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no teacher found"
+		}
+
+		return model.TeacherResponse{}, NewErrorWrap(err, m.Name, "delete/teacher",
+			message, status)
+	}
+
+	return teacher.Response(), nil
+}

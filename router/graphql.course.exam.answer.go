@@ -207,4 +207,107 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		course_exam_answer_update(
+			id:"",
+			course_exam_id : "",
+			type_answer : 0,
+			label : "",
+			text : "",
+			image_url : ""
+		)
+		{
+			id
+		}
+	} */
+
+	courseExamAnswerUpdateField = &graphql.Field{
+		Type: courseExamAnswerType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_exam_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"type_answer": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"label": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"text": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"image_url": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseExamResponse{}, errUUID
+			}
+
+			courseExamID, errUUID := uuid.FromString(p.Args["course_exam_id"].(string))
+			if errUUID != nil {
+				return model.CourseExamResponse{}, errUUID
+			}
+
+			courseExamAnswer := api.AddCourseExamAnswerParam{
+				CourseExamID: courseExamID,
+				TypeAnswer:   int32(p.Args["type_answer"].(int)),
+				Label:        p.Args["label"].(string),
+				Text:         p.Args["text"].(string),
+				ImageURL:     p.Args["image_url"].(string),
+			}
+
+			data, err := courseExamAnswerModule.Update(ctx, courseExamAnswer, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* {
+		course_exam_answer_delete(
+			id: "4252869c-ddd2-466f-8528-e1fe8aff4135"
+		)
+		{
+			id
+		}
+	} */
+
+	courseExamAnswerDeletelField = &graphql.Field{
+		Type: courseExamAnswerType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseExamAnswerResponse{}, errUUID
+			}
+
+			data, err := courseExamAnswerModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

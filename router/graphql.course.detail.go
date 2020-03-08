@@ -157,4 +157,100 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		course_detail_update(
+			id:"",
+			course_id : "123a1b1e-b822-4035-b9ef-ee133857939f",
+			overview_text:"data science",
+			description_text : "data science is fun",
+			image_url : "path/to/image"
+		)
+		{
+			id
+		}
+	} */
+
+	courseDetailUpdateField = &graphql.Field{
+		Type: courseDetailType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"overview_text": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"description_text": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"image_url": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseDetailResponse{}, errUUID
+			}
+
+			CourseID, errUUID := uuid.FromString(p.Args["course_id"].(string))
+			if errUUID != nil {
+				return model.CourseDetailResponse{}, errUUID
+			}
+
+			course := api.AddCourseDetailParam{
+				CourseID:        CourseID,
+				OverviewText:    p.Args["overview_text"].(string),
+				DescriptionText: p.Args["description_text"].(string),
+				ImageURL:        p.Args["image_url"].(string),
+			}
+
+			data, err := courseDetailModule.Update(ctx, course, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		course_detail_delete(
+			id:""
+		)
+		{
+			id
+		}
+	} */
+
+	courseDetailDeleteField = &graphql.Field{
+		Type: courseDetailType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseDetailResponse{}, errUUID
+			}
+
+			data, err := courseDetailModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

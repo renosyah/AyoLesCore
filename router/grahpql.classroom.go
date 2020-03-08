@@ -261,4 +261,97 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		classroom_update(
+			id : "36bf5614-bc14-4c98-96f4-4dae483b79e5",
+			course_id : "4252869c-ddd2-466f-8528-e1fe8aff4135",
+			student_id : "4252869c-ddd2-466f-8528-e1fe8aff4135"
+		)
+		{
+			id
+		}
+	} */
+
+	classRoomUpdateField = &graphql.Field{
+		Type: classRoomType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"student_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomResponse{}, errUUID
+			}
+
+			courseID, errUUID := uuid.FromString(p.Args["course_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomResponse{}, errUUID
+			}
+
+			studentID, errUUID := uuid.FromString(p.Args["student_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomResponse{}, errUUID
+			}
+
+			classRoom := api.AddClassRoomParam{
+				CourseID:  courseID,
+				StudentID: studentID,
+			}
+
+			data, err := classRoomModule.Update(ctx, classRoom, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		classroom_delete(
+			id : "36bf5614-bc14-4c98-96f4-4dae483b79e5"
+		)
+		{
+			id
+		}
+	} */
+
+	classRoomDeleteField = &graphql.Field{
+		Type: classRoomType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomResponse{}, errUUID
+			}
+
+			data, err := classRoomModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

@@ -262,4 +262,39 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		teacher_delete(
+			id : ""
+		)
+		{
+			id
+		}
+	} */
+
+	teacherDeleteField = &graphql.Field{
+		Type: teacherType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.TeacherResponse{}, errUUID
+			}
+
+			data, err := teacherModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

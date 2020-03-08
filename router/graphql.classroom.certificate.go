@@ -172,4 +172,92 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		classroom_certificate_update(
+			id : "",
+			classroom_id : "",
+			hash_id : ""
+		)
+		{
+			id
+		 }
+	} */
+
+	classroomCertificateUpdateField = &graphql.Field{
+		Type: classroomCertificateType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"classroom_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"hash_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomCertificateResponse{}, errUUID
+			}
+
+			classRoomID, errUUID := uuid.FromString(p.Args["classroom_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomCertificateResponse{}, errUUID
+			}
+
+			param := api.AddClassRoomCertificateParam{
+				ClassroomID: classRoomID,
+				HashID:      p.Args["classroom_id"].(string),
+			}
+
+			data, err := classRoomCertificateModule.Update(ctx, param, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		classroom_certificate_delete(
+			id : ""
+		)
+		{
+			id
+		 }
+	} */
+
+	classroomCertificateDeleteField = &graphql.Field{
+		Type: classroomCertificateType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomCertificateResponse{}, errUUID
+			}
+
+			data, err := classRoomCertificateModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

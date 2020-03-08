@@ -178,4 +178,112 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		course_material_detail_update(
+			id:"",
+			course_material_id : "",
+			position : 0,
+			title  : "",
+			type_material : 0,
+			content  : "",
+			image_url  : "",
+		)
+		{
+			id
+		}
+	} */
+
+	courseMaterialDetailUpdateField = &graphql.Field{
+		Type: courseMaterialDetailType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_material_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"position": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"title": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"type_material": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"content": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"image_url": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseMaterialDetailResponse{}, errUUID
+			}
+
+			courseMaterialID, errUUID := uuid.FromString(p.Args["course_material_id"].(string))
+			if errUUID != nil {
+				return model.CourseMaterialDetailResponse{}, errUUID
+			}
+
+			courseMaterialDetail := api.AddCourseMaterialDetailParam{
+				CourseMaterialID: courseMaterialID,
+				Position:         int32(p.Args["position"].(int)),
+				Title:            p.Args["title"].(string),
+				TypeMaterial:     int32(p.Args["type_material"].(int)),
+				Content:          p.Args["content"].(string),
+				ImageURL:         p.Args["image_url"].(string),
+			}
+
+			data, err := courseMaterialDetailModule.Update(ctx, courseMaterialDetail, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		course_material_detail_delete(
+			id:"",
+		)
+		{
+			id
+		}
+	} */
+
+	courseMaterialDetailDeleteField = &graphql.Field{
+		Type: courseMaterialDetailType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CourseMaterialDetailResponse{}, errUUID
+			}
+
+			data, err := courseMaterialDetailModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

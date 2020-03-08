@@ -166,4 +166,96 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		classroom_progress_update(
+			id : "",
+			classroom_id :"",
+			course_material_id :""
+		)
+		{
+			id
+		 }
+	} */
+
+	classroomProgressUpdateField = &graphql.Field{
+		Type: classroomProgressType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"classroom_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_material_id": &graphql.ArgumentConfig{
+				Type: graphql.String,
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomProgressResponse{}, errUUID
+			}
+
+			classRoomID, errUUID := uuid.FromString(p.Args["classroom_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomProgressResponse{}, errUUID
+			}
+			courseMaterialID, errUUID := uuid.FromString(p.Args["course_material_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomProgressResponse{}, errUUID
+			}
+
+			param := api.AddClassRoomProgressParam{
+				ClassRoomID:      classRoomID,
+				CourseMaterialID: courseMaterialID,
+			}
+
+			data, err := classRoomProgressModule.Update(ctx, param, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		classroom_progress_delete(
+			id: ""
+		)
+		{
+			id
+		 }
+	} */
+
+	classroomProgressDeleteField = &graphql.Field{
+		Type: graphql.NewList(classroomProgressType),
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomProgressResponse{}, errUUID
+			}
+
+			one, err := classRoomProgressModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return one, err
+			}
+
+			return one, nil
+		},
+	}
 )

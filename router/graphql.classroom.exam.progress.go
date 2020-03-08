@@ -193,16 +193,80 @@ var (
 			return data, nil
 		},
 	}
+	/* mutation {
+		classroom_exam_progress_update(
+			id:"",
+			classroom_id : "",
+			course_exam_id : "",
+			course_exam_answer_id : ""
+		)
+		{
+			id
+		 }
+	} */
+
+	classroomExamProgressUpdateField = &graphql.Field{
+		Type: classroomExamProgressType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"classroom_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_exam_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"course_exam_answer_id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomExamProgressResponse{}, errUUID
+			}
+
+			classRoomID, errUUID := uuid.FromString(p.Args["classroom_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomExamProgressResponse{}, errUUID
+			}
+
+			courseExamID, errUUID := uuid.FromString(p.Args["course_exam_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomExamProgressResponse{}, errUUID
+			}
+
+			courseCourseExamAnswerID, errUUID := uuid.FromString(p.Args["course_exam_answer_id"].(string))
+			if errUUID != nil {
+				return model.ClassRoomExamProgressResponse{}, errUUID
+			}
+
+			param := api.AddClassRoomExamParam{
+				ClassroomID:        classRoomID,
+				CourseExamID:       courseExamID,
+				CourseExamAnswerID: courseCourseExamAnswerID,
+			}
+
+			data, err := classRoomExamProgressModule.Update(ctx, param, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 
 	/* mutation {
 		classroom_exam_progress_delete(
 			classroom_id : "",
 		)
 		{
-			id,
-			classroom_id,
-			course_exam_id,
-			course_exam_answer_id
+			id
 		 }
 	} */
 

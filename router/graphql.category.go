@@ -161,4 +161,87 @@ var (
 			return data, nil
 		},
 	}
+
+	/* mutation {
+		category_update(
+				id : "",
+				name : "sport",
+				image_url : "data/category/sport.png"
+			) {
+				id
+			}
+	} */
+
+	categoryUpdateField = &graphql.Field{
+		Type: categoryType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"name": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"image_url": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CategoryResponse{}, errUUID
+			}
+
+			category := api.AddCategoryParam{
+				Name:     p.Args["name"].(string),
+				ImageURL: p.Args["image_url"].(string),
+			}
+
+			data, err := categoryModule.Update(ctx, category, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		category_update(
+				id : "",
+				name : "sport",
+				image_url : "data/category/sport.png"
+			) {
+				id
+			}
+	} */
+
+	categoryDeleteField = &graphql.Field{
+		Type: categoryType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.CategoryResponse{}, errUUID
+			}
+
+			data, err := categoryModule.Delete(ctx, id)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
 )

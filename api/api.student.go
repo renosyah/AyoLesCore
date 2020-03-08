@@ -199,3 +199,27 @@ func (m StudentModule) Login(ctx context.Context, param StudentLoginParam) (mode
 
 	return resp, nil
 }
+
+func (m StudentModule) Delete(ctx context.Context, id uuid.UUID) (model.StudentResponse, *Error) {
+	var emptyUUID uuid.UUID
+
+	student := &model.Student{
+		ID: id,
+	}
+
+	i, err := student.Delete(ctx, m.db)
+	if err != nil || i == emptyUUID {
+		status := http.StatusInternalServerError
+		message := "error on delete student"
+
+		if errors.Cause(err) == sql.ErrNoRows {
+			status = http.StatusOK
+			message = "no student found"
+		}
+
+		return model.StudentResponse{}, NewErrorWrap(err, m.Name, "delete/student",
+			message, status)
+	}
+
+	return student.Response(), nil
+}

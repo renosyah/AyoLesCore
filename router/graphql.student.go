@@ -247,13 +247,48 @@ var (
 			}
 
 			student := api.UpdateStudentParam{
-				ID: id,
+				ID:       id,
 				Name:     p.Args["name"].(string),
 				Email:    p.Args["email"].(string),
 				Password: p.Args["password"].(string),
 			}
 
 			data, err := studentModule.Update(ctx, student)
+			if err != nil {
+				log.Println(err)
+				return data, err
+			}
+
+			return data, nil
+		},
+	}
+
+	/* mutation {
+		student_delete(
+			id : ""
+		)
+		{
+			id
+		}
+	} */
+
+	studentDeleteField = &graphql.Field{
+		Type: studentType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			ctx := p.Context
+
+			id, errUUID := uuid.FromString(p.Args["id"].(string))
+			if errUUID != nil {
+				return model.StudentResponse{}, errUUID
+			}
+
+			data, err := studentModule.Delete(ctx, id)
 			if err != nil {
 				log.Println(err)
 				return data, err

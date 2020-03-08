@@ -1,60 +1,8 @@
 package router
 
 import (
-	"encoding/json"
-	"log"
-	"net/http"
-
 	"github.com/graphql-go/graphql"
-	"github.com/renosyah/AyoLesCore/api"
 )
-
-type (
-	HandlerFunc func(http.ResponseWriter, *http.Request) (interface{}, *api.Error)
-)
-
-func (fn HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var errs []string
-
-	// Ignore error from form parsing as it's insignificant.
-	r.ParseForm()
-
-	data, err := fn(w, r)
-	if err != nil {
-		log.Println(err)
-		errs = append(errs, err.Error())
-		w.WriteHeader(err.StatusCode)
-		resp := api.Response{
-			Status: http.StatusText(err.StatusCode),
-			Data:   data,
-			BaseResponse: api.BaseResponse{
-				Errors: errs,
-			},
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-
-		if err := json.NewEncoder(w).Encode(&resp); err != nil {
-			log.Println(err)
-			return
-		}
-	} else {
-		resp := api.Response{
-			Status: http.StatusText(200),
-			Data:   data,
-			BaseResponse: api.BaseResponse{
-				Errors: errs,
-			},
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-
-		if err := json.NewEncoder(w).Encode(&resp); err != nil {
-			log.Println(err)
-			return
-		}
-	}
-}
 
 func InitSchema() (graphql.Schema, error) {
 	queryFields := graphql.Fields{
@@ -98,6 +46,7 @@ func InitSchema() (graphql.Schema, error) {
 	mutationFields := graphql.Fields{
 		"student_register":                 studentCreateField,
 		"student_update":                   studentUpdateField,
+		"student_delete" :                  studentDeleteField,
 		"teacher_register":                 teacherCreateField,
 		"teacher_update":                   teacherUpdateField,
 		"teacher_delete":                   teacherDeleteField,

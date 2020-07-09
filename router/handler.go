@@ -46,7 +46,7 @@ func InitSchema() (graphql.Schema, error) {
 	mutationFields := graphql.Fields{
 		"student_register":                 studentCreateField,
 		"student_update":                   studentUpdateField,
-		"student_delete" :                  studentDeleteField,
+		"student_delete":                   studentDeleteField,
 		"teacher_register":                 teacherCreateField,
 		"teacher_update":                   teacherUpdateField,
 		"teacher_delete":                   teacherDeleteField,

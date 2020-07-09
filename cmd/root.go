@@ -64,7 +64,7 @@ var rootCmd = &cobra.Command{
 
 		// register end point with interceptor
 		// for graphql api
-		r.Handle("/graphql", auth.AuthenticationMiddleware(graphqlHandler)).Methods(http.MethodPost)
+		r.Handle("/graphql", auth.AuthenticationMiddleware(graphqlHandler))
 
 		port := viper.GetInt("app.port")
 		p := os.Getenv("PORT")

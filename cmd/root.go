@@ -18,7 +18,6 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/renosyah/AyoLesCore/auth"
 	"github.com/renosyah/AyoLesCore/router"
-	"github.com/renosyah/AyoLesCore/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -64,7 +63,7 @@ var rootCmd = &cobra.Command{
 
 		// register end point with interceptor
 		// for graphql api
-		r.Handle("/graphql", auth.AuthenticationMiddleware(graphqlHandler))
+		r.Handle("/graphql", auth.AuthenticationMiddleware(graphqlHandler)).Methods(http.MethodPost, http.MethodOptions)
 
 		port := viper.GetInt("app.port")
 		p := os.Getenv("PORT")
@@ -133,53 +132,17 @@ func initDB() {
 
 	db, err := sql.Open("postgres", dbConfig)
 	if err != nil {
-		log.Fatalln("Error open DB: %v\n", err)
-		return
+		fmt.Println(fmt.Sprintf("Error open DB: %v\n", err))
+		os.Exit(0)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalln("Error ping DB: %v\n", err)
-		return
+		fmt.Println(fmt.Sprintf("Error ping DB: %v\n", err))
+		os.Exit(0)
 	}
 
 	dbPool = db
-
-	if viper.GetBool("database.initdb") {
-		initDBSchema()
-		initDBSeed()
-	}
-}
-
-func initDBSchema() {
-
-	schema, err := util.ReadFile(viper.GetString("sql.schema"))
-	if err != nil {
-		log.Fatalln("Error file schema not found : %v\n", err)
-		return
-	}
-
-	_, err = dbPool.Exec(string(schema))
-	if err != nil {
-		log.Fatalln("Error import file schema to db : %v\n", err)
-		return
-	}
-
-}
-
-func initDBSeed() {
-	seed, err := util.ReadFile(viper.GetString("sql.seed"))
-	if err != nil {
-		log.Fatalln("Error file seed not found : %v\n", err)
-		return
-	}
-
-	_, err = dbPool.Exec(string(seed))
-	if err != nil {
-		log.Fatalln("Error import file seed to db : %v\n", err)
-		return
-	}
-
 }
 
 func initConfig() {

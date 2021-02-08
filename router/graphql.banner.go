@@ -141,7 +141,7 @@ var (
 	} */
 
 	bannerCreateField = &graphql.Field{
-		Type: categoryType,
+		Type: bannerType,
 		Args: graphql.FieldConfigArgument{
 			"title": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -188,7 +188,7 @@ var (
 	} */
 
 	bannerUpdateField = &graphql.Field{
-		Type: categoryType,
+		Type: bannerType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -240,7 +240,7 @@ var (
 	} */
 
 	bannerDeleteField = &graphql.Field{
-		Type: categoryType,
+		Type: bannerType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),

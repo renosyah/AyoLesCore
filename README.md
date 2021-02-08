@@ -6,33 +6,9 @@ AyoLesCore is backend core api for simple online course with grahpql
 
 ```
 
-del main.exe && go build main.go && main.exe --config=.server.toml
+go build main.go && ./main --config=.server.toml
 
 ```
-
-
-* build and build image
-
-```
-set GOARCH=amd64
-set GOOS=linux
-go build -o main
-docker build -t ayolescore .
-del main
-
-```
-
-* run image
-
-```
-
-docker run -d -p 8000:8000 ayolescore ./main --config=.staging.toml
-
-```
-
-* note
-
-dont forget if you on windows enable allow access to docker in firewall rule: C:\Program Files\Docker\Docker\resources\com.docker.backend.exe
 
 ## Requirement
 

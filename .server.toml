@@ -2,7 +2,7 @@
 name = "AyoLesCore"
 version = "0.0.1"
 host = "localhost"
-port = 8000
+port = 8080
 read_timeout = 5
 write_timeout = 10
 idle_timeout = 15
@@ -16,8 +16,3 @@ name = "ayoles_db"
 sslmode = "disable"
 username = "postgres"
 password = "123"
-initdb = false
-
-[sql]
-schema = "sql/ayoles_db_pq.sql"
-seed = "sql/seed.sql"

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -128,6 +129,7 @@ func (m CategoryModule) Update(ctx context.Context, param AddCategoryParam, id u
 	if err != nil || i == emptyUUID {
 		status := http.StatusInternalServerError
 		message := "error on update category"
+		fmt.Println(err)
 
 		return model.CategoryResponse{}, NewErrorWrap(err, m.Name, "update/category",
 			message, status)

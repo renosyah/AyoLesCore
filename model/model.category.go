@@ -91,7 +91,7 @@ func (c *Category) All(ctx context.Context, db *sql.DB, param AllCategory) ([]*C
 
 func (c *Category) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	var id uuid.UUID
-	query := `UPDATE category SET name=$1,image_url=$2 WHERE id=$3 RETURNING id`
+	query := `UPDATE course_category SET name=$1,image_url=$2 WHERE id=$3 RETURNING id`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), c.Name, c.ImageURL, c.ID).Scan(
 		&id,
 	)
@@ -103,7 +103,7 @@ func (c *Category) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 
 func (c *Category) Delete(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	var id uuid.UUID
-	query := `UPDATE category SET flag_status=$1 WHERE id=$2 RETURNING id`
+	query := `UPDATE course_category SET flag_status=$1 WHERE id=$2 RETURNING id`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), STATUS_DELETE, c.ID).Scan(
 		&id,
 	)

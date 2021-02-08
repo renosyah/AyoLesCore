@@ -1,0 +1,744 @@
+{
+	"info": {
+		"_postman_id": "1d56e43f-bde9-4e47-95cf-ef9b8f0be877",
+		"name": "AyoLes api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "banner",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($title :String!,$content:String!,$image_url: String!){\n    banner_register(\n        title : $title,\n        content : $content,\n        image_url: $image_url\n    ) {\n        id\n    }\n}",
+								"variables": "{\n    \"title\" : \"Abc\",\n    \"content\" : \"about Abc\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    banner_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
+								"variables": "{\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"title\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "de2de90d-bb46-43e2-84b4-5723a8e08bcd",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($id:String!){\n    banner_detail(\n        id:$id\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
+								"variables": "{\n    \"id\" : \"7bf82ae0-960b-48bc-b64a-853d729bf20c\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!,$title :String!,$content:String!,$image_url: String!){\n    banner_update(\n        id : $id,\n        title : $title,\n        content : $content,\n        image_url: $image_url\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n} ",
+								"variables": "{\n    \"id\":\"a25eabdb-0b95-4239-98e3-859d60e4fe1f\",\n    \"title\" : \"Abc Fun\",\n    \"content\" : \"about Abc Fun\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    banner_delete(\n        id:$id\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
+								"variables": "{\n    \"id\" : \"a25eabdb-0b95-4239-98e3-859d60e4fe1f\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($name :String!,$image_url: String!){\n    category_register(\n        name:$name,\n        image_url:$image_url \n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
+								"variables": "{\n    \"name\" : \"Abc\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    category_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        image_url\n    }\n}",
+								"variables": "{\n    \"search_by\":\"name\",\n    \"search_value\":\"\",\n    \"order_by\":\"name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d99df212-bae0-4b29-acbd-e1de1eba456d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($id:String!){\n    category_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
+								"variables": "{\n    \"id\" : \"b773f4d9-20b6-407d-8bbd-af6b48768080\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!,$name :String!,$image_url: String!){\n    category_update(\n        id : $id,\n        name:$name,\n        image_url:$image_url \n    ) {\n        id,\n        name,\n        image_url\n    }\n} ",
+								"variables": "{\n    \"id\":\"b773f4d9-20b6-407d-8bbd-af6b48768080\",\n    \"name\" : \"Abc Fun\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    category_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
+								"variables": "{\n    \"id\":\"b773f4d9-20b6-407d-8bbd-af6b48768080\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($name :String!,$email: String!,$password:String!){\n    student_register(\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"name\" : \"Abc\",\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    student_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"search_by\":\"name\",\n    \"search_value\":\"\",\n    \"order_by\":\"name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e6ffac72-4b94-410d-ae9e-41e7a861492d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($id:String!){\n    student_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"id\" : \"d98f82f5-a74e-4c44-a358-8414ceceb1ec\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7b4ca628-2e59-43a0-be7d-315554d3c0d3",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($email: String!,$password:String!){\n    student_login(\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"email\": \"reno@gmail.com\",\n    \"password\":\"12345\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!,$name :String!,$email: String!,$password:String!){\n    student_update(\n        id : $id,\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n} ",
+								"variables": "{\n    \"id\" : \"d98f82f5-a74e-4c44-a358-8414ceceb1ec\",\n    \"name\" : \"Abc fun\",\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    student_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"id\" : \"d98f82f5-a74e-4c44-a358-8414ceceb1ec\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "teacher",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($name :String!,$email: String!,$password:String!){\n    teacher_register(\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"name\" : \"Abc\",\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    teacher_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"search_by\":\"name\",\n    \"search_value\":\"\",\n    \"order_by\":\"name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4ae65626-0fa0-4aec-bb2d-57075e03aca4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($id:String!){\n    teacher_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"id\" : \"9912b2e0-54b1-4b11-9882-68ced89d8b85\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "092b513e-9dd2-403e-82ae-b423e8e82de5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($email: String!,$password:String!){\n    teacher_login(\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!,$name :String!,$email: String!,$password:String!){\n    teacher_update(\n        id : $id,\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n} ",
+								"variables": "{\n    \"id\": \"9912b2e0-54b1-4b11-9882-68ced89d8b85\",\n    \"email\": \"abc@gmail.com\",\n    \"name\": \"Abc fun\",\n    \"password\":\"123\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    teacher_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"variables": "{\n    \"id\" : \"9912b2e0-54b1-4b11-9882-68ced89d8b85\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

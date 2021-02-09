@@ -14,7 +14,7 @@ func HandleCertificateQRcode(w http.ResponseWriter, r *http.Request) {
 	hash := mux.Vars(r)["hash_id"]
 
 	qr := &util.Qrcode{
-		Value: fmt.Sprintf("http://letscourse.com/cert/%s", hash),
+		Value: fmt.Sprintf("https://ayoles-core.herokuapp.com/cert/%s", hash),
 		Size:  256,
 	}
 

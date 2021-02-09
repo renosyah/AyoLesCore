@@ -10,9 +10,9 @@ temp = "template/*.gohtml"
 files = "files"
 
 [database]
-host = "ec2-54-235-180-123.compute-1.amazonaws.com"
+host = "ec2-18-204-101-137.compute-1.amazonaws.com"
 port = 5432
-name = "d3ni8d81iguv4j"
+name = "dfpfdni5ttr19a"
 sslmode = "disable"
-username = "mdymqzvtzhreki"
-password = "06583719e1322d61649d1acf22c1a4273ac9c28c5c4bb17a55c3fc2e6d3f96ea"
+username = "xbtmrbncwxskld"
+password = "73375a49980f4f66f527fb8ea90ff7dfd930b56badbdf00f61ffadd4a95b710f"

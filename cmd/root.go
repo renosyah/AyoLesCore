@@ -122,7 +122,7 @@ func init() {
 
 func initDB() {
 
-	dbConfig := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s",
+	dbConfig := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=%s",
 		viper.GetString("database.username"),
 		viper.GetString("database.password"),
 		viper.GetString("database.host"),
@@ -132,14 +132,14 @@ func initDB() {
 
 	db, err := sql.Open("postgres", dbConfig)
 	if err != nil {
-		fmt.Println(fmt.Sprintf("Error open DB: %v\n", err))
-		os.Exit(0)
+		log.Fatalln(fmt.Sprintf("Error open DB: %v\n", err))
+		return
 	}
 
 	err = db.Ping()
 	if err != nil {
-		fmt.Println(fmt.Sprintf("Error ping DB: %v\n", err))
-		os.Exit(0)
+		log.Fatalln(fmt.Sprintf("Error ping DB: %v\n", err))
+		return
 	}
 
 	dbPool = db

@@ -122,7 +122,7 @@ func init() {
 
 func initDB() {
 
-	dbConfig := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=%s",
+	dbConfig := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s",
 		viper.GetString("database.username"),
 		viper.GetString("database.password"),
 		viper.GetString("database.host"),

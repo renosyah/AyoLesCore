@@ -738,6 +738,291 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "course",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($course_name:String!,$teacher_id:String!,$category_id:String!,$image_url:String!){\n    course_register(\n        course_name:$course_name,\n        teacher_id :$teacher_id,\n        category_id:$category_id,\n        image_url:$image_url,\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"variables": "{\n    \"course_name\":\"Belajar Abc\",\n    \"teacher_id\" :\"73aa9774-5f93-40b4-b510-4e465f97cfcd\",\n    \"category_id\":\"d2ab9a06-e866-4db0-a5d5-7ef31c4b25f5\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($category_id:String!,$teacher_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_list(\n        category_id : $category_id,\n\t\tteacher_id : $teacher_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"variables": "{\n    \"category_id\" : \"\",\n\t\"teacher_id\" : \"\",\n    \"search_by\":\"course_name\",\n    \"search_value\":\"\",\n    \"order_by\":\"course_name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cc01e556-ad2f-42dc-b6d4-8b5dd60135ee",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($id:String!){\n    course_detail(\n        id:$id\n    ) {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"variables": "{\n    \"id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!,$course_name:String!,$teacher_id:String!,$category_id:String!,$image_url:String!){\n    course_update(\n        id:$id,\n        course_name:$course_name,\n        teacher_id :$teacher_id,\n        category_id:$category_id,\n        image_url:$image_url,\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"variables": "{\n    \"id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"course_name\":\"Belajar Abc Fun\",\n    \"teacher_id\" :\"73aa9774-5f93-40b4-b510-4e465f97cfcd\",\n    \"category_id\":\"d2ab9a06-e866-4db0-a5d5-7ef31c4b25f5\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    course_delete(\n        id:$id\n    ) {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"variables": "{\n    \"id\" : \"4ffcaa56-7b12-4de5-b663-73ccce01f611\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "course-detail",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($course_id:String!,$overview_text:String!,$description_text:String!,$image_url:String!){\n    course_detail_register(\n        course_id : $course_id,\n        overview_text:$overview_text,\n        description_text:$description_text,\n        image_url:$image_url\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"variables": "{\n    \"course_id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"overview_text\":\"Belajar Abc\",\n    \"description_text\" :\"Belajar Abc is fun\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($course_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_detail_list(\n        course_id : $course_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"variables": "{\n    \"course_id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"search_by\":\"overview_text\",\n    \"search_value\":\"\",\n    \"order_by\":\"overview_text\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!,$course_id:String!,$overview_text:String!,$description_text:String!,$image_url:String!){\n    course_detail_update(\n        id:$id,\n        course_id : $course_id,\n        overview_text:$overview_text,\n        description_text:$description_text,\n        image_url:$image_url\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"variables": "{\n    \"id\" : \"c55053c0-ee10-4d78-973b-e8b963e4d144\",\n    \"course_id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"overview_text\":\"Belajar Abc\",\n    \"description_text\" :\"Belajar Abc is fun\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    course_detail_delete(\n        id:$id\n    ) {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"variables": "{\n    \"id\" : \"c55053c0-ee10-4d78-973b-e8b963e4d144\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}

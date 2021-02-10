@@ -151,7 +151,12 @@ func (m CourseModule) Delete(ctx context.Context, id uuid.UUID) (model.CourseRes
 	var emptyUUID uuid.UUID
 
 	course := &model.Course{
-		ID: id,
+		ID:            id,
+		CourseName:    "",
+		ImageURL:      "",
+		Teacher:       &model.Teacher{},
+		Category:      &model.Category{},
+		CourseDetails: []model.CourseDetail{},
 	}
 
 	i, err := course.Delete(ctx, m.db)

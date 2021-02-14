@@ -779,8 +779,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($category_id:String!,$teacher_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_list(\n        category_id : $category_id,\n\t\tteacher_id : $teacher_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
-								"variables": "{\n    \"category_id\" : \"\",\n\t\"teacher_id\" : \"\",\n    \"search_by\":\"course_name\",\n    \"search_value\":\"\",\n    \"order_by\":\"course_name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+								"query": "query getList($category_id:String!,$teacher_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n        course_list(\n        category_id : $category_id,\n        teacher_id : $teacher_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"variables": "{\n    \"category_id\" : \"\",\n    \"teacher_id\" : \"\",\n    \"search_by\":\"course_name\",\n    \"search_value\":\"\",\n    \"order_by\":\"course_name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
 								"raw": {
@@ -1002,6 +1002,291 @@
 							"graphql": {
 								"query": "mutation delete($id:String!){\n    course_detail_delete(\n        id:$id\n    ) {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
 								"variables": "{\n    \"id\" : \"c55053c0-ee10-4d78-973b-e8b963e4d144\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "course-material",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($course_id:String!,$material_index:Int!,$title:String!){\n    course_material_register(\n        course_id : $course_id,\n        material_index : $material_index,\n        title : $title\n    )\n    {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n} ",
+								"variables": "{\n    \"course_id\" : \"d0941ffe-d1bd-415b-b85e-f238ee7ca3ac\",\n    \"material_index\" : 1,\n    \"title\": \"Art part 1\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($course_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_material_list(\n        course_id : $course_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n}",
+								"variables": "{\n    \"course_id\" : \"d0941ffe-d1bd-415b-b85e-f238ee7ca3ac\",\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"material_index\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bec70cb-6f9a-4484-af75-88d21dd1dd34",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOne($id:String!){\n    course_material_detail(\n        id:$id\n    ) {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n}",
+								"variables": "{\n    \"id\" : \"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!$course_id:String!,$material_index:Int!,$title:String!){\n    course_material_update(\n        id : $id,\n        course_id : $course_id,\n        material_index : $material_index,\n        title : $title\n    )\n    {\n        id\n    }\n}",
+								"variables": "{\n    \"id\" : \"05b62075-1790-42e1-ae9a-78a9c67cf905\",\n    \"course_id\" : \"db5100be-d200-41a9-beb6-1b41751a9b77\",\n    \"material_index\" : 1,\n    \"title\" : \"Art at first glance\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    course_material_delete(\n        id:$id\n    ) {\n        id\n    }\n}",
+								"variables": "{\n    \"id\" : \"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "course-material-detail",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add($course_material_id:String!,$position:Int!,$title:String!,$type_material:Int!,$content:String!,$image_url:String!){\n    course_material_detail_register(\n        course_material_id : $course_material_id,\n        position : $position,\n        title  : $title,\n        type_material : $type_material,\n        content  : $content,\n        image_url : $image_url,\n    )\n    {\n        id,\n        course_material_id,\n        position,\n        title,\n        type_material,\n        content,\n        image_url\n    }\n}",
+								"variables": "{\n    \"course_material_id\":\"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\",\n    \"position\":1,\n    \"title\":\"At first\",\n    \"type_material\":0,\n    \"content\":\"this is only begining of understanding art\",\n    \"image_url\":\"\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getList($course_material_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_material_detail_list(\n        course_material_id : $course_material_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_material_id,\n        position,\n        title,\n        type_material,\n        content,\n        image_url\n    }\n}",
+								"variables": "{\n    \"course_material_id\" : \"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\",\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"position\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update($id:String!,$course_material_id:String!,$position:Int!,$title:String!,$type_material:Int!,$content:String!,$image_url:String!){\n    course_material_detail_update(\n        id:$id,\n        course_material_id : $course_material_id,\n        position : $position,\n        title  : $title,\n        type_material : $type_material,\n        content  : $content,\n        image_url : $image_url,\n    )\n    {\n        id\n    }\n}",
+								"variables": "{\n    \"id\":\"eb887739-0b9d-4d41-bb59-c913eaf0baf1\",\n    \"course_material_id\":\"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\",\n    \"position\":1,\n    \"title\":\"At first now\",\n    \"type_material\":0,\n    \"content\":\"this is only begining of understanding art\",\n    \"image_url\":\"\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete($id:String!){\n    course_material_detail_delete(\n        id:$id\n    ) {\n        id\n    }\n}",
+								"variables": "{\n    \"id\":\"eb887739-0b9d-4d41-bb59-c913eaf0baf1\"\n}"
 							},
 							"options": {
 								"raw": {

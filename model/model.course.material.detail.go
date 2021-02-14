@@ -9,6 +9,11 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+const (
+	TYPE_TEXT  = 0
+	TYPE_IMAGE = 1
+)
+
 type (
 	CourseMaterialDetail struct {
 		ID               uuid.UUID `json:"id"`
@@ -59,6 +64,7 @@ func (c *CourseMaterialDetail) Add(ctx context.Context, db *sql.DB) (uuid.UUID, 
 		&c.ID,
 	)
 	if err != nil {
+		fmt.Println(err)
 		return c.ID, errors.Wrap(err, "error at insert new course material detail")
 	}
 

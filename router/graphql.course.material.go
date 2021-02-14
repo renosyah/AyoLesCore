@@ -150,7 +150,7 @@ var (
 	} */
 
 	courseMaterialCreateField = &graphql.Field{
-		Type: courseType,
+		Type: courseMaterialType,
 		Args: graphql.FieldConfigArgument{
 			"course_id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -200,7 +200,7 @@ var (
 	} */
 
 	courseMaterialUpdateField = &graphql.Field{
-		Type: courseType,
+		Type: courseMaterialType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -255,7 +255,7 @@ var (
 	} */
 
 	courseMaterialDeleteField = &graphql.Field{
-		Type: courseType,
+		Type: courseMaterialType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),

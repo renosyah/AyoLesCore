@@ -16,7 +16,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($title :String!,$content:String!,$image_url: String!){\n    banner_register(\n        title : $title,\n        content : $content,\n        image_url: $image_url\n    ) {\n        id\n    }\n}",
+								"query": "mutation add(\n    $title :String!,\n    $content:String!,\n    $image_url: String!\n){\n    banner_register(\n        title : $title,\n        content : $content,\n        image_url: $image_url\n    ) {\n        id\n    }\n}",
 								"variables": "{\n    \"title\" : \"Abc\",\n    \"content\" : \"about Abc\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
 							},
 							"options": {
@@ -45,7 +45,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    banner_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
+								"query": "query list(\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    banner_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
 								"variables": "{\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"title\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
@@ -86,7 +86,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($id:String!){\n    banner_detail(\n        id:$id\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
+								"query": "query detail(\n    $id:String!\n){\n    banner_detail(\n        id:$id\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
 								"variables": "{\n    \"id\" : \"7bf82ae0-960b-48bc-b64a-853d729bf20c\"\n}"
 							},
 							"options": {
@@ -115,7 +115,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!,$title :String!,$content:String!,$image_url: String!){\n    banner_update(\n        id : $id,\n        title : $title,\n        content : $content,\n        image_url: $image_url\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n} ",
+								"query": "mutation update(\n    $id:String!,\n    $title :String!,\n    $content:String!,\n    $image_url: String!\n){\n    banner_update(\n        id : $id,\n        title : $title,\n        content : $content,\n        image_url: $image_url\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n} ",
 								"variables": "{\n    \"id\":\"a25eabdb-0b95-4239-98e3-859d60e4fe1f\",\n    \"title\" : \"Abc Fun\",\n    \"content\" : \"about Abc Fun\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
 							},
 							"options": {
@@ -144,7 +144,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    banner_delete(\n        id:$id\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    banner_delete(\n        id:$id\n    ) {\n        id,\n        title,\n        content,\n        image_url\n    }\n}",
 								"variables": "{\n    \"id\" : \"a25eabdb-0b95-4239-98e3-859d60e4fe1f\"\n}"
 							},
 							"options": {
@@ -179,7 +179,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($name :String!,$image_url: String!){\n    category_register(\n        name:$name,\n        image_url:$image_url \n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
+								"query": "mutation add(\n    $name :String!,\n    $image_url: String!\n){\n    category_register(\n        name:$name,\n        image_url:$image_url \n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
 								"variables": "{\n    \"name\" : \"Abc\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
 							},
 							"options": {
@@ -208,7 +208,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    category_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        image_url\n    }\n}",
+								"query": "query list(\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    category_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        image_url\n    }\n}",
 								"variables": "{\n    \"search_by\":\"name\",\n    \"search_value\":\"\",\n    \"order_by\":\"name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
@@ -249,7 +249,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($id:String!){\n    category_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
+								"query": "query detail(\n    $id:String!\n){\n    category_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
 								"variables": "{\n    \"id\" : \"b773f4d9-20b6-407d-8bbd-af6b48768080\"\n}"
 							},
 							"options": {
@@ -278,7 +278,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!,$name :String!,$image_url: String!){\n    category_update(\n        id : $id,\n        name:$name,\n        image_url:$image_url \n    ) {\n        id,\n        name,\n        image_url\n    }\n} ",
+								"query": "mutation update(\n    $id:String!,\n    $name :String!,\n    $image_url: String!\n){\n    category_update(\n        id : $id,\n        name:$name,\n        image_url:$image_url \n    ) {\n        id,\n        name,\n        image_url\n    }\n} ",
 								"variables": "{\n    \"id\":\"b773f4d9-20b6-407d-8bbd-af6b48768080\",\n    \"name\" : \"Abc Fun\",\n    \"image_url\": \"https://warm-wave-76942.herokuapp.com/data/banner/android.png\"\n}"
 							},
 							"options": {
@@ -307,7 +307,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    category_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    category_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        image_url\n    }\n}",
 								"variables": "{\n    \"id\":\"b773f4d9-20b6-407d-8bbd-af6b48768080\"\n}"
 							},
 							"options": {
@@ -342,7 +342,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($name :String!,$email: String!,$password:String!){\n    student_register(\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "mutation add(\n    $name :String!,\n    $email: String!,\n    $password:String!\n){\n    student_register(\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"name\" : \"Abc\",\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
 							},
 							"options": {
@@ -371,7 +371,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    student_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "query list(\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    student_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"search_by\":\"name\",\n    \"search_value\":\"\",\n    \"order_by\":\"name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
@@ -412,7 +412,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($id:String!){\n    student_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "query detail(\n    $id:String!\n){\n    student_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"id\" : \"d98f82f5-a74e-4c44-a358-8414ceceb1ec\"\n}"
 							},
 							"options": {
@@ -453,7 +453,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($email: String!,$password:String!){\n    student_login(\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "query login(\n    $email: String!,\n    $password:String!\n){\n    student_login(\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"email\": \"reno@gmail.com\",\n    \"password\":\"12345\"\n}"
 							},
 							"options": {
@@ -482,7 +482,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!,$name :String!,$email: String!,$password:String!){\n    student_update(\n        id : $id,\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n} ",
+								"query": "mutation update(\n    $id:String!,\n    $name :String!,\n    $email: String!,\n    $password:String!\n){\n    student_update(\n        id : $id,\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n} ",
 								"variables": "{\n    \"id\" : \"d98f82f5-a74e-4c44-a358-8414ceceb1ec\",\n    \"name\" : \"Abc fun\",\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
 							},
 							"options": {
@@ -511,7 +511,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    student_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    student_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"id\" : \"d98f82f5-a74e-4c44-a358-8414ceceb1ec\"\n}"
 							},
 							"options": {
@@ -546,7 +546,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($name :String!,$email: String!,$password:String!){\n    teacher_register(\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "mutation add(\n    $name :String!,\n    $email: String!,\n    $password:String!\n){\n    teacher_register(\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"name\" : \"Abc\",\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
 							},
 							"options": {
@@ -575,7 +575,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    teacher_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "query list(\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    teacher_list(\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"search_by\":\"name\",\n    \"search_value\":\"\",\n    \"order_by\":\"name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
@@ -616,7 +616,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($id:String!){\n    teacher_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "query detail(\n    $id:String!\n){\n    teacher_detail(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"id\" : \"9912b2e0-54b1-4b11-9882-68ced89d8b85\"\n}"
 							},
 							"options": {
@@ -657,7 +657,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($email: String!,$password:String!){\n    teacher_login(\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "query login(\n    $email: String!,\n    $password:String!\n){\n    teacher_login(\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"email\": \"abc@gmail.com\",\n    \"password\":\"123\"\n}"
 							},
 							"options": {
@@ -686,7 +686,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!,$name :String!,$email: String!,$password:String!){\n    teacher_update(\n        id : $id,\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n} ",
+								"query": "mutation update(\n    $id:String!,\n    $name :String!,\n    $email: String!,\n    $password:String!\n){\n    teacher_update(\n        id : $id,\n        name:$name,\n        email:$email,\n        password:$password\n    ) {\n        id,\n        name,\n        email\n    }\n} ",
 								"variables": "{\n    \"id\": \"9912b2e0-54b1-4b11-9882-68ced89d8b85\",\n    \"email\": \"abc@gmail.com\",\n    \"name\": \"Abc fun\",\n    \"password\":\"123\"\n}"
 							},
 							"options": {
@@ -715,7 +715,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    teacher_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    teacher_delete(\n        id:$id\n    ) {\n        id,\n        name,\n        email\n    }\n}",
 								"variables": "{\n    \"id\" : \"9912b2e0-54b1-4b11-9882-68ced89d8b85\"\n}"
 							},
 							"options": {
@@ -750,7 +750,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($course_name:String!,$teacher_id:String!,$category_id:String!,$image_url:String!){\n    course_register(\n        course_name:$course_name,\n        teacher_id :$teacher_id,\n        category_id:$category_id,\n        image_url:$image_url,\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"query": "mutation add(\n    $course_name:String!,\n    $teacher_id:String!,\n    $category_id:String!,\n    $image_url:String!\n){\n    course_register(\n        course_name:$course_name,\n        teacher_id :$teacher_id,\n        category_id:$category_id,\n        image_url:$image_url,\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
 								"variables": "{\n    \"course_name\":\"Belajar Abc\",\n    \"teacher_id\" :\"73aa9774-5f93-40b4-b510-4e465f97cfcd\",\n    \"category_id\":\"d2ab9a06-e866-4db0-a5d5-7ef31c4b25f5\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
 							},
 							"options": {
@@ -779,7 +779,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($category_id:String!,$teacher_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n        course_list(\n        category_id : $category_id,\n        teacher_id : $teacher_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"query": "query list(\n    $category_id:String!,\n    $teacher_id:String!,\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    course_list(\n        category_id : $category_id,\n        teacher_id : $teacher_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
 								"variables": "{\n    \"category_id\" : \"\",\n    \"teacher_id\" : \"\",\n    \"search_by\":\"course_name\",\n    \"search_value\":\"\",\n    \"order_by\":\"course_name\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
@@ -820,7 +820,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($id:String!){\n    course_detail(\n        id:$id\n    ) {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"query": "query detail(\n    $id:String!\n){\n    course_detail(\n        id:$id\n    ) {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
 								"variables": "{\n    \"id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\"\n}"
 							},
 							"options": {
@@ -849,7 +849,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!,$course_name:String!,$teacher_id:String!,$category_id:String!,$image_url:String!){\n    course_update(\n        id:$id,\n        course_name:$course_name,\n        teacher_id :$teacher_id,\n        category_id:$category_id,\n        image_url:$image_url,\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"query": "mutation update(\n    $id:String!,\n    $course_name:String!,\n    $teacher_id:String!,\n    $category_id:String!,\n    $image_url:String!\n){\n    course_update(\n        id:$id,\n        course_name:$course_name,\n        teacher_id :$teacher_id,\n        category_id:$category_id,\n        image_url:$image_url,\n    )\n    {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
 								"variables": "{\n    \"id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"course_name\":\"Belajar Abc Fun\",\n    \"teacher_id\" :\"73aa9774-5f93-40b4-b510-4e465f97cfcd\",\n    \"category_id\":\"d2ab9a06-e866-4db0-a5d5-7ef31c4b25f5\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
 							},
 							"options": {
@@ -878,7 +878,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    course_delete(\n        id:$id\n    ) {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    course_delete(\n        id:$id\n    ) {\n        id,\n        course_name,\n        image_url,\n        teacher { id, name, email } ,\n        category {id, name, image_url},\n        course_details { id,course_id , overview_text, description_text,image_url }\n    }\n}",
 								"variables": "{\n    \"id\" : \"4ffcaa56-7b12-4de5-b663-73ccce01f611\"\n}"
 							},
 							"options": {
@@ -913,7 +913,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($course_id:String!,$overview_text:String!,$description_text:String!,$image_url:String!){\n    course_detail_register(\n        course_id : $course_id,\n        overview_text:$overview_text,\n        description_text:$description_text,\n        image_url:$image_url\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"query": "mutation add(\n    $course_id:String!,\n    $overview_text:String!,\n    $description_text:String!,\n    $image_url:String!\n){\n    course_detail_register(\n        course_id : $course_id,\n        overview_text:$overview_text,\n        description_text:$description_text,\n        image_url:$image_url\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
 								"variables": "{\n    \"course_id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"overview_text\":\"Belajar Abc\",\n    \"description_text\" :\"Belajar Abc is fun\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
 							},
 							"options": {
@@ -942,7 +942,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($course_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_detail_list(\n        course_id : $course_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"query": "query list(\n    $course_id:String!,\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    course_detail_list(\n        course_id : $course_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
 								"variables": "{\n    \"course_id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"search_by\":\"overview_text\",\n    \"search_value\":\"\",\n    \"order_by\":\"overview_text\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
@@ -971,7 +971,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!,$course_id:String!,$overview_text:String!,$description_text:String!,$image_url:String!){\n    course_detail_update(\n        id:$id,\n        course_id : $course_id,\n        overview_text:$overview_text,\n        description_text:$description_text,\n        image_url:$image_url\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"query": "mutation update(\n    $id:String!,\n    $course_id:String!,\n    $overview_text:String!,\n    $description_text:String!,\n    $image_url:String!\n){\n    course_detail_update(\n        id:$id,\n        course_id : $course_id,\n        overview_text:$overview_text,\n        description_text:$description_text,\n        image_url:$image_url\n    )\n    {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
 								"variables": "{\n    \"id\" : \"c55053c0-ee10-4d78-973b-e8b963e4d144\",\n    \"course_id\" : \"631f3eec-7f60-47a5-bc03-174ebd81647d\",\n    \"overview_text\":\"Belajar Abc\",\n    \"description_text\" :\"Belajar Abc is fun\",\n    \"image_url\":\"http://192.168.100.15:8080/data/category/math.png\"\n}"
 							},
 							"options": {
@@ -1000,7 +1000,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    course_detail_delete(\n        id:$id\n    ) {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    course_detail_delete(\n        id:$id\n    ) {\n        id,\n        course_id,\n        overview_text,\n        description_text,\n        image_url\n    }\n}",
 								"variables": "{\n    \"id\" : \"c55053c0-ee10-4d78-973b-e8b963e4d144\"\n}"
 							},
 							"options": {
@@ -1035,7 +1035,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($course_id:String!,$material_index:Int!,$title:String!){\n    course_material_register(\n        course_id : $course_id,\n        material_index : $material_index,\n        title : $title\n    )\n    {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n} ",
+								"query": "mutation add(\n    $course_id:String!,\n    $material_index:Int!,\n    $title:String!\n){\n    course_material_register(\n        course_id : $course_id,\n        material_index : $material_index,\n        title : $title\n    )\n    {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n} ",
 								"variables": "{\n    \"course_id\" : \"d0941ffe-d1bd-415b-b85e-f238ee7ca3ac\",\n    \"material_index\" : 1,\n    \"title\": \"Art part 1\"\n}"
 							},
 							"options": {
@@ -1064,8 +1064,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($course_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_material_list(\n        course_id : $course_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n}",
-								"variables": "{\n    \"course_id\" : \"d0941ffe-d1bd-415b-b85e-f238ee7ca3ac\",\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"material_index\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+								"query": "query list(\n    $course_id:String!,\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    course_material_list(\n        course_id : $course_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n}",
+								"variables": "{\n    \"course_id\" : \"2e847a03-5209-4d2b-9e37-b88e461e9c41\",\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"material_index\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
 								"raw": {
@@ -1105,7 +1105,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getOne($id:String!){\n    course_material_detail(\n        id:$id\n    ) {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n}",
+								"query": "query detail(\n    $id:String!\n){\n    course_material_detail(\n        id:$id\n    ) {\n        id,\n        course_id,\n        material_index,\n        title\n    }\n}",
 								"variables": "{\n    \"id\" : \"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\"\n}"
 							},
 							"options": {
@@ -1134,7 +1134,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!$course_id:String!,$material_index:Int!,$title:String!){\n    course_material_update(\n        id : $id,\n        course_id : $course_id,\n        material_index : $material_index,\n        title : $title\n    )\n    {\n        id\n    }\n}",
+								"query": "mutation update(\n    $id:String!,\n    $course_id:String!,\n    $material_index:Int!,\n    $title:String!\n){\n    course_material_update(\n        id : $id,\n        course_id : $course_id,\n        material_index : $material_index,\n        title : $title\n    )\n    {\n        id\n    }\n}",
 								"variables": "{\n    \"id\" : \"05b62075-1790-42e1-ae9a-78a9c67cf905\",\n    \"course_id\" : \"db5100be-d200-41a9-beb6-1b41751a9b77\",\n    \"material_index\" : 1,\n    \"title\" : \"Art at first glance\"\n}"
 							},
 							"options": {
@@ -1163,7 +1163,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    course_material_delete(\n        id:$id\n    ) {\n        id\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    course_material_delete(\n        id:$id\n    ) {\n        id\n    }\n}",
 								"variables": "{\n    \"id\" : \"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\"\n}"
 							},
 							"options": {
@@ -1198,7 +1198,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation add($course_material_id:String!,$position:Int!,$title:String!,$type_material:Int!,$content:String!,$image_url:String!){\n    course_material_detail_register(\n        course_material_id : $course_material_id,\n        position : $position,\n        title  : $title,\n        type_material : $type_material,\n        content  : $content,\n        image_url : $image_url,\n    )\n    {\n        id,\n        course_material_id,\n        position,\n        title,\n        type_material,\n        content,\n        image_url\n    }\n}",
+								"query": "mutation add(\n    $course_material_id:String!,\n    $position:Int!,\n    $title:String!,\n    $type_material:Int!,\n    $content:String!,\n    $image_url:String!\n){\n    course_material_detail_register(\n        course_material_id : $course_material_id,\n        position : $position,\n        title  : $title,\n        type_material : $type_material,\n        content  : $content,\n        image_url : $image_url,\n    )\n    {\n        id,\n        course_material_id,\n        position,\n        title,\n        type_material,\n        content,\n        image_url\n    }\n}",
 								"variables": "{\n    \"course_material_id\":\"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\",\n    \"position\":1,\n    \"title\":\"At first\",\n    \"type_material\":0,\n    \"content\":\"this is only begining of understanding art\",\n    \"image_url\":\"\"\n}"
 							},
 							"options": {
@@ -1227,8 +1227,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query getList($course_material_id:String!,$search_by:String!,$search_value:String!,$order_by:String!,$order_dir:String!,$offset:Int!,$limit:Int!){\n    course_material_detail_list(\n        course_material_id : $course_material_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_material_id,\n        position,\n        title,\n        type_material,\n        content,\n        image_url\n    }\n}",
-								"variables": "{\n    \"course_material_id\" : \"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\",\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"position\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
+								"query": "query list(\n    $course_material_id:String!,\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!\n){\n    course_material_detail_list(\n        course_material_id : $course_material_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset:$offset,\n        limit:$limit\n    )\n    {\n        id,\n        course_material_id,\n        position,\n        title,\n        type_material,\n        content,\n        image_url\n    }\n}",
+								"variables": "{\n    \"course_material_id\" : \"6047cecb-f518-465b-8a89-cfe6b00d843d\",\n    \"search_by\":\"title\",\n    \"search_value\":\"\",\n    \"order_by\":\"position\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10\n}"
 							},
 							"options": {
 								"raw": {
@@ -1256,7 +1256,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation update($id:String!,$course_material_id:String!,$position:Int!,$title:String!,$type_material:Int!,$content:String!,$image_url:String!){\n    course_material_detail_update(\n        id:$id,\n        course_material_id : $course_material_id,\n        position : $position,\n        title  : $title,\n        type_material : $type_material,\n        content  : $content,\n        image_url : $image_url,\n    )\n    {\n        id\n    }\n}",
+								"query": "mutation update(\n    $id:String!,\n    $course_material_id:String!,\n    $position:Int!,\n    $title:String!,\n    $type_material:Int!,\n    $content:String!,\n    $image_url:String!\n){\n    course_material_detail_update(\n        id:$id,\n        course_material_id : $course_material_id,\n        position : $position,\n        title  : $title,\n        type_material : $type_material,\n        content  : $content,\n        image_url : $image_url,\n    )\n    {\n        id\n    }\n}",
 								"variables": "{\n    \"id\":\"eb887739-0b9d-4d41-bb59-c913eaf0baf1\",\n    \"course_material_id\":\"fa71681d-1958-4bca-b4eb-3f8e5e21dd12\",\n    \"position\":1,\n    \"title\":\"At first now\",\n    \"type_material\":0,\n    \"content\":\"this is only begining of understanding art\",\n    \"image_url\":\"\"\n}"
 							},
 							"options": {
@@ -1285,8 +1285,171 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation delete($id:String!){\n    course_material_detail_delete(\n        id:$id\n    ) {\n        id\n    }\n}",
+								"query": "mutation delete(\n    $id:String!\n){\n    course_material_detail_delete(\n        id:$id\n    ) {\n        id\n    }\n}",
 								"variables": "{\n    \"id\":\"eb887739-0b9d-4d41-bb59-c913eaf0baf1\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "course-exam",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation add(\n    $course_id:String!,\n    $type_exam:Int!,\n    $exam_index:Int!,\n    $text:String!,\n    $image_url:String!\n){\n    course_exam_register(\n        course_id : $course_id,\n        type_exam :  $type_exam,\n        exam_index : $exam_index,\n        text :$text,\n        image_url : $image_url\n    )\n    {\n        id,\n        course_id,\n        type_exam,\n        exam_index,\n        text,\n        image_url,\n        answers {\n            id,\n            course_exam_id,\n            type_answer,\n            label,\n            text,\n            image_url\n        }\n    }\n}",
+								"variables": "{\n    \"course_id\": \"2e847a03-5209-4d2b-9e37-b88e461e9c41\",\n    \"exam_index\": 4,\n    \"image_url\": \"\",\n    \"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident .. ?\",\n    \"type_exam\": 0\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query list(\n    $course_id : String!,\n    $search_by:String!,\n    $search_value:String!,\n    $order_by:String!,\n    $order_dir:String!,\n    $offset:Int!,\n    $limit:Int!,\n    $limit_answer:Int!\n){\n    course_exam_list(\n        course_id : $course_id,\n        search_by:$search_by,\n        search_value:$search_value,\n        order_by:$order_by,\n        order_dir:$order_dir,\n        offset: $offset,\n        limit:$limit,\n        limit_answer : $limit_answer\n    )\n    {\n        id,\n        course_id,\n        type_exam,\n        exam_index,\n        text,\n        image_url,\n        answers {\n            id,\n            course_exam_id,\n            type_answer,\n            label,\n            text,\n            image_url\n        }\n    }\n}",
+								"variables": "{\n    \"course_id\" : \"2e847a03-5209-4d2b-9e37-b88e461e9c41\",\n    \"search_by\":\"text\",\n    \"search_value\":\"\",\n    \"order_by\":\"exam_index\",\n    \"order_dir\":\"asc\",\n    \"offset\":0,\n    \"limit\":10,\n    \"limit_answer\" : 4\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7e6f497a-b72c-40ac-b016-41b27b564524",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query detail(\n    $id:String!\n){\n    course_exam_detail(\n        id:$id\n    ) {\n        id,\n        course_id,\n        type_exam,\n        exam_index,\n        text,\n        image_url,\n        answers {\n            id,\n            course_exam_id,\n            type_answer,\n            label,\n            text,\n            image_url\n        }\n    }\n}",
+								"variables": "{\n    \"id\" : \"19665a85-f303-4fe1-b441-4f92b8a1cf11\"\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation update(\n    $id : String!,\n    $course_id : String!,\n    $type_exam:Int!,\n    $exam_index:Int!,\n    $text : String!,\n    $image_url : String!\n){\n    course_exam_update(\n        id : $id,\n        course_id : $course_id,\n        type_exam :  $type_exam,\n        exam_index : $exam_index,\n        text :$text,\n        image_url : $image_url\n    )\n    {\n        id\n    }\n}",
+								"variables": "{\n    \"course_id\": \"2e847a03-5209-4d2b-9e37-b88e461e9c41\",\n    \"exam_index\": 4,\n    \"id\": \"19665a85-f303-4fe1-b441-4f92b8a1cf11\",\n    \"image_url\": \"\",\n    \"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident?\",\n    \"type_exam\": 0\n}"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}{{port}}/graphql",
+							"host": [
+								"{{protocol}}{{host}}{{port}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation delete(\n    $id:String!\n){\n   course_exam_delete(\n        id:$id\n    ) {\n        id\n    }\n}",
+								"variables": "{\n    \"id\" : \"19665a85-f303-4fe1-b441-4f92b8a1cf11\"\n}"
 							},
 							"options": {
 								"raw": {

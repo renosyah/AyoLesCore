@@ -196,7 +196,7 @@ var (
 	} */
 
 	courseExamCreateField = &graphql.Field{
-		Type: courseType,
+		Type: courseExamType,
 		Args: graphql.FieldConfigArgument{
 			"course_id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
@@ -256,7 +256,7 @@ var (
 	} */
 
 	courseExamUpdateField = &graphql.Field{
-		Type: courseType,
+		Type: courseExamType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),

@@ -89,6 +89,7 @@ func (m CourseExamModule) Add(ctx context.Context, param AddCourseExamParam) (mo
 		ExamIndex: param.ExamIndex,
 		Text:      param.Text,
 		ImageURL:  param.ImageURL,
+		Answers:   []*model.CourseExamAnswer{},
 	}
 
 	id, err := courseExam.Add(ctx, m.db)

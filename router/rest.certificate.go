@@ -34,9 +34,7 @@ func HandleCertificateQRcode(w http.ResponseWriter, r *http.Request) {
 func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	hash := mux.Vars(r)["hash_id"]
-
 	flag := r.FormValue("print")
-
 	cert, err := classRoomCertificateModule.One(ctx, api.OneClassRoomCertificateParam{
 		HashID: hash,
 	})
@@ -44,19 +42,15 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
-
 	classroom, _ := classRoomModule.One(ctx, api.OneClassRoomParam{
 		ID: cert.ClassroomID,
 	})
-
 	course, _ := courseModule.One(ctx, api.OneCourseParam{
 		ID: classroom.Course.ID,
 	})
-
 	student, _ := studentModule.One(ctx, api.OneStudentParam{
 		ID: classroom.StudentID,
 	})
-
 	data := map[string]string{
 		"Name":       student.Name,
 		"CourseName": course.CourseName,
@@ -65,10 +59,8 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 		"HashID":     cert.HashID,
 		"Print":      flag,
 	}
-
 	errServe := temp.ExecuteTemplate(w, "cert.gohtml", data)
 	if errServe != nil {
 		http.Error(w, "500 failed to serve certificate", http.StatusInternalServerError)
 	}
-
 }

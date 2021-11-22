@@ -107,11 +107,8 @@ var (
 			},
 		},
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-
 			ctx := p.Context
-
 			classRoomID, _ := uuid.FromString(p.Args["classroom_id"].(string))
-
 			param := api.AllClassRoomExamResultParam{
 				ClassRoomID: classRoomID,
 				SearchBy:    p.Args["search_by"].(string),
@@ -122,13 +119,11 @@ var (
 				Limit:       p.Args["limit"].(int),
 				LimitAnswer: p.Args["limit_answer"].(int),
 			}
-
 			all, err := classRoomExamResultModule.All(ctx, param)
 			if err != nil {
 				log.Println(err)
 				return all, err
 			}
-
 			return all, nil
 		},
 	}

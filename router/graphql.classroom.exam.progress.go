@@ -160,36 +160,29 @@ var (
 			},
 		},
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-
 			ctx := p.Context
-
 			classRoomID, errUUID := uuid.FromString(p.Args["classroom_id"].(string))
 			if errUUID != nil {
 				return model.ClassRoomExamProgressResponse{}, errUUID
 			}
-
 			courseExamID, errUUID := uuid.FromString(p.Args["course_exam_id"].(string))
 			if errUUID != nil {
 				return model.ClassRoomExamProgressResponse{}, errUUID
 			}
-
 			courseCourseExamAnswerID, errUUID := uuid.FromString(p.Args["course_exam_answer_id"].(string))
 			if errUUID != nil {
 				return model.ClassRoomExamProgressResponse{}, errUUID
 			}
-
 			param := api.AddClassRoomExamParam{
 				ClassroomID:        classRoomID,
 				CourseExamID:       courseExamID,
 				CourseExamAnswerID: courseCourseExamAnswerID,
 			}
-
 			data, err := classRoomExamProgressModule.Add(ctx, param)
 			if err != nil {
 				log.Println(err)
 				return data, err
 			}
-
 			return data, nil
 		},
 	}

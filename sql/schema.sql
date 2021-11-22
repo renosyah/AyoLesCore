@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS student CASCADE;
 CREATE TABLE student (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     name TEXT NOT NULL DEFAULT '',
-    email TEXT NOT NULL DEFAULT '',
+    nis TEXT NOT NULL DEFAULT '',
     password TEXT NOT NULL DEFAULT '',
     create_at TIMESTAMPTZ NOT NULL DEFAULT now()::TIMESTAMPTZ,
     flag_status INT NOT NULL DEFAULT 0,

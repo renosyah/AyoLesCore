@@ -17,19 +17,19 @@ type (
 	}
 
 	StudentLoginParam struct {
-		Email    string `json:"email"`
+		Nis      string `json:"nis"`
 		Password string `json:"password"`
 	}
 
 	AddStudentParam struct {
 		Name     string `json:"name"`
-		Email    string `json:"email"`
+		Nis      string `json:"nis"`
 		Password string `json:"password"`
 	}
 
 	UpdateStudentParam struct {
 		Name     string    `json:"name"`
-		Email    string    `json:"email"`
+		Nis      string    `json:"nis"`
 		Password string    `json:"password"`
 		ID       uuid.UUID `json:"id"`
 	}
@@ -60,7 +60,7 @@ func (m StudentModule) Update(ctx context.Context, param UpdateStudentParam) (mo
 	student := &model.Student{
 		ID:       param.ID,
 		Name:     param.Name,
-		Email:    param.Email,
+		Nis:      param.Nis,
 		Password: param.Password,
 	}
 
@@ -81,11 +81,11 @@ func (m StudentModule) Add(ctx context.Context, param AddStudentParam) (model.St
 
 	student := &model.Student{
 		Name:     param.Name,
-		Email:    param.Email,
+		Nis:      param.Nis,
 		Password: param.Password,
 	}
 
-	check, err := student.OneByEmail(ctx, m.db)
+	check, err := student.OneByNis(ctx, m.db)
 	if err != nil && errors.Cause(err) != sql.ErrNoRows {
 		status := http.StatusInternalServerError
 		message := "error on check existing student"
@@ -94,9 +94,9 @@ func (m StudentModule) Add(ctx context.Context, param AddStudentParam) (model.St
 			message, status)
 	}
 
-	if check.Email != "" && check.Email == student.Email {
+	if check.Nis != "" && check.Nis == student.Nis {
 		status := http.StatusOK
-		message := "student with this email is exist"
+		message := "student with this Nis is exist"
 
 		return model.StudentResponse{}, NewErrorWrap(err, m.Name, "add/student",
 			message, status)
@@ -173,7 +173,7 @@ func (m StudentModule) One(ctx context.Context, param OneStudentParam) (model.St
 func (m StudentModule) Login(ctx context.Context, param StudentLoginParam) (model.StudentResponse, *Error) {
 	var resp model.StudentResponse
 
-	student, err := (&model.Student{Email: param.Email}).OneByEmail(ctx, m.db)
+	student, err := (&model.Student{Nis: param.Nis}).OneByNis(ctx, m.db)
 	if err != nil {
 		status := http.StatusInternalServerError
 		message := "error on login student"

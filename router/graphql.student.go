@@ -19,7 +19,7 @@ var (
 			"name": &graphql.Field{
 				Type: graphql.String,
 			},
-			"email": &graphql.Field{
+			"nis": &graphql.Field{
 				Type: graphql.String,
 			},
 		},
@@ -37,7 +37,7 @@ var (
 		{
 			id,
 			name,
-			email
+			nis
 		}
 	} */
 
@@ -92,7 +92,7 @@ var (
 		{
 			id,
 			name,
-			email
+			nis
 		}
 	} */
 
@@ -124,20 +124,20 @@ var (
 
 	/* {
 		student_login(
-			email:"reno@gmail.com",
+			nis:"reno@gmail.com",
 			password:"12345"
 		)
 		{
 			id,
 			name,
-			email
+			nis
 		}
 	} */
 
 	studentLoginField = &graphql.Field{
 		Type: studentType,
 		Args: graphql.FieldConfigArgument{
-			"email": &graphql.ArgumentConfig{
+			"nis": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
 			"password": &graphql.ArgumentConfig{
@@ -148,10 +148,10 @@ var (
 
 			ctx := p.Context
 
-			email := p.Args["email"].(string)
+			nis := p.Args["nis"].(string)
 			password := p.Args["password"].(string)
 
-			data, err := studentModule.Login(ctx, api.StudentLoginParam{Email: email, Password: password})
+			data, err := studentModule.Login(ctx, api.StudentLoginParam{Nis: nis, Password: password})
 			if err != nil {
 				log.Println(err)
 				return data, err
@@ -164,13 +164,13 @@ var (
 	/* mutation {
 		student_register(
 			name:"reno",
-			email:"reno@gmail.com",
+			nis:"reno@gmail.com",
 			password:"12345"
 		)
 		{
 			id,
 			name,
-			email
+			nis
 		}
 	} */
 
@@ -180,7 +180,7 @@ var (
 			"name": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
-			"email": &graphql.ArgumentConfig{
+			"nis": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
 			"password": &graphql.ArgumentConfig{
@@ -193,7 +193,7 @@ var (
 
 			student := api.AddStudentParam{
 				Name:     p.Args["name"].(string),
-				Email:    p.Args["email"].(string),
+				Nis:      p.Args["nis"].(string),
 				Password: p.Args["password"].(string),
 			}
 
@@ -211,13 +211,13 @@ var (
 		student_update(
 			id : "",
 			name:"reno",
-			email:"reno@gmail.com",
+			nis:"reno@gmail.com",
 			password:"12345"
 		)
 		{
 			id,
 			name,
-			email
+			nis
 		}
 	} */
 
@@ -230,7 +230,7 @@ var (
 			"name": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
-			"email": &graphql.ArgumentConfig{
+			"nis": &graphql.ArgumentConfig{
 				Type: graphql.NewNonNull(graphql.String),
 			},
 			"password": &graphql.ArgumentConfig{
@@ -249,7 +249,7 @@ var (
 			student := api.UpdateStudentParam{
 				ID:       id,
 				Name:     p.Args["name"].(string),
-				Email:    p.Args["email"].(string),
+				Nis:      p.Args["nis"].(string),
 				Password: p.Args["password"].(string),
 			}
 

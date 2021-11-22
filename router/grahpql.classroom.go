@@ -234,30 +234,24 @@ var (
 			},
 		},
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-
 			ctx := p.Context
-
 			courseID, errUUID := uuid.FromString(p.Args["course_id"].(string))
 			if errUUID != nil {
 				return model.ClassRoomResponse{}, errUUID
 			}
-
 			studentID, errUUID := uuid.FromString(p.Args["student_id"].(string))
 			if errUUID != nil {
 				return model.ClassRoomResponse{}, errUUID
 			}
-
 			classRoom := api.AddClassRoomParam{
 				CourseID:  courseID,
 				StudentID: studentID,
 			}
-
 			data, err := classRoomModule.Add(ctx, classRoom)
 			if err != nil {
 				log.Println(err)
 				return data, err
 			}
-
 			return data, nil
 		},
 	}

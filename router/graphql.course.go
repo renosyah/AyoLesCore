@@ -84,12 +84,9 @@ var (
 			},
 		},
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-
 			ctx := p.Context
-
 			categoryID, _ := uuid.FromString(p.Args["category_id"].(string))
 			teacherID, _ := uuid.FromString(p.Args["teacher_id"].(string))
-
 			param := api.AllCourseParam{
 				CategoryID:  categoryID,
 				TeacherID:   teacherID,
@@ -100,13 +97,11 @@ var (
 				Offset:      p.Args["offset"].(int),
 				Limit:       p.Args["limit"].(int),
 			}
-
 			all, err := courseModule.All(ctx, param)
 			if err != nil {
 				log.Println(err)
 				return all, err
 			}
-
 			return all, nil
 		},
 	}

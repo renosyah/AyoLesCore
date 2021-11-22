@@ -13,14 +13,14 @@ type (
 	Student struct {
 		ID       uuid.UUID `json:"id"`
 		Name     string    `json:"name"`
-		Email    string    `json:"email"`
+		Nis      string    `json:"nis"`
 		Password string    `json:"password"`
 	}
 
 	StudentResponse struct {
 		ID       uuid.UUID `json:"id"`
 		Name     string    `json:"name"`
-		Email    string    `json:"email"`
+		Nis      string    `json:"nis"`
 		Password string    `json:"-"`
 	}
 
@@ -38,14 +38,14 @@ func (s *Student) Response() StudentResponse {
 	return StudentResponse{
 		ID:       s.ID,
 		Name:     s.Name,
-		Email:    s.Email,
+		Nis:      s.Nis,
 		Password: s.Password,
 	}
 }
 
 func (s *Student) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
-	query := `INSERT INTO student (name,email,password) VALUES ($1,$2,$3) RETURNING id`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Email, s.Password).Scan(
+	query := `INSERT INTO student (name,nis,password) VALUES ($1,$2,$3) RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Nis, s.Password).Scan(
 		&s.ID,
 	)
 	if err != nil {
@@ -57,9 +57,9 @@ func (s *Student) Add(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 
 func (s *Student) One(ctx context.Context, db *sql.DB) (*Student, error) {
 	one := &Student{}
-	query := `SELECT id,name,email,password FROM student WHERE id = $1 AND flag_status = $2 LIMIT 1`
+	query := `SELECT id,name,nis,password FROM student WHERE id = $1 AND flag_status = $2 LIMIT 1`
 	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.ID, STATUS_AVAILABLE).Scan(
-		&one.ID, &one.Name, &one.Email, &one.Password,
+		&one.ID, &one.Name, &one.Nis, &one.Password,
 	)
 	if err != nil {
 		return one, errors.Wrap(err, "error at query student with id")
@@ -70,7 +70,7 @@ func (s *Student) One(ctx context.Context, db *sql.DB) (*Student, error) {
 
 func (s *Student) All(ctx context.Context, db *sql.DB, param AllStudent) ([]*Student, error) {
 	all := []*Student{}
-	query := `SELECT id,name,email,password FROM student WHERE %s LIKE $1 AND flag_status = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
+	query := `SELECT id,name,nis,password FROM student WHERE %s LIKE $1 AND flag_status = $2 ORDER BY %s %s OFFSET $3 LIMIT $4 `
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(query, param.SearchBy, param.OrderBy, param.OrderDir), "%"+param.SearchValue+"%", STATUS_AVAILABLE, param.Offset, param.Limit)
 	if err != nil {
 		return all, errors.Wrap(err, "error at query all student")
@@ -81,7 +81,7 @@ func (s *Student) All(ctx context.Context, db *sql.DB, param AllStudent) ([]*Stu
 	for rows.Next() {
 		one := &Student{}
 		err = rows.Scan(
-			&one.ID, &one.Name, &one.Email, &one.Password,
+			&one.ID, &one.Name, &one.Nis, &one.Password,
 		)
 		if err != nil {
 			return all, errors.Wrap(err, "error at query all and scan one of student data")
@@ -92,22 +92,22 @@ func (s *Student) All(ctx context.Context, db *sql.DB, param AllStudent) ([]*Stu
 	return all, nil
 }
 
-func (s *Student) OneByEmail(ctx context.Context, db *sql.DB) (*Student, error) {
+func (s *Student) OneByNis(ctx context.Context, db *sql.DB) (*Student, error) {
 	one := &Student{}
-	query := `SELECT id,name,email,password FROM student WHERE email = $1 AND flag_status = $2 LIMIT 1`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Email, STATUS_AVAILABLE).Scan(
-		&one.ID, &one.Name, &one.Email, &one.Password,
+	query := `SELECT id,name,nis,password FROM student WHERE nis = $1 AND flag_status = $2 LIMIT 1`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Nis, STATUS_AVAILABLE).Scan(
+		&one.ID, &one.Name, &one.Nis, &one.Password,
 	)
 	if err != nil {
-		return one, errors.Wrap(err, "error at query student with email")
+		return one, errors.Wrap(err, "error at query student with nis")
 	}
 	return one, nil
 }
 
 func (s *Student) Update(ctx context.Context, db *sql.DB) (uuid.UUID, error) {
 	var emptyId uuid.UUID
-	query := `UPDATE student SET name = $1,email = $2 WHERE id = $3 RETURNING id`
-	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Email, s.ID).Scan(
+	query := `UPDATE student SET name = $1,nis = $2 WHERE id = $3 RETURNING id`
+	err := db.QueryRowContext(ctx, fmt.Sprintf(query), s.Name, s.Nis, s.ID).Scan(
 		&s.ID,
 	)
 

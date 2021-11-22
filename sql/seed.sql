@@ -1,7 +1,7 @@
-INSERT INTO student (id,name,email,password) VALUES ('26ba6f57-8cc1-4f33-a18d-b17d1b9fa7ea','reno','reno@gmail.com','12345');
-INSERT INTO student (id,name,email,password) VALUES ('53a3277b-5533-4d5d-9c54-0d33272f3fb0','rikka','rikka@gmail.com','12345');
-INSERT INTO student (id,name,email,password) VALUES ('f4df3b19-99d7-49f7-85a2-636b1ccab36d','agus','agus@gmail.com','12345');
-INSERT INTO student (id,name,email,password) VALUES ('a0779b2e-6ab4-4258-a129-843e574f4815','surya','surya@gmail.com','12345');
+INSERT INTO student (id,name,nis,password) VALUES ('26ba6f57-8cc1-4f33-a18d-b17d1b9fa7ea','reno','1111','12345');
+INSERT INTO student (id,name,nis,password) VALUES ('53a3277b-5533-4d5d-9c54-0d33272f3fb0','rikka','1112','12345');
+INSERT INTO student (id,name,nis,password) VALUES ('f4df3b19-99d7-49f7-85a2-636b1ccab36d','agus','1113','12345');
+INSERT INTO student (id,name,nis,password) VALUES ('a0779b2e-6ab4-4258-a129-843e574f4815','surya','1114','12345');
 
 
 INSERT INTO teacher (id,name,email,password) VALUES ('73aa9774-5f93-40b4-b510-4e465f97cfcd','prof agus','profagus@gmail.com','12345');

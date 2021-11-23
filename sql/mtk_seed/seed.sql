@@ -1,4 +1,4 @@
-INSERT INTO course (id,course_name,teacher_id,category_id,image_url) VALUES ('f0c68980-70a8-492d-8701-9fb15086dd44','Matematika Bilangan Bulat','73aa9774-5f93-40b4-b510-4e465f97cfcd','0679c05c-db7b-4278-968a-3ec0388673c8','http://192.168.100.62:8080/data/course/bilangan_bulat.png');
+INSERT INTO course (id,course_name,teacher_id,category_id,image_url) VALUES ('f0c68980-70a8-492d-8701-9fb15086dd44','Bilangan Bulat','73aa9774-5f93-40b4-b510-4e465f97cfcd','0679c05c-db7b-4278-968a-3ec0388673c8','http://192.168.100.62:8080/data/course/bilangan_bulat.png');
 
 
 INSERT INTO course_qualification (course_id,course_level,min_score,course_material_total,course_exam_total) VALUES ('f0c68980-70a8-492d-8701-9fb15086dd44','SD kelas 6',3,3,5);

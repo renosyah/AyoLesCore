@@ -52,7 +52,7 @@ func (c *ClassRoomExamProgress) Add(ctx context.Context, db *sql.DB) (uuid.UUID,
 	}
 
 	if c.ID != emptyUUID {
-		return c.ID, nil
+		return c.ID, errors.Wrap(err, "course exam progress already inserted")
 	}
 
 	query = `INSERT INTO classroom_exam_progress (classroom_id,course_exam_id,course_exam_answer_id) VALUES ($1,$2,$3) RETURNING id`

@@ -1,10 +1,10 @@
-INSERT INTO course (id,course_name,teacher_id,category_id,image_url) VALUES ('8c6c787f-1ec1-4be2-b7f0-161e0c3a5345','Inggris','73aa9774-5f93-40b4-b510-4e465f97cfcd','0679c05c-db7b-4278-968a-3ec0388673c8','http://192.168.100.62:8080/data/course/bahasa_inggris.png');
+INSERT INTO course (id,course_name,teacher_id,category_id,image_url) VALUES ('8c6c787f-1ec1-4be2-b7f0-161e0c3a5345','Inggris','73aa9774-5f93-40b4-b510-4e465f97cfcd','0679c05c-db7b-4278-968a-3ec0388673c8','https://ayoles-core.herokuapp.com/data/course/bahasa_inggris.png');
 
 
 INSERT INTO course_qualification (course_id,course_level,min_score,course_material_total,course_exam_total) VALUES ('8c6c787f-1ec1-4be2-b7f0-161e0c3a5345','SD kelas 6',3,3,5);
 
 
-INSERT INTO course_detail (course_id,overview_text,description_text,image_url) VALUES ('8c6c787f-1ec1-4be2-b7f0-161e0c3a5345','English Book','Mengingat era Globalisasi saat ini, kebutuhan akan Bahasa Inggris memang sangatlah tinggi, seperti yang kita semua ketahui, bahasa pengantar yang dipergunakan masyarakat global sekarang adalah Bahasa Inggris, untuk itu pentingnya memberikan pelajaran Bahasa Inggris sejak dini memang dirasa tepat.','http://192.168.100.62:8080/data/course/bahasa_inggris.png');
+INSERT INTO course_detail (course_id,overview_text,description_text,image_url) VALUES ('8c6c787f-1ec1-4be2-b7f0-161e0c3a5345','English Book','Mengingat era Globalisasi saat ini, kebutuhan akan Bahasa Inggris memang sangatlah tinggi, seperti yang kita semua ketahui, bahasa pengantar yang dipergunakan masyarakat global sekarang adalah Bahasa Inggris, untuk itu pentingnya memberikan pelajaran Bahasa Inggris sejak dini memang dirasa tepat.','https://ayoles-core.herokuapp.com/data/course/bahasa_inggris.png');
 
 
 INSERT INTO course_material (id,course_id,material_index,title) VALUES ('9b807042-2d9f-4961-a95e-af7b3cde2d0e','8c6c787f-1ec1-4be2-b7f0-161e0c3a5345',1,'Bab 1 : Numbers');
@@ -12,7 +12,7 @@ INSERT INTO course_material (id,course_id,material_index,title) VALUES ('80cb982
 INSERT INTO course_material (id,course_id,material_index,title) VALUES ('6045e993-0242-4881-b395-464cbca226c8','8c6c787f-1ec1-4be2-b7f0-161e0c3a5345',3,'Bab 3 : Reading Comprehension');
 
 
-INSERT INTO course_material_detail (course_material_id,position,title,type_material,content,image_url) VALUES ('9b807042-2d9f-4961-a95e-af7b3cde2d0e',1,'',1,'','http://192.168.100.62:8080/data/material/bahasa_inggris_bab_1_1.png');
+INSERT INTO course_material_detail (course_material_id,position,title,type_material,content,image_url) VALUES ('9b807042-2d9f-4961-a95e-af7b3cde2d0e',1,'',1,'','https://ayoles-core.herokuapp.com/data/material/bahasa_inggris_bab_1_1.png');
 
 INSERT INTO course_material_detail (course_material_id,position,title,type_material,content,image_url) VALUES ('80cb982e-edad-4d11-a77e-f4f892d20d3d',1,'Read the conversation below!',0,'A: Hello, how are you?\n B: I am fine, thanks.\n A: What is your name?\n B: My name is Sasha.\n A: Where do you come from?\n B: I come from Jakarta.\n A: Where do you live?\n B: I live in Garut\n A: Who do you live with?\n B: I live with my family.\n A: How old are you?\n B: I am fifteen years old.\n A: Where and when were you born?\n B: I was born in Jakarta on March 2nd, 2000\n A: Where do you study?\n B: I study in SMPN Garut 1.\n A: What is your fathers name?\n B: My Fathers name is Tony.\n A: What is your mothers name?\n B: My mothers name is Abby.\n A: How many brothers do you have?\n B: I have one brother\n A: How many sisters do you have?\nB : I dont have any sister.\n A: What is your telephone number?\n B: My telephone number is 253 698,\n A: What is your hobby?\n B: My hobby is studying.\n A: What is your favorite color?\n B: My favorite color is red,\n A: What is your favorite subject?\n B: My favorite subject is Mathematics.\n A: What is your favorite food?\n B: My favorite food is fried rice.\n A: What is your favorite drink?\n B: My favorite drink is orange juice.\n A: What is your favorite fruit?\n B: My favorite fruit is apple.\n A: What is your favorite vegetable?\n B: My favorite vegetable is carrot.','');
 

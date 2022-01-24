@@ -51,6 +51,12 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 	student, _ := studentModule.One(ctx, api.OneStudentParam{
 		ID: classroom.StudentID,
 	})
+	quality, _ := classRoomQualificationModule.One(ctx, api.OneClassRoomQualificationParam{
+		ClassRoomID: classroom.ID,
+	})
+
+	score := (float32(quality.TotalScore) / float32(quality.CourseQualification.CourseExamTotal)) * float32(100.0)
+
 	data := map[string]string{
 		"Name":       student.Name,
 		"CourseName": course.CourseName,
@@ -58,6 +64,7 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 		"Date":       cert.CreateAt.Format("02 January 2006"),
 		"HashID":     cert.HashID,
 		"Print":      flag,
+		"Score":      fmt.Sprint(score),
 	}
 	errServe := temp.ExecuteTemplate(w, "cert.gohtml", data)
 	if errServe != nil {

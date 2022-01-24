@@ -64,7 +64,7 @@ func HandleCertificate(w http.ResponseWriter, r *http.Request) {
 		"Date":       cert.CreateAt.Format("02 January 2006"),
 		"HashID":     cert.HashID,
 		"Print":      flag,
-		"Score":      fmt.Sprint(score),
+		"Score":      fmt.Sprint(int(score)),
 	}
 	errServe := temp.ExecuteTemplate(w, "cert.gohtml", data)
 	if errServe != nil {
